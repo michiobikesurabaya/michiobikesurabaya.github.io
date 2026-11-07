@@ -181,22 +181,23 @@ const money=n=>new Intl.NumberFormat('id-ID',{
 let products=[], cart=[], category='Semua', latestOrder=null;
 let photoIndexes={};
 
+function sameId(a,b){
+  return String(a)===String(b);
+}
 
 function driveImg(url){
   if(!url)return '';
 
-  // URL thumbnail Google Drive dipakai langsung.
   if(/drive\.google\.com\/thumbnail/i.test(url)){
     return url;
   }
 
-  let m=url.match(/(?:id=|\/d\/)([A-Za-z0-9_-]{15,})/);
+  let m=String(url).match(/(?:id=|\/d\/)([A-Za-z0-9_-]{15,})/);
 
   return m
     ? 'https://drive.google.com/thumbnail?id='+m[1]+'&sz=w1200'
     : url;
 }
-
 
 function esc(s){
   return String(s??'').replace(/[&<>"']/g,c=>({
@@ -208,19 +209,16 @@ function esc(s){
   }[c]));
 }
 
-
 function getPhotos(product){
-  if(Array.isArray(product.photos)&&product.photos.length){
-    return product.photos.filter(Boolean);
+  if(Array.isArray(product.photos)){
+    const list=product.photos.filter(Boolean);
+    if(list.length)return list;
   }
 
   return product.photo?[product.photo]:[];
 }
 
-
-/* =====================================================
-   GALERI FOTO PRODUK
-===================================================== */
+/* GALERI FOTO PRODUK */
 
 function renderProductPhoto(product){
   const photos=getPhotos(product);
@@ -229,11 +227,11 @@ function renderProductPhoto(product){
     return '<div class="photo">Foto produk belum tersedia</div>';
   }
 
-  let index=Number(photoIndexes[product.id]||0);
+  let index=Number(photoIndexes[String(product.id)]||0);
 
   if(index<0||index>=photos.length){
     index=0;
-    photoIndexes[product.id]=0;
+    photoIndexes[String(product.id)]=0;
   }
 
   const imageUrl=driveImg(photos[index]);
@@ -256,8 +254,7 @@ function renderProductPhoto(product){
 
   return `
     <div class="photo">
-      <img
-        loading="lazy"
+      <img loading="lazy"
         src="${esc(imageUrl)}"
         alt="${esc(product.name)}"
         onerror="this.alt='Foto tidak dapat dimuat';this.style.display='none'">
@@ -266,9 +263,8 @@ function renderProductPhoto(product){
   `;
 }
 
-
 function changeProductPhoto(id,direction){
-  const product=products.find(p=>p.id===id);
+  const product=products.find(p=>sameId(p.id,id));
 
   if(!product)return;
 
@@ -276,19 +272,16 @@ function changeProductPhoto(id,direction){
 
   if(photos.length<2)return;
 
-  let index=Number(photoIndexes[id]||0);
+  const key=String(id);
+  let index=Number(photoIndexes[key]||0);
 
   index=(index+direction+photos.length)%photos.length;
-
-  photoIndexes[id]=index;
+  photoIndexes[key]=index;
 
   render();
 }
 
-
-/* =====================================================
-   MEMUAT KATALOG
-===================================================== */
+/* MEMUAT KATALOG */
 
 function load(){
   const status=document.querySelector('#status');
@@ -319,7 +312,6 @@ function load(){
   document.head.appendChild(script);
 }
 
-
 function renderFilters(){
   let cats=['Semua',...new Set(
     products.map(p=>p.category).filter(Boolean)
@@ -330,7 +322,6 @@ function renderFilters(){
       onclick="category='${esc(c)}';renderFilters();render()">${esc(c)}</button>`
   ).join('');
 }
-
 
 function render(){
   let q=document.querySelector('#search').value.toLowerCase();
@@ -367,17 +358,14 @@ function render(){
     `Menampilkan ${a.length} produk`;
 }
 
-
-/* =====================================================
-   KERANJANG
-===================================================== */
+/* KERANJANG */
 
 function addCart(id){
-  let p=products.find(x=>x.id===id);
+  let p=products.find(x=>sameId(x.id,id));
 
   if(!p)return;
 
-  let item=cart.find(x=>x.id===id);
+  let item=cart.find(x=>sameId(x.id,id));
 
   if(item)item.qty++;
   else cart.push({...p,qty:1});
@@ -386,7 +374,6 @@ function addCart(id){
 
   alert('Produk ditambahkan ke keranjang');
 }
-
 
 function updateCart(){
   document.querySelector('#cartcount').textContent=
@@ -410,25 +397,21 @@ function updateCart(){
     money(cart.reduce((s,x)=>s+x.price*x.qty,0));
 }
 
-
 function changeQty(id,n){
-  let x=cart.find(x=>x.id===id);
+  let x=cart.find(x=>sameId(x.id,id));
 
   if(!x)return;
 
   x.qty+=n;
 
   if(x.qty<1){
-    cart=cart.filter(y=>y.id!==id);
+    cart=cart.filter(y=>!sameId(y.id,id));
   }
 
   updateCart();
 }
 
-
-/* =====================================================
-   NAVIGASI
-===================================================== */
+/* NAVIGASI */
 
 function showView(v){
   ['catalog','cart','orders'].forEach(x=>
@@ -444,7 +427,6 @@ function showView(v){
   );
 }
 
-
 document.querySelectorAll('.nav button').forEach(b=>
   b.onclick=()=>showView(b.dataset.view)
 );
@@ -452,26 +434,22 @@ document.querySelectorAll('.nav button').forEach(b=>
 document.querySelector('#search').oninput=render;
 document.querySelector('#sort').onchange=render;
 
-
-/* =====================================================
-   BAGIKAN PRODUK
-===================================================== */
+/* BAGIKAN PRODUK */
 
 function shareProduct(id){
-  let p=products.find(x=>x.id===id);
+  let p=products.find(x=>sameId(x.id,id));
 
   if(p&&navigator.share){
     navigator.share({
       title:p.name,
       text:`${p.name} — ${money(p.price)} | Michio Bike Surabaya`
     }).catch(()=>{});
+  }else if(p){
+    alert(`${p.name} — ${money(p.price)}`);
   }
 }
 
-
-/* =====================================================
-   CHECKOUT
-===================================================== */
+/* CHECKOUT */
 
 function checkout(){
   if(!cart.length){
@@ -482,11 +460,6 @@ function checkout(){
   document.querySelector('#checkoutDialog').showModal();
 }
 
-
-/**
- * Mengirim pesanan ke Apps Script.
- * Token unik digunakan untuk mencocokkan balasan checkout.
- */
 function sendOrderToSheets(order){
   return new Promise((resolve,reject)=>{
     let frame=document.getElementById('michioOrderFrame');
@@ -568,7 +541,6 @@ function sendOrderToSheets(order){
   });
 }
 
-
 document.querySelector('#checkoutForm').onsubmit=async function(e){
   e.preventDefault();
 
@@ -629,10 +601,7 @@ document.querySelector('#checkoutForm').onsubmit=async function(e){
   }
 };
 
-
-/* =====================================================
-   CETAK INVOICE
-===================================================== */
+/* CETAK INVOICE */
 
 function printInvoice(){
   if(!latestOrder)return;
@@ -689,10 +658,7 @@ function printInvoice(){
   w.document.close();
 }
 
-
-/* =====================================================
-   CETAK ORDER GUDANG
-===================================================== */
+/* CETAK ORDER GUDANG */
 
 function printPicking(){
   if(!cart.length){
@@ -735,10 +701,7 @@ function printPicking(){
   w.document.close();
 }
 
-
-/* =====================================================
-   MULAI WEBSITE
-===================================================== */
+/* MULAI WEBSITE */
 
 load();
 updateCart();
