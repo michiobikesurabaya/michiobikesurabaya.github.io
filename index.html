@@ -1,4 +1,3 @@
-
 <!doctype html>
 <html lang="id">
 <head>
@@ -12,7 +11,6 @@
 :root{
   --navy:#0b1930;
   --navy2:#142947;
-  --navy3:#203d63;
   --gold:#d9ad54;
   --gold2:#f5d991;
   --ink:#172238;
@@ -22,876 +20,303 @@
   --line:#e7eaf0;
   --shadow:0 12px 35px rgba(11,25,48,.08);
 }
-
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
-
 body{
-  margin:0;
-  background:var(--paper);
+  margin:0;background:var(--paper);
   font-family:Inter,system-ui,-apple-system,Arial,sans-serif;
-  color:var(--ink);
+  color:var(--ink)
 }
-
 button,input,select,textarea{font:inherit}
 button{cursor:pointer}
 button:disabled{opacity:.6;cursor:not-allowed}
 
 header{
   background:linear-gradient(120deg,#081529,#17365c);
-  color:white;
-  padding:13px 18px;
-  position:sticky;
-  top:0;
-  z-index:20;
-  box-shadow:0 6px 24px #06152b35;
-  border-bottom:1px solid #d9ad5430;
+  color:white;padding:13px 18px;position:sticky;top:0;z-index:20;
+  box-shadow:0 6px 24px #06152b35;border-bottom:1px solid #d9ad5430
 }
-
 .head{
-  max-width:1180px;
-  margin:auto;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:16px;
+  max-width:1180px;margin:auto;display:flex;
+  align-items:center;justify-content:space-between;gap:16px
 }
-
-.brand{
-  display:flex;
-  align-items:center;
-  gap:11px;
-  min-width:0;
-}
-
-.brand img{
-  width:58px;
-  height:48px;
-  object-fit:contain;
-}
-
-.brand b{
-  color:var(--gold2);
-  letter-spacing:2px;
-  font-size:16px;
-}
-
+.brand{display:flex;align-items:center;gap:11px;min-width:0}
+.brand img{width:58px;height:48px;object-fit:contain}
+.brand b{color:var(--gold2);letter-spacing:2px;font-size:16px}
 .brand small{
-  display:block;
-  color:#d5dce7;
-  letter-spacing:4px;
-  font-size:9px;
-  margin-top:3px;
+  display:block;color:#d5dce7;letter-spacing:4px;
+  font-size:9px;margin-top:3px
 }
-
-.nav{
-  display:flex;
-  gap:8px;
-  flex-wrap:wrap;
-}
-
+.nav{display:flex;gap:8px;flex-wrap:wrap}
 .nav button{
-  border:1px solid #d9ad5470;
-  color:#f4d995;
-  background:transparent;
-  border-radius:30px;
-  padding:10px 16px;
-  transition:.2s;
+  border:1px solid #d9ad5470;color:#f4d995;background:transparent;
+  border-radius:30px;padding:10px 16px
 }
-
 .nav button:hover{background:#ffffff12}
-
-.nav button.active,
-.gold{
+.nav button.active,.gold{
   background:linear-gradient(135deg,#f8dfa0,#c89136);
-  color:#172238;
-  border:0;
-  font-weight:800;
+  color:#172238;border:0;font-weight:800
 }
-
 #cartcount{
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  min-width:20px;
-  height:20px;
-  padding:0 5px;
-  margin-left:3px;
-  border-radius:20px;
-  background:#ffffff25;
-  color:inherit;
-  font-size:11px;
+  display:inline-flex;align-items:center;justify-content:center;
+  min-width:20px;height:20px;padding:0 5px;margin-left:3px;
+  border-radius:20px;background:#ffffff25;color:inherit;font-size:11px
 }
-
-main{
-  max-width:1180px;
-  margin:26px auto;
-  padding:0 18px;
-}
-
-/* HERO */
+main{max-width:1180px;margin:26px auto;padding:0 18px}
 
 .hero{
   border-radius:26px;
-  background:
-    radial-gradient(circle at 85% 20%,#d9ad5430,transparent 28%),
-    linear-gradient(115deg,#09172c,#19395f);
-  color:white;
-  padding:42px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:24px;
-  overflow:hidden;
-  position:relative;
-  box-shadow:0 18px 45px #0b193022;
+  background:radial-gradient(circle at 85% 20%,#d9ad5430,transparent 28%),
+  linear-gradient(115deg,#09172c,#19395f);
+  color:white;padding:42px;display:flex;justify-content:space-between;
+  align-items:center;gap:24px;overflow:hidden;position:relative;
+  box-shadow:0 18px 45px #0b193022
 }
-
-.hero:after{
-  content:"";
-  position:absolute;
-  width:300px;
-  height:300px;
-  border:1px solid #d9ad5425;
-  border-radius:50%;
-  right:8%;
-  top:-180px;
-}
-
 .hero-content{position:relative;z-index:1}
-
 .hero .slogan{
-  font-size:11px;
-  letter-spacing:4px;
-  color:var(--gold2);
-  font-weight:800;
-  margin-bottom:14px;
+  font-size:11px;letter-spacing:4px;color:var(--gold2);
+  font-weight:800;margin-bottom:14px
 }
-
 .hero h1{
-  font-size:clamp(32px,5vw,54px);
-  line-height:1.08;
-  margin:0 0 13px;
-  color:var(--gold2);
-  letter-spacing:-1.5px;
+  font-size:clamp(32px,5vw,54px);line-height:1.08;
+  margin:0 0 13px;color:var(--gold2);letter-spacing:-1.5px
 }
-
-.hero p{
-  color:#e0e6ef;
-  margin:0 0 23px;
-  line-height:1.7;
-  max-width:480px;
-}
-
+.hero p{color:#e0e6ef;margin:0 0 23px;line-height:1.7;max-width:480px}
 .hero-mark{
-  font-size:125px;
-  color:var(--gold);
-  opacity:.75;
-  padding:0 20px;
-  text-shadow:0 10px 40px #0004;
-  position:relative;
-  z-index:1;
+  font-size:125px;color:var(--gold);opacity:.75;padding:0 20px;
+  text-shadow:0 10px 40px #0004;position:relative;z-index:1
 }
-
-.hero-info{
-  display:flex;
-  flex-wrap:wrap;
-  gap:10px;
-  margin-top:25px;
-}
-
+.hero-info{display:flex;flex-wrap:wrap;gap:10px;margin-top:25px}
 .hero-info span{
-  border:1px solid #ffffff30;
-  background:#ffffff0c;
-  border-radius:30px;
-  padding:8px 13px;
-  font-size:11px;
-  color:#f3e8cb;
+  border:1px solid #ffffff30;background:#ffffff0c;
+  border-radius:30px;padding:8px 13px;font-size:11px;color:#f3e8cb
 }
-
-/* TOMBOL */
-
 .primary{
   background:linear-gradient(135deg,#f7dda0,#c8943e);
-  border:0;
-  border-radius:12px;
-  padding:13px 18px;
-  font-weight:800;
-  color:#18243a;
-  box-shadow:0 5px 15px #c8943e30;
-  transition:transform .2s,box-shadow .2s;
+  border:0;border-radius:12px;padding:13px 18px;font-weight:800;
+  color:#18243a;box-shadow:0 5px 15px #c8943e30;transition:.2s
 }
-
-.primary:hover{
-  transform:translateY(-2px);
-  box-shadow:0 8px 20px #c8943e45;
-}
-
+.primary:hover{transform:translateY(-2px);box-shadow:0 8px 20px #c8943e45}
 .outline{
-  border:1px solid #d9ad5470;
-  color:#f4d995;
-  background:transparent;
-  border-radius:12px;
-  padding:11px 15px;
+  border:1px solid #d9ad5470;color:#f4d995;background:transparent;
+  border-radius:12px;padding:11px 15px
 }
-
-.dark{
-  background:var(--navy);
-  color:white;
-}
-
+.dark{background:var(--navy);color:white}
 .full{width:100%;margin-top:12px}
 
-/* KATALOG */
-
 .catalog-heading{margin:32px 0 15px}
-
 .catalog-heading small{
-  color:#a5792d;
-  font-weight:800;
-  letter-spacing:2px;
-  font-size:10px;
+  color:#a5792d;font-weight:800;letter-spacing:2px;font-size:10px
 }
-
-.catalog-heading h2{
-  margin:5px 0;
-  color:var(--navy);
-  font-size:25px;
-}
-
-.catalog-heading p{
-  color:var(--muted);
-  font-size:13px;
-  margin:0;
-}
-
-.toolbar{
-  display:flex;
-  gap:12px;
-  margin:18px 0;
-  flex-wrap:wrap;
-}
-
+.catalog-heading h2{margin:5px 0;color:var(--navy);font-size:25px}
+.catalog-heading p{color:var(--muted);font-size:13px;margin:0}
+.toolbar{display:flex;gap:12px;margin:18px 0;flex-wrap:wrap}
 .toolbar input{flex:1;min-width:180px}
-
 .field{
-  border:1px solid #dce1e9;
-  background:white;
-  border-radius:12px;
-  padding:13px 14px;
-  width:100%;
-  outline-color:var(--gold);
-  color:var(--ink);
-  transition:border .2s,box-shadow .2s;
+  border:1px solid #dce1e9;background:white;border-radius:12px;
+  padding:13px 14px;width:100%;outline-color:var(--gold);color:var(--ink)
 }
-
-.field:focus{
-  border-color:var(--gold);
-  box-shadow:0 0 0 3px #d9ad5420;
-}
-
+.field:focus{border-color:var(--gold);box-shadow:0 0 0 3px #d9ad5420}
 .filters{
-  display:flex;
-  gap:8px;
-  overflow:auto;
-  padding:2px 0 15px;
-  scrollbar-width:thin;
+  display:flex;gap:8px;overflow:auto;padding:2px 0 15px;
+  scrollbar-width:thin
 }
-
 .filters button{
-  white-space:nowrap;
-  border:1px solid #d9dfeb;
-  border-radius:30px;
-  background:#fff;
-  padding:9px 16px;
-  color:#334;
-  font-size:12px;
-  transition:.2s;
+  white-space:nowrap;border:1px solid #d9dfeb;border-radius:30px;
+  background:#fff;padding:9px 16px;color:#334;font-size:12px
 }
-
-.filters button:hover{border-color:var(--gold)}
-
 .filters button.active{
-  background:var(--navy);
-  color:var(--gold2);
-  border-color:var(--navy);
+  background:var(--navy);color:var(--gold2);border-color:var(--navy)
 }
-
-/* KARTU PRODUK */
-
-.grid{
-  display:grid;
-  grid-template-columns:repeat(3,minmax(0,1fr));
-  gap:18px;
-}
-
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
 .card{
-  background:#fff;
-  border:1px solid #e7eaf0;
-  border-radius:19px;
-  overflow:hidden;
-  box-shadow:0 7px 22px #16233a0a;
-  transition:transform .22s,box-shadow .22s;
+  background:#fff;border:1px solid #e7eaf0;border-radius:19px;
+  overflow:hidden;box-shadow:0 7px 22px #16233a0a;transition:.22s
 }
-
-.card:hover{
-  transform:translateY(-4px);
-  box-shadow:0 15px 35px #16233a16;
-}
-
+.card:hover{transform:translateY(-4px);box-shadow:0 15px 35px #16233a16}
 .photo{
-  height:220px;
-  background:linear-gradient(135deg,#eef1f5,#fff);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  color:#9aa5b6;
-  position:relative;
-  overflow:hidden;
-  padding:8px;
+  height:220px;background:linear-gradient(135deg,#eef1f5,#fff);
+  display:flex;align-items:center;justify-content:center;color:#9aa5b6;
+  position:relative;overflow:hidden;padding:8px
 }
-
-.photo img{
-  width:100%;
-  height:100%;
-  object-fit:contain;
-  transition:transform .35s;
-}
-
+.photo img{width:100%;height:100%;object-fit:contain;transition:.35s}
 .card:hover .photo img{transform:scale(1.035)}
-
 .photo-nav{
-  position:absolute;
-  inset:0;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding:0 9px;
-  pointer-events:none;
+  position:absolute;inset:0;display:flex;align-items:center;
+  justify-content:space-between;padding:0 9px;pointer-events:none
 }
-
 .photo-nav button{
-  pointer-events:auto;
-  border:1px solid #ffffff50;
-  border-radius:50%;
-  width:34px;
-  height:34px;
-  background:#0b1930c9;
-  color:white;
-  font-size:21px;
-  line-height:1;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  transition:.2s;
+  pointer-events:auto;border:1px solid #ffffff50;border-radius:50%;
+  width:34px;height:34px;background:#0b1930c9;color:white;
+  font-size:21px;display:flex;align-items:center;justify-content:center
 }
-
-.photo-nav button:hover{
-  background:var(--gold);
-  color:var(--navy);
-}
-
 .photo-count{
-  position:absolute;
-  right:10px;
-  bottom:10px;
-  background:#0b1930d9;
-  color:white;
-  border-radius:20px;
-  padding:5px 10px;
-  font-size:10px;
+  position:absolute;right:10px;bottom:10px;background:#0b1930d9;
+  color:white;border-radius:20px;padding:5px 10px;font-size:10px
 }
-
 .cardbody{padding:17px}
-
 .tag{
-  display:inline-block;
-  font-size:10px;
-  color:#94702d;
-  letter-spacing:1.2px;
-  text-transform:uppercase;
-  font-weight:800;
-  background:#fbf4e5;
-  border-radius:20px;
-  padding:5px 9px;
+  display:inline-block;font-size:10px;color:#94702d;letter-spacing:1.2px;
+  text-transform:uppercase;font-weight:800;background:#fbf4e5;
+  border-radius:20px;padding:5px 9px
 }
-
-.card h3{
-  font-size:16px;
-  margin:10px 0 7px;
-  color:var(--navy);
-  line-height:1.4;
-}
-
-.desc{
-  font-size:12px;
-  color:var(--muted);
-  min-height:34px;
-  line-height:1.6;
-}
-
-.price{
-  font-size:20px;
-  font-weight:900;
-  color:#a56c16;
-  margin:13px 0;
-}
-
-.actions{
-  display:flex;
-  gap:7px;
-}
-
+.card h3{font-size:16px;margin:10px 0 7px;color:var(--navy);line-height:1.4}
+.desc{font-size:12px;color:var(--muted);min-height:34px;line-height:1.6}
+.price{font-size:20px;font-weight:900;color:#a56c16;margin:13px 0}
+.actions{display:flex;gap:7px}
 .actions button{
-  flex:1;
-  min-width:0;
-  border-radius:10px;
-  padding:11px 5px;
-  border:0;
-  font-size:11px;
-  font-weight:700;
+  flex:1;min-width:0;border-radius:10px;padding:11px 5px;
+  border:0;font-size:11px;font-weight:700
 }
-
-/* KERANJANG DAN PANEL */
-
-.detail{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:22px;
-}
-
 .panel{
-  background:white;
-  border:1px solid #e7eaf0;
-  border-radius:19px;
-  padding:24px;
-  box-shadow:var(--shadow);
+  background:white;border:1px solid #e7eaf0;border-radius:19px;
+  padding:24px;box-shadow:var(--shadow)
 }
-
-.panel h2{
-  margin-top:0;
-  color:var(--navy);
-}
-
-.muted{
-  color:var(--muted);
-  font-size:13px;
-  line-height:1.6;
-}
-
+.panel h2{margin-top:0;color:var(--navy)}
+.muted{color:var(--muted);font-size:13px;line-height:1.6}
 .row{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:12px;
-  padding:13px 0;
-  border-bottom:1px solid #edf0f4;
+  display:flex;justify-content:space-between;align-items:center;
+  gap:12px;padding:13px 0;border-bottom:1px solid #edf0f4
 }
-
-.qty{
-  display:flex;
-  align-items:center;
-  gap:9px;
-}
-
+.qty{display:flex;align-items:center;gap:9px}
 .qty button{
-  border:1px solid #ddd;
-  background:#fff;
-  border-radius:8px;
-  padding:5px 11px;
-  font-weight:800;
+  border:1px solid #ddd;background:#fff;border-radius:8px;
+  padding:5px 11px;font-weight:800
 }
-
-.qty button:hover{
-  border-color:var(--gold);
-  background:#fbf4e5;
-}
-
+.qty button:hover{border-color:var(--gold);background:#fbf4e5}
 .empty{
-  text-align:center;
-  padding:40px 15px;
-  color:var(--muted);
-  background:#fafbfd;
-  border-radius:14px;
+  text-align:center;padding:40px 15px;color:var(--muted);
+  background:#fafbfd;border-radius:14px
 }
-
 .notice{
-  background:#fff6df;
-  padding:15px;
-  border-radius:12px;
-  font-size:12px;
-  color:#70521b;
-  line-height:1.8;
-  border:1px solid #f0dfb8;
+  background:#fff6df;padding:15px;border-radius:12px;font-size:12px;
+  color:#70521b;line-height:1.8;border:1px solid #f0dfb8
 }
-
 .hide{display:none!important}
-
-/* DIALOG CHECKOUT */
+footer{
+  text-align:center;background:#0b1930;color:#dce3ee;
+  padding:25px 15px;margin-top:45px;font-size:12px;line-height:2
+}
+footer b{color:var(--gold2);letter-spacing:2px}
 
 dialog{
-  border:0;
-  border-radius:20px;
-  width:min(520px,calc(100% - 24px));
-  padding:25px;
-  box-shadow:0 20px 80px #0005;
+  border:0;border-radius:20px;width:min(520px,calc(100% - 24px));
+  padding:25px;box-shadow:0 20px 80px #0005
 }
-
 dialog::backdrop{background:#06152b99}
-
 .formgrid{display:grid;gap:12px}
+.formgrid h2{margin:0 0 8px;color:var(--navy)}
 
-.formgrid h2{
-  margin:0 0 8px;
-  color:var(--navy);
+.assembly-option{
+  display:flex;align-items:flex-start;gap:12px;padding:15px;
+  border:1px solid #e8dfc9;border-radius:13px;background:#fffaf0;
+  margin:16px 0
 }
-
-/* DETAIL PRODUK PREMIUM */
+.assembly-option input{width:19px;height:19px;accent-color:#a8792d;margin-top:2px}
+.assembly-option b{display:block;color:var(--navy);font-size:14px}
+.assembly-option small{display:block;color:#778196;font-size:12px;line-height:1.5;margin-top:4px}
+.cart-total{font-size:19px;color:#a56c16}
 
 .product-detail-dialog{
-  width:min(950px,calc(100% - 24px));
-  max-width:950px;
-  max-height:90vh;
-  padding:0;
-  overflow:auto;
-  border:1px solid #e5e9f0;
-  border-radius:22px;
-  background:#fff;
+  width:min(950px,calc(100% - 24px));max-width:950px;max-height:90vh;
+  padding:0;overflow:auto;border:1px solid #e5e9f0;border-radius:22px;
+  background:#fff
 }
-
-.product-detail-dialog::backdrop{
-  background:#06152bd9;
-  backdrop-filter:blur(4px);
-}
-
+.product-detail-dialog::backdrop{background:#06152bd9;backdrop-filter:blur(4px)}
 .detail-topbar{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  padding:17px 22px;
-  background:linear-gradient(120deg,#081529,#17365c);
-  color:#f5d991;
-  position:sticky;
-  top:0;
-  z-index:2;
+  display:flex;justify-content:space-between;align-items:center;
+  padding:17px 22px;background:linear-gradient(120deg,#081529,#17365c);
+  color:#f5d991;position:sticky;top:0;z-index:2
 }
-
-.detail-topbar b{
-  letter-spacing:2px;
-  font-size:12px;
-}
-
+.detail-topbar b{letter-spacing:2px;font-size:12px}
 .detail-close{
-  border:1px solid #ffffff55;
-  background:#ffffff12;
-  color:white;
-  border-radius:50%;
-  width:35px;
-  height:35px;
-  font-size:21px;
+  border:1px solid #ffffff55;background:#ffffff12;color:white;
+  border-radius:50%;width:35px;height:35px;font-size:21px
 }
-
 .detail-content{
-  display:grid;
-  grid-template-columns:1.05fr .95fr;
-  gap:28px;
-  padding:25px;
+  display:grid;grid-template-columns:1.05fr .95fr;gap:28px;padding:25px
 }
-
-.detail-gallery{min-width:0}
-
+.detail-gallery,.detail-info{min-width:0}
 .detail-main-photo{
-  height:390px;
-  background:linear-gradient(135deg,#eef1f5,#fff);
-  border-radius:17px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  overflow:hidden;
-  position:relative;
-  color:#9aa5b6;
+  height:390px;background:linear-gradient(135deg,#eef1f5,#fff);
+  border-radius:17px;display:flex;align-items:center;
+  justify-content:center;overflow:hidden;position:relative;color:#9aa5b6
 }
-
-.detail-main-photo img{
-  width:100%;
-  height:100%;
-  object-fit:contain;
-  padding:12px;
-}
-
+.detail-main-photo img{width:100%;height:100%;object-fit:contain;padding:12px}
 .detail-gallery-nav{
-  position:absolute;
-  inset:0;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding:12px;
-  pointer-events:none;
+  position:absolute;inset:0;display:flex;align-items:center;
+  justify-content:space-between;padding:12px;pointer-events:none
 }
-
 .detail-gallery-nav button{
-  pointer-events:auto;
-  width:40px;
-  height:40px;
-  border:0;
-  border-radius:50%;
-  background:#0b1930d9;
-  color:white;
-  font-size:24px;
+  pointer-events:auto;width:40px;height:40px;border:0;
+  border-radius:50%;background:#0b1930d9;color:white;font-size:24px
 }
-
 .detail-gallery-count{
-  position:absolute;
-  right:12px;
-  bottom:12px;
-  background:#0b1930df;
-  color:white;
-  padding:7px 12px;
-  border-radius:20px;
-  font-size:11px;
+  position:absolute;right:12px;bottom:12px;background:#0b1930df;
+  color:white;padding:7px 12px;border-radius:20px;font-size:11px
 }
-
-.detail-info{min-width:0}
-
 .detail-category{
-  display:inline-block;
-  background:#fbf4e5;
-  color:#94702d;
-  padding:7px 12px;
-  border-radius:20px;
-  font-size:10px;
-  font-weight:800;
-  letter-spacing:1px;
-  text-transform:uppercase;
+  display:inline-block;background:#fbf4e5;color:#94702d;
+  padding:7px 12px;border-radius:20px;font-size:10px;
+  font-weight:800;letter-spacing:1px;text-transform:uppercase
 }
-
-.detail-info h2{
-  color:var(--navy);
-  font-size:27px;
-  line-height:1.3;
-  margin:13px 0;
-}
-
-.detail-price{
-  font-size:29px;
-  color:#a56c16;
-  font-weight:900;
-  margin:16px 0;
-}
-
+.detail-info h2{color:var(--navy);font-size:27px;line-height:1.3;margin:13px 0}
+.detail-price{font-size:29px;color:#a56c16;font-weight:900;margin:16px 0}
 .detail-stock{
-  display:inline-block;
-  padding:8px 13px;
-  border-radius:9px;
-  background:#e9f7ef;
-  color:#187344;
-  font-size:12px;
-  font-weight:800;
+  display:inline-block;padding:8px 13px;border-radius:9px;
+  background:#e9f7ef;color:#187344;font-size:12px;font-weight:800
 }
-
-.detail-stock.low{
-  background:#fff5df;
-  color:#95651b;
-}
-
-.detail-stock.out{
-  background:#fdeaea;
-  color:#a52d2d;
-}
-
+.detail-stock.low{background:#fff5df;color:#95651b}
+.detail-stock.out{background:#fdeaea;color:#a52d2d}
 .detail-spec{
-  margin-top:22px;
-  padding:17px;
-  background:#f7f8fa;
-  border:1px solid #e8ebf0;
-  border-radius:14px;
+  margin-top:22px;padding:17px;background:#f7f8fa;
+  border:1px solid #e8ebf0;border-radius:14px
 }
-
-.detail-spec h3{
-  margin:0 0 12px;
-  color:var(--navy);
-  font-size:14px;
-}
-
+.detail-spec h3{margin:0 0 12px;color:var(--navy);font-size:14px}
 .detail-spec-content{
-  color:#5d687b;
-  font-size:13px;
-  line-height:1.9;
-  white-space:pre-line;
-  overflow-wrap:anywhere;
+  color:#5d687b;font-size:13px;line-height:1.9;white-space:pre-line;
+  overflow-wrap:anywhere
 }
-
-.detail-actions{
-  display:flex;
-  gap:10px;
-  margin-top:20px;
-}
-
+.detail-actions{display:flex;gap:10px;margin-top:20px}
 .detail-actions button{flex:1}
-
-.detail-note{
-  color:#8992a1;
-  font-size:11px;
-  line-height:1.7;
-  margin-top:15px;
-}
-
-/* RESPONSIVE TABLET DAN HP */
+.detail-note{color:#8992a1;font-size:11px;line-height:1.7;margin-top:15px}
 
 @media(max-width:850px){
   .grid{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .photo{height:185px}
-  .hero{padding:30px}
-  .hero-mark{font-size:90px}
+  .photo{height:185px}.hero{padding:30px}.hero-mark{font-size:90px}
 }
-
 @media(max-width:650px){
-  .product-detail-dialog{
-    max-height:94vh;
-    border-radius:17px;
-  }
-
-  .detail-content{
-    grid-template-columns:1fr;
-    gap:18px;
-    padding:16px;
-  }
-
+  .product-detail-dialog{max-height:94vh;border-radius:17px}
+  .detail-content{grid-template-columns:1fr;gap:18px;padding:16px}
   .detail-main-photo{height:280px}
-  .detail-info h2{font-size:22px}
-  .detail-price{font-size:25px}
+  .detail-info h2{font-size:22px}.detail-price{font-size:25px}
 }
-
 @media(max-width:600px){
   header{padding:11px 12px}
-
-  .head{
-    flex-direction:column;
-    align-items:stretch;
-    gap:12px;
-  }
-
-  .brand img{
-    width:43px;
-    height:40px;
-  }
-
-  .brand b{font-size:14px}
-
-  .nav{
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:7px;
-  }
-
-  .nav button{
-    padding:10px 5px;
-    font-size:11px;
-    text-align:center;
-  }
-
-  main{
-    margin:17px auto;
-    padding:0 12px;
-  }
-
-  .hero{
-    padding:25px 20px;
-    border-radius:20px;
-    min-height:270px;
-  }
-
-  .hero h1{font-size:34px}
-  .hero p{font-size:13px}
-  .hero-mark{font-size:55px;padding:0}
-  .hero-info{gap:6px}
-
-  .hero-info span{
-    font-size:9px;
-    padding:7px 9px;
-  }
-
-  .catalog-heading h2{font-size:22px}
-  .toolbar{gap:8px}
-
-  .toolbar select{
-    max-width:145px!important;
-    font-size:12px;
-  }
-
-  .grid{
-    grid-template-columns:repeat(2,minmax(0,1fr));
-    gap:10px;
-  }
-
-  .photo{height:145px;padding:5px}
-  .card{border-radius:14px}
-  .cardbody{padding:11px}
-
-  .card h3{
-    font-size:13px;
-    margin:8px 0 5px;
-  }
-
-  .desc{
-    font-size:11px;
-    min-height:32px;
-  }
-
-  .price{
-    font-size:16px;
-    margin:10px 0;
-  }
-
-  .actions{gap:4px}
-
-  .actions button{
-    font-size:9px;
-    padding:10px 3px;
-  }
-
-  .photo-nav button{
-    width:27px;
-    height:27px;
-    font-size:17px;
-  }
-
-  .photo-count{
-    font-size:9px;
-    padding:4px 7px;
-  }
-
+  .head{flex-direction:column;align-items:stretch;gap:12px}
+  .brand img{width:43px;height:40px}.brand b{font-size:14px}
+  .nav{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}
+  .nav button{padding:10px 5px;font-size:11px;text-align:center}
+  main{margin:17px auto;padding:0 12px}
+  .hero{padding:25px 20px;border-radius:20px;min-height:270px}
+  .hero h1{font-size:34px}.hero p{font-size:13px}
+  .hero-mark{font-size:55px;padding:0}.hero-info{gap:6px}
+  .hero-info span{font-size:9px;padding:7px 9px}
+  .catalog-heading h2{font-size:22px}.toolbar{gap:8px}
+  .toolbar select{max-width:145px!important;font-size:12px}
+  .grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+  .photo{height:145px;padding:5px}.card{border-radius:14px}
+  .cardbody{padding:11px}.card h3{font-size:13px;margin:8px 0 5px}
+  .desc{font-size:11px;min-height:32px}
+  .price{font-size:16px;margin:10px 0}
+  .actions{gap:4px}.actions button{font-size:9px;padding:10px 3px}
+  .photo-nav button{width:27px;height:27px;font-size:17px}
+  .photo-count{font-size:9px;padding:4px 7px}
   .panel{padding:17px}
-  .detail{grid-template-columns:1fr}
 }
-
 @media(max-width:360px){
-  .hero h1{font-size:29px}
-  .hero-mark{font-size:40px}
-  .photo{height:125px}
-  .cardbody{padding:9px}
-  .price{font-size:15px}
-}
-
-/* CETAK */
-
-@media print{
-  header,.hero,.toolbar,.filters,.actions,footer{
-    display:none!important;
-  }
-
-  body{background:white}
-
-  main{
-    margin:0;
-    max-width:none;
-    padding:0;
-  }
-
-  .panel,.card{
-    box-shadow:none;
-    border:0;
-  }
+  .hero h1{font-size:29px}.hero-mark{font-size:40px}
+  .photo{height:125px}.cardbody{padding:9px}.price{font-size:15px}
 }
 </style>
 </head>
@@ -899,225 +324,150 @@ dialog::backdrop{background:#06152b99}
 <body>
 
 <header>
-<div class="head">
-
-<div class="brand">
-<img src="logo-michio-bike.svg" alt="Logo Michio Bike">
-<div>
-<b>MICHIO BIKE</b>
-<small>S U R A B A Y A</small>
-</div>
-</div>
-
-<nav class="nav">
-<button class="active" data-view="catalog">Katalog</button>
-<button data-view="cart">Keranjang <span id="cartcount">0</span></button>
-<button data-view="orders">Cara Pesan</button>
-</nav>
-
-</div>
+  <div class="head">
+    <div class="brand">
+      <img src="logo-michio-bike.svg" alt="Logo Michio Bike">
+      <div><b>MICHIO BIKE</b><small>S U R A B A Y A</small></div>
+    </div>
+    <nav class="nav">
+      <button class="active" data-view="catalog">Katalog</button>
+      <button data-view="cart">Keranjang <span id="cartcount">0</span></button>
+      <button data-view="orders">Cara Pesan</button>
+    </nav>
+  </div>
 </header>
 
 <main>
+  <section id="hero" class="hero">
+    <div class="hero-content">
+      <div class="slogan">RIDE BETTER, LIVE HAPPIER</div>
+      <h1>Temukan Sepeda<br>Terbaik Anda.</h1>
+      <p>Koleksi sepeda, E-Bike, dan aksesoris pilihan untuk menemani perjalanan Anda.</p>
+      <button class="primary" onclick="document.querySelector('#search').focus();document.querySelector('#catalogView').scrollIntoView({behavior:'smooth'})">Jelajahi Katalog →</button>
+      <div class="hero-info">
+        <span>✦ Koleksi Pilihan</span>
+        <span>✦ Michio Bike Surabaya</span>
+        <span>✦ Layanan Pemesanan</span>
+      </div>
+    </div>
+    <div class="hero-mark">✦</div>
+  </section>
 
-<section id="hero" class="hero">
-<div class="hero-content">
+  <section id="catalogView">
+    <div class="catalog-heading">
+      <small>KOLEKSI MICHIO BIKE</small>
+      <h2>Temukan Sepeda Favorit Anda</h2>
+      <p>Pilih produk dan lihat koleksi foto sebelum melakukan pemesanan.</p>
+    </div>
+    <div class="toolbar">
+      <input id="search" class="field" placeholder="Cari nama atau kategori produk…">
+      <select id="sort" class="field" style="max-width:180px">
+        <option value="name">Urutkan: Nama</option>
+        <option value="low">Harga terendah</option>
+        <option value="high">Harga tertinggi</option>
+      </select>
+    </div>
+    <div class="filters" id="filters"></div>
+    <div id="products" class="grid"></div>
+    <p class="muted" id="status"></p>
+  </section>
 
-<div class="slogan">RIDE BETTER, LIVE HAPPIER</div>
+  <section id="cartView" class="hide">
+    <div class="panel">
+      <h2>🛒 Keranjang Pesanan</h2>
+      <p class="muted">Periksa kembali produk dan jumlah pesanan Anda.</p>
+      <div id="cartitems"></div>
 
-<h1>Temukan Sepeda<br>Terbaik Anda.</h1>
+      <label class="assembly-option">
+        <input type="checkbox" id="assemblyService" onchange="updateCart()">
+        <span>
+          <b>Tambahkan Jasa Rakit Sepeda</b>
+          <small>Sepeda dirakit oleh tim Michio Bike. Biaya tambahan Rp25.000 untuk pesanan ini.</small>
+        </span>
+      </label>
 
-<p>
-Koleksi sepeda, E-Bike, dan aksesoris pilihan
-untuk menemani perjalanan Anda.
-</p>
+      <div id="cartSubtotal" class="row">
+        <span>Subtotal produk</span><b id="subtotal">Rp0</b>
+      </div>
+      <div id="assemblyRow" class="row hide">
+        <span>Jasa Rakit Sepeda</span><b>Rp25.000</b>
+      </div>
+      <div class="row">
+        <b>Total Pembayaran</b>
+        <b id="total" class="cart-total">Rp0</b>
+      </div>
 
-<button class="primary"
-onclick="document.querySelector('#search').focus();document.querySelector('#catalogView').scrollIntoView({behavior:'smooth'})">
-Jelajahi Katalog →
-</button>
+      <button class="primary full" onclick="checkout()">Lanjutkan & Buat Invoice</button>
+      <button class="outline full" style="color:#243" onclick="printPicking()">Cetak Order Gudang</button>
+    </div>
+  </section>
 
-<div class="hero-info">
-<span>✦ Koleksi Pilihan</span>
-<span>✦ Michio Bike Surabaya</span>
-<span>✦ Layanan Pemesanan</span>
-</div>
-
-</div>
-
-<div class="hero-mark">✦</div>
-</section>
-
-<section id="catalogView">
-
-<div class="catalog-heading">
-<small>KOLEKSI MICHIO BIKE</small>
-<h2>Temukan Sepeda Favorit Anda</h2>
-<p>Pilih produk dan lihat koleksi foto sebelum melakukan pemesanan.</p>
-</div>
-
-<div class="toolbar">
-<input id="search" class="field"
-placeholder="Cari nama atau kategori produk…">
-
-<select id="sort" class="field" style="max-width:180px">
-<option value="name">Urutkan: Nama</option>
-<option value="low">Harga terendah</option>
-<option value="high">Harga tertinggi</option>
-</select>
-</div>
-
-<div class="filters" id="filters"></div>
-<div id="products" class="grid"></div>
-<p class="muted" id="status"></p>
-
-</section>
-
-<section id="cartView" class="hide">
-
-<div class="panel">
-<h2>🛒 Keranjang Pesanan</h2>
-
-<p class="muted">
-Periksa kembali produk dan jumlah pesanan Anda.
-</p>
-
-<div id="cartitems"></div>
-
-<div class="row">
-<b>Total Pembayaran</b>
-<b id="total">Rp0</b>
-</div>
-
-<button class="primary full" onclick="checkout()">
-Lanjutkan & Buat Invoice
-</button>
-
-<button class="outline full" style="color:#243"
-onclick="printPicking()">
-Cetak Order Gudang
-</button>
-
-</div>
-</section>
-
-<section id="ordersView" class="hide">
-
-<div class="panel">
-<h2>Informasi Pemesanan</h2>
-
-<p>
-Pilih produk dari katalog, masukkan ke keranjang,
-lalu isi data pembeli untuk membuat invoice.
-</p>
-
-<div class="notice">
-<b>Informasi Pembayaran</b><br>
-Transfer BCA<br>
-<b>0881885122 a.n. Bryan Surya Putra</b><br>
-Mohon konfirmasi pembayaran kepada admin toko.
-</div>
-
-<p class="muted">
-Ketersediaan dan harga dapat berubah.
-Pesanan dikonfirmasi setelah admin memeriksa stok aktual.
-</p>
-</div>
-</section>
-
+  <section id="ordersView" class="hide">
+    <div class="panel">
+      <h2>Informasi Pemesanan</h2>
+      <p>Pilih produk dari katalog, masukkan ke keranjang, lalu isi data pembeli untuk membuat invoice.</p>
+      <div class="notice">
+        <b>Informasi Pembayaran</b><br>
+        Transfer BCA<br>
+        <b>0881885122 a.n. Bryan Surya Putra</b><br>
+        Mohon konfirmasi pembayaran kepada admin toko.
+      </div>
+      <p class="muted">Ketersediaan dan harga dapat berubah. Pesanan dikonfirmasi setelah admin memeriksa stok aktual.</p>
+    </div>
+  </section>
 </main>
 
 <footer>
-<b>© MICHIO BIKE SURABAYA</b><br>
-Ride Better, Live Happier
+  <b>© MICHIO BIKE SURABAYA</b><br>
+  Ride Better, Live Happier
 </footer>
 
 <dialog id="checkoutDialog">
-<form method="dialog" class="formgrid" id="checkoutForm">
-
-<h2>Data Pembeli</h2>
-
-<input class="field" id="buyer"
-placeholder="Nama pembeli" required>
-
-<input class="field" id="phone"
-placeholder="Nomor WhatsApp" required>
-
-<textarea class="field" id="address"
-placeholder="Alamat / catatan (opsional)"></textarea>
-
-<div class="notice">
-Transfer BCA<br>
-<b>0881885122 a.n. Bryan Surya Putra</b>
-</div>
-
-<button class="primary" type="submit">
-Simpan Pesanan & Buat Invoice
-</button>
-
-<button class="outline" type="button"
-onclick="document.querySelector('#checkoutDialog').close()">
-Batal
-</button>
-
-</form>
+  <form method="dialog" class="formgrid" id="checkoutForm">
+    <h2>Data Pembeli</h2>
+    <input class="field" id="buyer" placeholder="Nama pembeli" required>
+    <input class="field" id="phone" placeholder="Nomor WhatsApp" required>
+    <textarea class="field" id="address" placeholder="Alamat / catatan (opsional)"></textarea>
+    <div class="notice">
+      Transfer BCA<br><b>0881885122 a.n. Bryan Surya Putra</b>
+    </div>
+    <button class="primary" type="submit">Simpan Pesanan & Buat Invoice</button>
+    <button class="outline" type="button" onclick="document.querySelector('#checkoutDialog').close()">Batal</button>
+  </form>
 </dialog>
 
-<!-- DIALOG DETAIL PRODUK -->
-
 <dialog id="productDetailDialog" class="product-detail-dialog">
-
-<div class="detail-topbar">
-<b>MICHIO BIKE — PRODUCT DETAIL</b>
-<button class="detail-close" type="button"
-onclick="closeProductDetail()">×</button>
-</div>
-
-<div id="productDetailContent"></div>
-
+  <div class="detail-topbar">
+    <b>MICHIO BIKE — PRODUCT DETAIL</b>
+    <button class="detail-close" type="button" onclick="closeProductDetail()">×</button>
+  </div>
+  <div id="productDetailContent"></div>
 </dialog>
 
 <script>
-
-const API_URL = "https://script.google.com/macros/s/AKfycbxVbEUxvQAFaJSiUWoSW_KfrTW22LrtJp_YTDKoVV-WKs2jFVUdGZjeQbbBUx4Zq3cM/exec";
-const ORDER_API_URL = API_URL;
+const API_URL="https://script.google.com/macros/s/AKfycbxVbEUxvQAFaJSiUWoSW_KfrTW22LrtJp_YTDKoVV-WKs2jFVUdGZjeQbbBUx4Zq3cM/exec";
+const ORDER_API_URL=API_URL;
+const ASSEMBLY_FEE=25000;
 
 const money=n=>new Intl.NumberFormat('id-ID',{
-  style:'currency',
-  currency:'IDR',
-  maximumFractionDigits:0
+  style:'currency',currency:'IDR',maximumFractionDigits:0
 }).format(Number(n)||0);
 
-let products=[], cart=[], category='Semua', latestOrder=null;
-let photoIndexes={};
-let detailPhotoIndex=0;
-let activeDetailProduct=null;
+let products=[],cart=[],category='Semua',latestOrder=null;
+let photoIndexes={},detailPhotoIndex=0,activeDetailProduct=null;
 
-function sameId(a,b){
-  return String(a)===String(b);
-}
+function sameId(a,b){return String(a)===String(b)}
 
 function driveImg(url){
   if(!url)return '';
-
-  if(/drive\.google\.com\/thumbnail/i.test(url)){
-    return url;
-  }
-
-  let m=String(url).match(/(?:id=|\/d\/)([A-Za-z0-9_-]{15,})/);
-
-  return m
-    ? 'https://drive.google.com/thumbnail?id='+m[1]+'&sz=w1200'
-    : url;
+  if(/drive\.google\.com\/thumbnail/i.test(url))return url;
+  const m=String(url).match(/(?:id=|\/d\/)([A-Za-z0-9_-]{15,})/);
+  return m?'https://drive.google.com/thumbnail?id='+m[1]+'&sz=w1200':url;
 }
 
 function esc(s){
   return String(s??'').replace(/[&<>"']/g,c=>({
-    '&':'&amp;',
-    '<':'&lt;',
-    '>':'&gt;',
-    '"':'&quot;',
-    "'":'&#39;'
+    '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
   }[c]));
 }
 
@@ -1126,221 +476,114 @@ function getPhotos(product){
     const list=product.photos.filter(Boolean);
     if(list.length)return list;
   }
-
   return product.photo?[product.photo]:[];
 }
 
-/* GALERI FOTO PRODUK DI KATALOG */
+/* GALERI KATALOG */
 
 function renderProductPhoto(product){
   const photos=getPhotos(product);
-
-  if(!photos.length){
-    return '<div class="photo">Foto produk belum tersedia</div>';
-  }
+  if(!photos.length)return '<div class="photo">Foto produk belum tersedia</div>';
 
   let index=Number(photoIndexes[String(product.id)]||0);
+  if(index<0||index>=photos.length)index=0;
 
-  if(index<0||index>=photos.length){
-    index=0;
-    photoIndexes[String(product.id)]=0;
-  }
-
-  const imageUrl=driveImg(photos[index]);
-
-  let controls='';
-
-  if(photos.length>1){
-    controls=`
-      <div class="photo-nav">
-        <button type="button"
-          aria-label="Foto sebelumnya"
-          onclick="changeProductPhoto('${esc(product.id)}',-1)">‹</button>
-        <button type="button"
-          aria-label="Foto berikutnya"
-          onclick="changeProductPhoto('${esc(product.id)}',1)">›</button>
-      </div>
-      <div class="photo-count">${index+1} / ${photos.length}</div>
-    `;
-  }
-
-  return `
-    <div class="photo">
-      <img loading="lazy"
-        src="${esc(imageUrl)}"
-        alt="${esc(product.name)}"
-        onerror="this.alt='Foto tidak dapat dimuat';this.style.display='none'">
-      ${controls}
+  const controls=photos.length>1?`
+    <div class="photo-nav">
+      <button type="button" aria-label="Foto sebelumnya" onclick="changeProductPhoto('${esc(product.id)}',-1)">‹</button>
+      <button type="button" aria-label="Foto berikutnya" onclick="changeProductPhoto('${esc(product.id)}',1)">›</button>
     </div>
-  `;
+    <div class="photo-count">${index+1} / ${photos.length}</div>`:'';
+
+  return `<div class="photo">
+    <img loading="lazy" src="${esc(driveImg(photos[index]))}" alt="${esc(product.name)}"
+      onerror="this.alt='Foto tidak dapat dimuat';this.style.display='none'">
+    ${controls}
+  </div>`;
 }
 
 function changeProductPhoto(id,direction){
   const product=products.find(p=>sameId(p.id,id));
-
   if(!product)return;
-
   const photos=getPhotos(product);
-
   if(photos.length<2)return;
-
   const key=String(id);
-  let index=Number(photoIndexes[key]||0);
-
-  index=(index+direction+photos.length)%photos.length;
-  photoIndexes[key]=index;
-
+  photoIndexes[key]=(Number(photoIndexes[key]||0)+direction+photos.length)%photos.length;
   render();
 }
 
-/* DETAIL PRODUK PREMIUM */
+/* DETAIL PRODUK */
 
 function openProductDetail(id){
   const p=products.find(x=>sameId(x.id,id));
-
   if(!p)return;
-
   activeDetailProduct=p;
   detailPhotoIndex=0;
-
   renderProductDetail();
-
   document.querySelector('#productDetailDialog').showModal();
 }
 
 function renderProductDetail(){
   const p=activeDetailProduct;
-
   if(!p)return;
 
   const photos=getPhotos(p);
-  const hasPhotos=photos.length>0;
+  if(detailPhotoIndex>=photos.length)detailPhotoIndex=0;
 
-  if(hasPhotos && detailPhotoIndex>=photos.length){
-    detailPhotoIndex=0;
-  }
-
-  let photoHtml='';
-
-  if(hasPhotos){
-    photoHtml=`
-      <img src="${esc(driveImg(photos[detailPhotoIndex]))}"
-        alt="${esc(p.name)}"
-        onerror="this.alt='Foto tidak dapat dimuat';this.style.display='none'">
-
-      ${photos.length>1?`
-        <div class="detail-gallery-nav">
-          <button type="button"
-            aria-label="Foto sebelumnya"
-            onclick="changeDetailPhoto(-1)">‹</button>
-          <button type="button"
-            aria-label="Foto berikutnya"
-            onclick="changeDetailPhoto(1)">›</button>
-        </div>
-        <div class="detail-gallery-count">
-          ${detailPhotoIndex+1} / ${photos.length}
-        </div>
-      `:''}
-    `;
-  }else{
-    photoHtml='<span class="muted">Foto produk belum tersedia</span>';
-  }
+  let photoHtml=photos.length?`
+    <img src="${esc(driveImg(photos[detailPhotoIndex]))}" alt="${esc(p.name)}"
+      onerror="this.alt='Foto tidak dapat dimuat';this.style.display='none'">
+    ${photos.length>1?`
+      <div class="detail-gallery-nav">
+        <button type="button" onclick="changeDetailPhoto(-1)">‹</button>
+        <button type="button" onclick="changeDetailPhoto(1)">›</button>
+      </div>
+      <div class="detail-gallery-count">${detailPhotoIndex+1} / ${photos.length}</div>`:''}
+  `:'<span class="muted">Foto produk belum tersedia</span>';
 
   const stockValue=Number(p.qty);
-  const stockKnown=
-    p.qty!==undefined &&
-    p.qty!==null &&
-    String(p.qty).trim()!=='';
-
-  let stockText='Hubungi toko untuk cek stok';
-  let stockClass='detail-stock';
+  const stockKnown=p.qty!==undefined&&p.qty!==null&&String(p.qty).trim()!=='';
+  let stockText='Hubungi toko untuk cek stok',stockClass='detail-stock';
 
   if(stockKnown){
-    if(!Number.isFinite(stockValue)){
-      stockText='Hubungi toko untuk cek stok';
-    }else if(stockValue<=0){
-      stockText='Stok habis';
-      stockClass+=' out';
-    }else if(stockValue<=3){
-      stockText=`Stok terbatas · ${stockValue} unit`;
-      stockClass+=' low';
-    }else{
-      stockText=`Tersedia · ${stockValue} unit`;
-    }
+    if(!Number.isFinite(stockValue))stockText='Hubungi toko untuk cek stok';
+    else if(stockValue<=0){stockText='Stok habis';stockClass+=' out'}
+    else if(stockValue<=3){stockText=`Stok terbatas · ${stockValue} unit`;stockClass+=' low'}
+    else stockText=`Tersedia · ${stockValue} unit`;
   }
 
   document.querySelector('#productDetailContent').innerHTML=`
     <div class="detail-content">
-
-      <div class="detail-gallery">
-        <div class="detail-main-photo">
-          ${photoHtml}
-        </div>
-      </div>
-
+      <div class="detail-gallery"><div class="detail-main-photo">${photoHtml}</div></div>
       <div class="detail-info">
-
-        <span class="detail-category">
-          ${esc(p.category||'Koleksi Michio Bike')}
-        </span>
-
+        <span class="detail-category">${esc(p.category||'Koleksi Michio Bike')}</span>
         <h2>${esc(p.name)}</h2>
-
         <div class="detail-price">${money(p.price)}</div>
-
-        <div class="${stockClass}">
-          ${esc(stockText)}
-        </div>
-
+        <div class="${stockClass}">${esc(stockText)}</div>
         <div class="detail-spec">
           <h3>Spesifikasi & Informasi Produk</h3>
-          <div class="detail-spec-content">${
-            esc(p.description||'Informasi produk belum tersedia.')
-          }</div>
+          <div class="detail-spec-content">${esc(p.description||'Informasi produk belum tersedia.')}</div>
         </div>
-
         <div class="detail-actions">
-          <button class="primary" type="button"
-            onclick="addCart('${esc(p.id)}');closeProductDetail()">
-            + Keranjang
-          </button>
-
-          <button class="dark" type="button"
-            onclick="closeProductDetail()">
-            Tutup
-          </button>
+          <button class="primary" type="button" onclick="addCart('${esc(p.id)}');closeProductDetail()">+ Keranjang</button>
+          <button class="dark" type="button" onclick="closeProductDetail()">Tutup</button>
         </div>
-
-        <div class="detail-note">
-          Harga dan ketersediaan produk dapat berubah.
-          Silakan konfirmasi langsung kepada staf Michio Bike Surabaya.
-        </div>
-
+        <div class="detail-note">Harga dan ketersediaan produk dapat berubah. Silakan konfirmasi langsung kepada staf Michio Bike Surabaya.</div>
       </div>
-    </div>
-  `;
+    </div>`;
 }
 
 function changeDetailPhoto(direction){
   if(!activeDetailProduct)return;
-
   const photos=getPhotos(activeDetailProduct);
-
   if(photos.length<2)return;
-
-  detailPhotoIndex=
-    (detailPhotoIndex+direction+photos.length)%photos.length;
-
+  detailPhotoIndex=(detailPhotoIndex+direction+photos.length)%photos.length;
   renderProductDetail();
 }
 
 function closeProductDetail(){
   const dialog=document.querySelector('#productDetailDialog');
-
-  if(dialog.open){
-    dialog.close();
-  }
-
+  if(dialog.open)dialog.close();
   activeDetailProduct=null;
 }
 
@@ -1351,107 +594,94 @@ function load(){
 
   window.michioCatalogLoaded=function(data){
     products=(data&&data.products)||[];
-
     photoIndexes={};
-
     renderFilters();
     render();
-
-    if(data&&data.ok===false){
-      status.textContent=data.message||'Katalog belum dapat dimuat.';
-    }
+    if(data&&data.ok===false)status.textContent=data.message||'Katalog belum dapat dimuat.';
   };
 
   const script=document.createElement('script');
-
-  script.src=API_URL+
-    '?action=products&callback=michioCatalogLoaded&ts='+Date.now();
-
-  script.onerror=()=>{
-    status.textContent=
-      'Katalog belum dapat dimuat. Periksa URL Apps Script dan koneksi internet.';
-  };
-
+  script.src=API_URL+'?action=products&callback=michioCatalogLoaded&ts='+Date.now();
+  script.onerror=()=>status.textContent='Katalog belum dapat dimuat. Periksa URL Apps Script dan koneksi internet.';
   document.head.appendChild(script);
 }
 
 function renderFilters(){
-  let cats=['Semua',...new Set(
-    products.map(p=>p.category).filter(Boolean)
-  )];
-
+  const cats=['Semua',...new Set(products.map(p=>p.category).filter(Boolean))];
   document.querySelector('#filters').innerHTML=cats.map(c=>
-    `<button class="${c===category?'active':''}"
-      onclick="category='${esc(c)}';renderFilters();render()">${esc(c)}</button>`
+    `<button class="${c===category?'active':''}" onclick="setCategory('${esc(c)}')">${esc(c)}</button>`
   ).join('');
 }
 
-function render(){
-  let q=document.querySelector('#search').value.toLowerCase();
-  let sort=document.querySelector('#sort').value;
+function setCategory(value){
+  category=value;
+  renderFilters();
+  render();
+}
 
-  let a=products.filter(p=>
+function render(){
+  const q=document.querySelector('#search').value.toLowerCase();
+  const sort=document.querySelector('#sort').value;
+
+  const list=products.filter(p=>
     (category==='Semua'||p.category===category)&&
     (`${p.name} ${p.category} ${p.description}`).toLowerCase().includes(q)
   );
 
-  a.sort((x,y)=>
+  list.sort((x,y)=>
     sort==='low'?x.price-y.price:
     sort==='high'?y.price-x.price:
     x.name.localeCompare(y.name)
   );
 
-  document.querySelector('#products').innerHTML=a.map(p=>
-    `<article class="card">
+  document.querySelector('#products').innerHTML=list.map(p=>`
+    <article class="card">
       ${renderProductPhoto(p)}
       <div class="cardbody">
         <div class="tag">${esc(p.category||'Produk Michio Bike')}</div>
         <h3>${esc(p.name)}</h3>
         <div class="desc">${esc(p.description||'')}</div>
         <div class="price">${money(p.price)}</div>
-
         <div class="actions">
-          <button class="dark"
-            onclick="addCart('${esc(p.id)}')">+ Keranjang</button>
-
-          <button class="primary"
-            onclick="openProductDetail('${esc(p.id)}')">Detail</button>
-
-          <button class="outline"
-            style="color:#243"
-            onclick="shareProduct('${esc(p.id)}')">Bagikan</button>
+          <button class="dark" onclick="addCart('${esc(p.id)}')">+ Keranjang</button>
+          <button class="primary" onclick="openProductDetail('${esc(p.id)}')">Detail</button>
+          <button class="outline" style="color:#243" onclick="shareProduct('${esc(p.id)}')">Bagikan</button>
         </div>
       </div>
-    </article>`
-  ).join('')||'<div class="empty">Belum ada produk yang ditampilkan.</div>';
+    </article>`).join('')||'<div class="empty">Belum ada produk yang ditampilkan.</div>';
 
-  document.querySelector('#status').textContent=
-    `Menampilkan ${a.length} produk`;
+  document.querySelector('#status').textContent=`Menampilkan ${list.length} produk`;
 }
 
 /* KERANJANG */
 
 function addCart(id){
-  let p=products.find(x=>sameId(x.id,id));
-
+  const p=products.find(x=>sameId(x.id,id));
   if(!p)return;
-
-  let item=cart.find(x=>sameId(x.id,id));
-
+  const item=cart.find(x=>sameId(x.id,id));
   if(item)item.qty++;
   else cart.push({...p,qty:1});
-
   updateCart();
-
   alert('Produk ditambahkan ke keranjang');
 }
 
-function updateCart(){
-  document.querySelector('#cartcount').textContent=
-    cart.reduce((s,x)=>s+x.qty,0);
+function getProductSubtotal(){
+  return cart.reduce((sum,item)=>sum+(Number(item.price)||0)*item.qty,0);
+}
 
-  document.querySelector('#cartitems').innerHTML=cart.map(x=>
-    `<div class="row">
+function isAssemblySelected(){
+  return document.querySelector('#assemblyService').checked;
+}
+
+function getOrderTotal(){
+  return getProductSubtotal()+(isAssemblySelected()?ASSEMBLY_FEE:0);
+}
+
+function updateCart(){
+  document.querySelector('#cartcount').textContent=cart.reduce((s,x)=>s+x.qty,0);
+
+  document.querySelector('#cartitems').innerHTML=cart.map(x=>`
+    <div class="row">
       <div>
         <b>${esc(x.name)}</b>
         <div class="muted">${money(x.price)} × ${x.qty}</div>
@@ -1461,57 +691,47 @@ function updateCart(){
         ${x.qty}
         <button onclick="changeQty('${esc(x.id)}',1)">+</button>
       </div>
-    </div>`
-  ).join('')||'<div class="empty">Keranjang masih kosong.</div>';
+    </div>`).join('')||'<div class="empty">Keranjang masih kosong.</div>';
 
-  document.querySelector('#total').textContent=
-    money(cart.reduce((s,x)=>s+x.price*x.qty,0));
+  const subtotal=getProductSubtotal();
+  const assembly=isAssemblySelected();
+
+  document.querySelector('#subtotal').textContent=money(subtotal);
+  document.querySelector('#assemblyRow').classList.toggle('hide',!assembly);
+  document.querySelector('#total').textContent=money(subtotal+(assembly?ASSEMBLY_FEE:0));
 }
 
 function changeQty(id,n){
-  let x=cart.find(x=>sameId(x.id,id));
-
-  if(!x)return;
-
-  x.qty+=n;
-
-  if(x.qty<1){
-    cart=cart.filter(y=>!sameId(y.id,id));
-  }
-
+  const item=cart.find(x=>sameId(x.id,id));
+  if(!item)return;
+  item.qty+=n;
+  if(item.qty<1)cart=cart.filter(x=>!sameId(x.id,id));
   updateCart();
 }
 
 /* NAVIGASI */
 
-function showView(v){
+function showView(view){
   ['catalog','cart','orders'].forEach(x=>
-    document.querySelector('#'+x+'View')
-      .classList.toggle('hide',x!==v)
+    document.querySelector('#'+x+'View').classList.toggle('hide',x!==view)
   );
-
-  document.querySelector('#hero')
-    .classList.toggle('hide',v!=='catalog');
-
+  document.querySelector('#hero').classList.toggle('hide',view!=='catalog');
   document.querySelectorAll('.nav button').forEach(b=>
-    b.classList.toggle('active',b.dataset.view===v)
+    b.classList.toggle('active',b.dataset.view===view)
   );
-
   window.scrollTo({top:0,behavior:'smooth'});
 }
 
 document.querySelectorAll('.nav button').forEach(b=>
   b.onclick=()=>showView(b.dataset.view)
 );
-
 document.querySelector('#search').oninput=render;
 document.querySelector('#sort').onchange=render;
 
 /* BAGIKAN PRODUK */
 
 function shareProduct(id){
-  let p=products.find(x=>sameId(x.id,id));
-
+  const p=products.find(x=>sameId(x.id,id));
   if(p&&navigator.share){
     navigator.share({
       title:p.name,
@@ -1529,7 +749,6 @@ function checkout(){
     alert('Keranjang masih kosong');
     return;
   }
-
   document.querySelector('#checkoutDialog').showModal();
 }
 
@@ -1545,11 +764,8 @@ function sendOrderToSheets(order){
       document.body.appendChild(frame);
     }
 
-    const requestToken=
-      order.number+'-'+Math.random().toString(36).slice(2);
-
-    let finished=false;
-    let timer;
+    const requestToken=order.number+'-'+Math.random().toString(36).slice(2);
+    let finished=false,timer;
 
     const cleanup=()=>{
       window.removeEventListener('message',receive);
@@ -1558,7 +774,6 @@ function sendOrderToSheets(order){
 
     function receive(event){
       const data=event.data;
-
       if(!data||typeof data!=='object')return;
       if(data.requestToken!==requestToken)return;
       if(typeof data.ok!=='boolean'||finished)return;
@@ -1566,43 +781,34 @@ function sendOrderToSheets(order){
       finished=true;
       cleanup();
 
-      if(data.ok){
-        resolve(data);
-      }else{
-        reject(new Error(data.message||'Pesanan gagal disimpan.'));
-      }
+      if(data.ok)resolve(data);
+      else reject(new Error(data.message||'Pesanan gagal disimpan.'));
     }
 
     window.addEventListener('message',receive);
 
     timer=setTimeout(()=>{
       if(finished)return;
-
       finished=true;
       cleanup();
-
-      reject(new Error(
-        'Waktu penyimpanan habis. Periksa koneksi dan deployment Apps Script.'
-      ));
+      reject(new Error('Waktu penyimpanan habis. Periksa koneksi dan deployment Apps Script.'));
     },30000);
 
     const form=document.createElement('form');
-
     form.method='POST';
     form.action=ORDER_API_URL;
     form.target=frame.name;
     form.style.display='none';
 
     const field=document.createElement('input');
-
     field.type='hidden';
     field.name='order';
-
     field.value=JSON.stringify({
       buyer:order.buyer,
       phone:order.phone,
       address:order.address,
       items:order.items,
+      assemblyService:order.assemblyService,
       clientOrderId:order.number,
       requestToken:requestToken
     });
@@ -1622,19 +828,23 @@ document.querySelector('#checkoutForm').onsubmit=async function(e){
     return;
   }
 
+  const assemblyService=isAssemblySelected();
+
   latestOrder={
     buyer:document.querySelector('#buyer').value.trim(),
     phone:document.querySelector('#phone').value.trim(),
     address:document.querySelector('#address').value.trim(),
     items:cart.map(x=>({...x})),
-    total:cart.reduce((s,x)=>s+x.price*x.qty,0),
+    assemblyService:assemblyService,
+    assemblyFee:assemblyService?ASSEMBLY_FEE:0,
+    productSubtotal:getProductSubtotal(),
+    total:getOrderTotal(),
     date:new Date().toLocaleString('id-ID'),
     number:'MB-'+Date.now()
   };
 
   const button=this.querySelector('button[type="submit"]');
   const oldText=button.textContent;
-
   button.disabled=true;
   button.textContent='Menyimpan pesanan...';
 
@@ -1643,6 +853,8 @@ document.querySelector('#checkoutForm').onsubmit=async function(e){
 
     latestOrder.number=result.orderNo||latestOrder.number;
     latestOrder.total=Number(result.total)||latestOrder.total;
+    latestOrder.assemblyService=result.assemblyService===true;
+    latestOrder.assemblyFee=Number(result.assemblyFee)||0;
 
     document.querySelector('#checkoutDialog').close();
 
@@ -1655,6 +867,7 @@ document.querySelector('#checkoutForm').onsubmit=async function(e){
     printInvoice();
 
     cart=[];
+    document.querySelector('#assemblyService').checked=false;
     updateCart();
 
     document.querySelector('#buyer').value='';
@@ -1667,71 +880,164 @@ document.querySelector('#checkoutForm').onsubmit=async function(e){
       error.message+
       '\nJangan anggap pesanan tercatat sebelum muncul pesan berhasil.'
     );
-
   }finally{
     button.disabled=false;
     button.textContent=oldText;
   }
 };
 
-/* CETAK INVOICE */
+/* INVOICE PREMIUM */
 
 function printInvoice(){
   if(!latestOrder)return;
 
-  let o=latestOrder;
+  const o=latestOrder;
+  const productRows=o.items.map(item=>`
+    <tr>
+      <td>
+        <strong>${esc(item.name)}</strong>
+        <small>Produk Michio Bike</small>
+      </td>
+      <td class="center">${Number(item.qty)||0}</td>
+      <td class="right">${money(item.price)}</td>
+      <td class="right">${money((Number(item.price)||0)*(Number(item.qty)||0))}</td>
+    </tr>`).join('');
 
-  let html=`<html><head><title>Invoice ${esc(o.number)}</title>
-  <style>
-  body{font:14px Arial;padding:30px;color:#172238}
-  h1{color:#9c742c}
-  table{width:100%;border-collapse:collapse;margin:20px 0}
-  td,th{padding:10px;border-bottom:1px solid #ddd;text-align:left}
-  .right{text-align:right}
-  .box{background:#f5f0e4;padding:15px}
-  </style></head><body>
-  <h1>MICHIO BIKE SURABAYA</h1>
-  <h2>INVOICE PEMBELIAN</h2>
-  <p>
-  No: ${esc(o.number)}<br>
-  Tanggal: ${esc(o.date)}<br>
-  Pembeli: ${esc(o.buyer)}<br>
-  WhatsApp: ${esc(o.phone)}<br>
-  Catatan: ${esc(o.address)}
-  </p>
-  <table>
-  <tr><th>Produk</th><th>Qty</th><th>Harga</th><th>Subtotal</th></tr>
-  ${o.items.map(x=>
-    `<tr>
-      <td>${esc(x.name)}</td>
-      <td>${x.qty}</td>
-      <td>${money(x.price)}</td>
-      <td>${money(x.price*x.qty)}</td>
-    </tr>`
-  ).join('')}
-  </table>
-  <h2 class="right">Total: ${money(o.total)}</h2>
-  <div class="box">
-  Pembayaran transfer BCA<br>
-  <b>0881885122 a.n. Bryan Surya Putra</b>
-  <p>Status: MENUNGGU KONFIRMASI. Mohon konfirmasi pembayaran kepada Michio Bike Surabaya.</p>
+  const assemblyRow=o.assemblyService?`
+    <tr>
+      <td><strong>Jasa Rakit Sepeda</strong><small>Layanan perakitan sepeda</small></td>
+      <td class="center">1</td>
+      <td class="right">${money(ASSEMBLY_FEE)}</td>
+      <td class="right">${money(ASSEMBLY_FEE)}</td>
+    </tr>`:'';
+
+  const html=`<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Invoice ${esc(o.number)}</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#eef1f5;font-family:Arial,Helvetica,sans-serif;color:#172238}
+.sheet{width:210mm;min-height:297mm;margin:24px auto;background:#fff;padding:17mm 16mm;box-shadow:0 8px 35px #0b19301a}
+.top{background:linear-gradient(120deg,#081529,#19395f);color:#fff;padding:25px 28px;display:flex;justify-content:space-between;gap:20px;border-bottom:5px solid #d9ad54}
+.brand{font-size:22px;font-weight:900;letter-spacing:2px;color:#f5d991}
+.brand small{display:block;font-size:10px;letter-spacing:4px;color:#dce3ee;margin-top:6px}
+.invoice-label{text-align:right}
+.invoice-label strong{display:block;font-size:22px;letter-spacing:2px;color:#f5d991}
+.invoice-label span{font-size:10px;letter-spacing:2px;color:#dce3ee}
+.meta{display:grid;grid-template-columns:1fr 1fr;gap:25px;padding:25px 2px}
+.label{font-size:9px;font-weight:800;letter-spacing:1.5px;color:#a5792d;margin-bottom:9px}
+.meta p{font-size:12px;line-height:1.8;margin:0;color:#455166}
+.meta strong{color:#172238}
+.order-no{font-size:15px;font-weight:800;color:#0b1930}
+.status{display:inline-block;margin-top:8px;background:#fff5df;color:#93651e;border-radius:20px;padding:6px 10px;font-size:9px;font-weight:800}
+table{width:100%;border-collapse:collapse;margin-top:8px}
+th{background:#0b1930;color:#f5d991;padding:13px 10px;text-align:left;font-size:10px;letter-spacing:.5px}
+td{padding:14px 10px;border-bottom:1px solid #e9edf2;font-size:11px;vertical-align:top}
+td small{display:block;color:#8a94a4;font-size:9px;margin-top:5px}
+.center{text-align:center}.right{text-align:right;white-space:nowrap}
+.summary{width:48%;margin:20px 0 0 auto}
+.summary div{display:flex;justify-content:space-between;padding:8px 0;font-size:11px;color:#596579;border-bottom:1px solid #edf0f4}
+.summary .grand{background:#0b1930;color:#f5d991;padding:14px;margin-top:8px;font-size:14px;font-weight:900;border:0}
+.payment{margin-top:30px;padding:19px 21px;background:#f7f8fa;border-left:4px solid #d9ad54;border-radius:4px}
+.payment h3{font-size:12px;margin:0 0 10px;color:#0b1930;letter-spacing:1px}
+.payment p{font-size:11px;line-height:1.8;margin:0;color:#536075}
+.payment strong{color:#0b1930;font-size:14px}
+.footer{margin-top:35px;padding-top:17px;border-top:1px solid #e5e9ef;text-align:center;color:#8490a1;font-size:10px;line-height:1.8}
+.footer strong{color:#a5792d;letter-spacing:2px}
+@page{size:A4;margin:0}
+@media print{
+  body{background:#fff}
+  .sheet{width:210mm;min-height:297mm;margin:0;box-shadow:none}
+  -webkit-print-color-adjust:exact;print-color-adjust:exact
+}
+@media(max-width:700px){
+  .sheet{width:100%;min-height:100vh;margin:0;padding:18px}
+  .top{padding:18px}.brand{font-size:17px}
+  .invoice-label strong{font-size:17px}
+  .meta{gap:12px}.summary{width:70%}
+  td,th{padding:9px 6px;font-size:9px}
+}
+</style>
+</head>
+<body>
+<div class="sheet">
+  <div class="top">
+    <div class="brand">MICHIO BIKE<small>S U R A B A Y A</small></div>
+    <div class="invoice-label"><strong>INVOICE</strong><span>SALES INVOICE</span></div>
   </div>
-  <p>Terima kasih telah berbelanja.</p>
-  <script>window.print()<\/script>
-  </body></html>`;
 
-  let w=window.open('','_blank');
+  <div class="meta">
+    <div>
+      <div class="label">DITERBITKAN OLEH</div>
+      <p><strong>MICHIO BIKE SURABAYA</strong><br>Ride Better, Live Happier</p>
+    </div>
+    <div>
+      <div class="label">INFORMASI PESANAN</div>
+      <p>
+        Nomor Invoice<br><span class="order-no">${esc(o.number)}</span><br>
+        Tanggal: ${esc(o.date)}<br>
+        <span class="status">MENUNGGU KONFIRMASI</span>
+      </p>
+    </div>
+    <div>
+      <div class="label">INFORMASI PEMBELI</div>
+      <p><strong>${esc(o.buyer)}</strong><br>WhatsApp: ${esc(o.phone)}<br>Catatan: ${esc(o.address||'-')}</p>
+    </div>
+    <div>
+      <div class="label">METODE PEMBAYARAN</div>
+      <p>Transfer Bank BCA<br><strong>0881885122</strong><br>a.n. Bryan Surya Putra</p>
+    </div>
+  </div>
+
+  <div class="label">RINCIAN PESANAN</div>
+  <table>
+    <thead><tr>
+      <th>DESKRIPSI</th><th class="center">QTY</th>
+      <th class="right">HARGA</th><th class="right">SUBTOTAL</th>
+    </tr></thead>
+    <tbody>${productRows}${assemblyRow}</tbody>
+  </table>
+
+  <div class="summary">
+    <div><span>Subtotal Produk</span><strong>${money(o.productSubtotal)}</strong></div>
+    ${o.assemblyService?`<div><span>Jasa Rakit Sepeda</span><strong>${money(ASSEMBLY_FEE)}</strong></div>`:''}
+    <div class="grand"><span>TOTAL PEMBAYARAN</span><span>${money(o.total)}</span></div>
+  </div>
+
+  <div class="payment">
+    <h3>INFORMASI PEMBAYARAN</h3>
+    <p>Silakan melakukan pembayaran melalui transfer ke rekening berikut:<br>
+    <strong>BCA · 0881885122</strong><br>
+    Atas Nama: Bryan Surya Putra<br>
+    Setelah transfer, mohon konfirmasi pembayaran kepada admin Michio Bike Surabaya.</p>
+  </div>
+
+  <div class="footer">
+    <strong>TERIMA KASIH TELAH MEMILIH MICHIO BIKE</strong><br>
+    Mohon simpan invoice ini sebagai bukti pemesanan.<br>
+    Ride Better, Live Happier.
+  </div>
+</div>
+<script>window.onload=function(){window.print()}<\/script>
+</body>
+</html>`;
+
+  const w=window.open('','_blank');
 
   if(!w){
     alert('Izinkan pop-up browser untuk mencetak invoice.');
     return;
   }
 
+  w.document.open();
   w.document.write(html);
   w.document.close();
 }
 
-/* CETAK ORDER GUDANG */
+/* CETAK ORDER GUDANG - HANYA PRODUK */
 
 function printPicking(){
   if(!cart.length){
@@ -1739,9 +1045,11 @@ function printPicking(){
     return;
   }
 
-  let html=`<html><head><title>Picking List</title>
+  const html=`<!doctype html><html><head><meta charset="utf-8">
+  <title>Picking List</title>
   <style>
-  body{font:14px Arial;padding:25px}
+  body{font:14px Arial;padding:25px;color:#172238}
+  h2{color:#0b1930}
   table{width:100%;border-collapse:collapse}
   td,th{border:1px solid #888;padding:10px;text-align:left}
   </style></head><body>
@@ -1749,27 +1057,19 @@ function printPicking(){
   <p>Tanggal: ${new Date().toLocaleString('id-ID')}</p>
   <table>
   <tr><th>No</th><th>Nama Barang</th><th>Qty</th><th>Lokasi</th><th>Checklist</th></tr>
-  ${cart.map((x,i)=>
-    `<tr>
-      <td>${i+1}</td>
-      <td>${esc(x.name)}</td>
-      <td>${x.qty}</td>
-      <td></td>
-      <td>□</td>
-    </tr>`
-  ).join('')}
+  ${cart.map((x,i)=>`
+    <tr><td>${i+1}</td><td>${esc(x.name)}</td><td>${x.qty}</td><td></td><td>□</td></tr>
+  `).join('')}
   </table>
   <p>Disiapkan: ____________ &nbsp; Dicek: ____________</p>
   <script>window.print()<\/script>
   </body></html>`;
 
-  let w=window.open('','_blank');
-
+  const w=window.open('','_blank');
   if(!w){
     alert('Izinkan pop-up browser untuk mencetak.');
     return;
   }
-
   w.document.write(html);
   w.document.close();
 }
@@ -1778,7 +1078,6 @@ function printPicking(){
 
 load();
 updateCart();
-
 </script>
 </body>
 </html>
