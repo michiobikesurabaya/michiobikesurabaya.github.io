@@ -428,6 +428,7 @@ dialog::backdrop{background:#06152b99}
     <input class="field" id="buyer" placeholder="Nama pembeli" required>
     <input class="field" id="phone" placeholder="Nomor WhatsApp" required>
     <textarea class="field" id="address" placeholder="Alamat / catatan (opsional)"></textarea>
+    <p class="muted" style="font-size:12px;line-height:1.5">Data nama dan WhatsApp digunakan Michio Bike untuk pencatatan transaksi dan pelayanan pelanggan.</p>
     <div class="notice">
       Transfer BCA<br><b>0881885122 a.n. Bryan Surya Putra</b>
     </div>
@@ -566,6 +567,7 @@ function renderProductDetail(){
         </div>
         <div class="detail-actions">
           <button class="primary" type="button" onclick="addCart('${esc(p.id)}');closeProductDetail()">+ Keranjang</button>
+          <button class="outline" type="button" onclick="shareProduct('${esc(p.id)}')">Bagikan</button>
           <button class="dark" type="button" onclick="closeProductDetail()">Tutup</button>
         </div>
         <div class="detail-note">Harga dan ketersediaan produk dapat berubah. Silakan konfirmasi langsung kepada staf Michio Bike Surabaya.</div>
@@ -598,6 +600,12 @@ function load(){
     renderFilters();
     render();
     if(data&&data.ok===false)status.textContent=data.message||'Katalog belum dapat dimuat.';
+    const sharedProductId = new URLSearchParams(window.location.search).get('produk');
+    if (sharedProductId) {
+      const sharedProduct = products.find(x => sameId(x.id, sharedProductId));
+      if (sharedProduct) openProductDetail(sharedProduct.id);
+      else status.textContent = 'Produk dari tautan tidak ditemukan atau sudah tidak tersedia.';
+    }
   };
 
   const script=document.createElement('script');
@@ -732,13 +740,29 @@ document.querySelector('#sort').onchange=render;
 
 function shareProduct(id){
   const p=products.find(x=>sameId(x.id,id));
-  if(p&&navigator.share){
-    navigator.share({
-      title:p.name,
-      text:`${p.name} — ${money(p.price)} | Michio Bike Surabaya`
-    }).catch(()=>{});
-  }else if(p){
-    alert(`${p.name} — ${money(p.price)}`);
+  if(!p)return;
+
+  // Tautan langsung membuka detail produk setelah katalog berhasil dimuat.
+  const productUrl = new URL(window.location.href);
+  productUrl.search = '';
+  productUrl.hash = '';
+  productUrl.searchParams.set('produk', String(p.id));
+  const url = productUrl.toString();
+  const shareText = `${p.name} — ${money(p.price)} | Michio Bike Surabaya\nLihat produk: ${url}`;
+
+  if (navigator.share) {
+    navigator.share({title:p.name, text:shareText, url:url}).catch(function(){});
+    return;
+  }
+
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(url).then(function(){
+      alert('Tautan produk berhasil disalin. Silakan bagikan kepada calon pembeli.\n' + url);
+    }).catch(function(){
+      window.prompt('Salin tautan produk berikut:', url);
+    });
+  } else {
+    window.prompt('Salin tautan produk berikut:', url);
   }
 }
 
