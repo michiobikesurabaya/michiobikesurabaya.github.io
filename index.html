@@ -498,7 +498,7 @@ function renderProductPhoto(product){
 
   return `<div class="photo">
     <img loading="lazy" src="${esc(driveImg(photos[index]))}" alt="${esc(product.name)}"
-      onerror="this.alt='Foto tidak dapat dimuat';this.style.display='none'">
+      onerror="this.onerror=null;this.parentElement.innerHTML='<span class=&quot;muted&quot;>Foto tidak dapat dimuat. Periksa akses Google Drive.</span>'">
     ${controls}
   </div>`;
 }
@@ -533,7 +533,7 @@ function renderProductDetail(){
 
   let photoHtml=photos.length?`
     <img src="${esc(driveImg(photos[detailPhotoIndex]))}" alt="${esc(p.name)}"
-      onerror="this.alt='Foto tidak dapat dimuat';this.style.display='none'">
+      onerror="this.onerror=null;this.parentElement.innerHTML='<span class=&quot;muted&quot;>Foto tidak dapat dimuat. Periksa akses Google Drive.</span>'">
     ${photos.length>1?`
       <div class="detail-gallery-nav">
         <button type="button" onclick="changeDetailPhoto(-1)">‹</button>
