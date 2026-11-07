@@ -4,6 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#0b1930">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="apple-touch-icon" href="./icons/icon-192.png">
 <meta name="description" content="Michio Bike Surabaya - Koleksi sepeda, E-Bike dan aksesoris pilihan.">
 <title>Michio Bike Surabaya</title>
 
@@ -281,6 +283,27 @@ dialog::backdrop{background:#06152b99}
 .detail-actions button{flex:1}
 .detail-note{color:#8992a1;font-size:11px;line-height:1.7;margin-top:15px}
 
+
+.toolbar{flex-wrap:wrap}
+.toolbar .field{min-width:180px;flex:1}
+.compare-toggle{margin-top:10px;width:100%;padding:9px;border:1px solid #d9dfeb;border-radius:9px;background:#f7f8fa;color:#243;font-size:11px;font-weight:700}
+.compare-toggle.selected{background:#0b1930;color:#f5d991;border-color:#0b1930}
+.compare-bar{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 15px;margin:12px 0;background:#fff;border:1px solid #e3e8ef;border-radius:12px}
+.compare-bar button{border:0;border-radius:9px;padding:10px 13px;background:#0b1930;color:#f5d991;font-weight:700}
+.compare-bar button:disabled{opacity:.4}
+.compare-dialog{width:min(1100px,calc(100% - 20px));max-width:1100px;max-height:90vh;overflow:auto}
+.compare-table{width:100%;border-collapse:collapse;min-width:650px}
+.compare-table th,.compare-table td{padding:12px;border:1px solid #e5e9ef;text-align:left;vertical-align:top}
+.compare-table th{background:#0b1930;color:#f5d991}
+.compare-table img{width:120px;height:100px;object-fit:contain}
+.service-mode #hero,.service-mode #cartView,.service-mode #ordersView,
+.service-mode .nav button[data-view="cart"],.service-mode .nav button[data-view="orders"]{display:none!important}
+.service-mode .nav button[data-view="catalog"]{display:none!important}
+.service-mode .nav{display:flex;justify-content:flex-end}
+.service-banner{display:none;background:#fbf4e5;color:#77551e;padding:10px 14px;border-radius:10px;margin:0 0 14px;font-size:12px}
+.service-mode .service-banner{display:block}
+@media(max-width:600px){.compare-bar{align-items:stretch;flex-direction:column}.compare-toggle{font-size:10px;padding:8px 2px}}
+
 @media(max-width:850px){
   .grid{grid-template-columns:repeat(2,minmax(0,1fr))}
   .photo{height:185px}.hero{padding:30px}.hero-mark{font-size:90px}
@@ -333,6 +356,7 @@ dialog::backdrop{background:#06152b99}
       <button class="active" data-view="catalog">Katalog</button>
       <button data-view="cart">Keranjang <span id="cartcount">0</span></button>
       <button data-view="orders">Cara Pesan</button>
+      <button type="button" id="serviceModeButton" onclick="toggleServiceMode()">Mode Pelayanan</button>
     </nav>
   </div>
 </header>
@@ -366,8 +390,20 @@ dialog::backdrop{background:#06152b99}
         <option value="low">Harga terendah</option>
         <option value="high">Harga tertinggi</option>
       </select>
+      <select id="sizeFilter" class="field" style="max-width:170px">
+        <option value="">Semua ukuran</option>
+      </select>
+      <select id="typeFilter" class="field" style="max-width:190px">
+        <option value="">Semua jenis sepeda</option>
+      </select>
     </div>
+    <div class="service-banner">MODE PELAYANAN AKTIF · Katalog siap diperlihatkan kepada pelanggan.</div>
     <div class="filters" id="filters"></div>
+    <div class="compare-bar">
+      <span id="compareCount">0 produk dipilih untuk dibandingkan (2–5 produk).</span>
+      <div><button type="button" onclick="openCompare()" id="compareButton" disabled>BANDINGKAN</button>
+      <button type="button" onclick="clearCompare()" style="background:#eef1f5;color:#243">RESET</button></div>
+    </div>
     <div id="products" class="grid"></div>
     <p class="muted" id="status"></p>
   </section>
@@ -444,6 +480,10 @@ dialog::backdrop{background:#06152b99}
   </div>
   <div id="productDetailContent"></div>
 </dialog>
+<dialog id="compareDialog" class="compare-dialog">
+  <div class="detail-topbar"><b>PERBANDINGAN PRODUK</b><button class="detail-close" onclick="document.querySelector('#compareDialog').close()">×</button></div>
+  <div id="compareContent" style="padding:15px;overflow:auto"></div>
+</dialog>
 
 <script>
 const API_URL="https://script.google.com/macros/s/AKfycbxVbEUxvQAFaJSiUWoSW_KfrTW22LrtJp_YTDKoVV-WKs2jFVUdGZjeQbbBUx4Zq3cM/exec";
@@ -455,7 +495,7 @@ const money=n=>new Intl.NumberFormat('id-ID',{
 }).format(Number(n)||0);
 
 let products=[],cart=[],category='Semua',latestOrder=null;
-let photoIndexes={},detailPhotoIndex=0,activeDetailProduct=null;
+let photoIndexes={},detailPhotoIndex=0,activeDetailProduct=null,selectedCompareIds=[];
 
 function sameId(a,b){return String(a)===String(b)}
 
@@ -619,6 +659,33 @@ function renderFilters(){
   document.querySelector('#filters').innerHTML=cats.map(c=>
     `<button class="${c===category?'active':''}" onclick="setCategory('${esc(c)}')">${esc(c)}</button>`
   ).join('');
+  const sizes=[...new Set(products.map(getProductSize).filter(Boolean))].sort((a,b)=>parseFloat(a)-parseFloat(b));
+  const sizeEl=document.querySelector('#sizeFilter');
+  const oldSize=sizeEl.value;
+  sizeEl.innerHTML='<option value="">Semua ukuran</option>'+sizes.map(x=>`<option value="${esc(x)}">${esc(x)} inci</option>`).join('');
+  sizeEl.value=sizes.includes(oldSize)?oldSize:'';
+  const types=[...new Set(products.map(getProductType).filter(Boolean))].sort();
+  const typeEl=document.querySelector('#typeFilter');
+  const oldType=typeEl.value;
+  typeEl.innerHTML='<option value="">Semua jenis sepeda</option>'+types.map(x=>`<option value="${esc(x)}">${esc(x)}</option>`).join('');
+  typeEl.value=types.includes(oldType)?oldType:'';
+}
+
+function getProductSize(p){
+  const text=(p.name+' '+p.description).toLowerCase();
+  const m=text.match(/(?:^|\D)(12|14|16|18|20|24|26|27[,.]?5|27|28|29)(?:\s*(?:inci|inch|"))?/i);
+  return m?m[1].replace(',','.'):'';
+}
+function getProductType(p){
+  const text=(p.category+' '+p.name+' '+p.description).toLowerCase();
+  if(/e-bike|electric|listrik/.test(text))return 'E-Bike';
+  if(/mountain|\bmtb\b/.test(text))return 'MTB';
+  if(/road bike|roadbike|balap/.test(text))return 'Road Bike';
+  if(/folding|lipat/.test(text))return 'Folding Bike';
+  if(/kids|anak|junior|toddler/.test(text))return 'Sepeda Anak';
+  if(/city|urban/.test(text))return 'City Bike';
+  if(/aksesor|accessor/.test(text))return 'Aksesoris';
+  return p.category||'Lainnya';
 }
 
 function setCategory(value){
@@ -628,13 +695,19 @@ function setCategory(value){
 }
 
 function render(){
-  const q=document.querySelector('#search').value.toLowerCase();
+  const q=document.querySelector('#search').value.toLowerCase().trim();
+  const terms=q.split(/\s+/).filter(Boolean);
   const sort=document.querySelector('#sort').value;
+  const size=document.querySelector('#sizeFilter').value;
+  const type=document.querySelector('#typeFilter').value;
 
-  const list=products.filter(p=>
-    (category==='Semua'||p.category===category)&&
-    (`${p.name} ${p.category} ${p.description}`).toLowerCase().includes(q)
-  );
+  const list=products.filter(p=>{
+    const hay=(`${p.name} ${p.category} ${p.description} ${getProductType(p)} ${getProductSize(p)}`).toLowerCase();
+    return (category==='Semua'||p.category===category) &&
+      terms.every(term=>hay.includes(term)) &&
+      (!size||getProductSize(p)===size) &&
+      (!type||getProductType(p)===type);
+  });
 
   list.sort((x,y)=>
     sort==='low'?x.price-y.price:
@@ -655,10 +728,14 @@ function render(){
           <button class="primary" onclick="openProductDetail('${esc(p.id)}')">Detail</button>
           <button class="outline" style="color:#243" onclick="shareProduct('${esc(p.id)}')">Bagikan</button>
         </div>
+        <button type="button" class="compare-toggle ${selectedCompareIds.some(id=>sameId(id,p.id))?'selected':''}" onclick="toggleCompare('${esc(p.id)}')">
+          ${selectedCompareIds.some(id=>sameId(id,p.id))?'✓ Dipilih untuk dibandingkan':'+ Bandingkan'}
+        </button>
       </div>
     </article>`).join('')||'<div class="empty">Belum ada produk yang ditampilkan.</div>';
 
   document.querySelector('#status').textContent=`Menampilkan ${list.length} produk`;
+  updateCompareBar();
 }
 
 /* KERANJANG */
@@ -735,6 +812,52 @@ document.querySelectorAll('.nav button').forEach(b=>
 );
 document.querySelector('#search').oninput=render;
 document.querySelector('#sort').onchange=render;
+
+document.querySelector('#sizeFilter').onchange=render;
+document.querySelector('#typeFilter').onchange=render;
+
+function toggleCompare(id){
+  const exists=selectedCompareIds.some(x=>sameId(x,id));
+  if(exists) selectedCompareIds=selectedCompareIds.filter(x=>!sameId(x,id));
+  else {
+    if(selectedCompareIds.length>=5){alert('Maksimal 5 produk untuk dibandingkan.');return;}
+    selectedCompareIds.push(id);
+  }
+  render();
+}
+function updateCompareBar(){
+  const n=selectedCompareIds.length;
+  document.querySelector('#compareCount').textContent=n+' produk dipilih untuk dibandingkan (2–5 produk).';
+  document.querySelector('#compareButton').disabled=n<2||n>5;
+}
+function clearCompare(){selectedCompareIds=[];render();}
+function openCompare(){
+  const selected=selectedCompareIds.map(id=>products.find(p=>sameId(p.id,id))).filter(Boolean);
+  if(selected.length<2||selected.length>5){alert('Pilih 2 sampai 5 produk.');return;}
+  const rows=[
+    ['Foto',p=>{const src=getPhotos(p)[0];return src?`<img src="${esc(driveImg(src))}" alt="${esc(p.name)}">`:'Foto belum tersedia';}],
+    ['Nama produk',p=>esc(p.name)],
+    ['Kategori',p=>esc(p.category)],
+    ['Jenis',p=>esc(getProductType(p))],
+    ['Ukuran',p=>esc(getProductSize(p)||'-')],
+    ['Harga',p=>'<b>'+money(p.price)+'</b>'],
+    ['Stok',p=>Number(p.qty)>0?Number(p.qty)+' unit':'Konfirmasi ke toko'],
+    ['Spesifikasi',p=>esc(p.description||'-')]
+  ];
+  document.querySelector('#compareContent').innerHTML='<table class="compare-table"><thead><tr><th>Informasi</th>'+selected.map(p=>'<th>'+esc(p.name)+'</th>').join('')+'</tr></thead><tbody>'+
+    rows.map(row=>'<tr><th>'+row[0]+'</th>'+selected.map(p=>'<td>'+row[1](p)+'</td>').join('')+'</tr>').join('')+'</tbody></table>';
+  document.querySelector('#compareDialog').showModal();
+}
+
+function toggleServiceMode(){
+  const enabled=!document.body.classList.contains('service-mode');
+  document.body.classList.toggle('service-mode',enabled);
+  const button=document.querySelector('#serviceModeButton');
+  button.textContent=enabled?'Keluar Mode Pelayanan':'Mode Pelayanan';
+  if(enabled)showView('catalog');
+  try{sessionStorage.setItem('mbServiceMode',enabled?'1':'0');}catch(e){}
+}
+
 
 /* BAGIKAN PRODUK */
 
@@ -1130,6 +1253,19 @@ function printPicking(){
   }
   w.document.write(html);
   w.document.close();
+}
+
+/* PWA + MODE PELAYANAN */
+try {
+  if(sessionStorage.getItem('mbServiceMode')==='1'){
+    document.body.classList.add('service-mode');
+    document.querySelector('#serviceModeButton').textContent='Keluar Mode Pelayanan';
+  }
+} catch(e) {}
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function() {
+    navigator.serviceWorker.register('./sw.js').catch(function(err){console.warn('PWA belum aktif:',err);});
+  });
 }
 
 /* MULAI WEBSITE */
