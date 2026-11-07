@@ -839,7 +839,7 @@ document.querySelector('#checkoutForm').onsubmit=async function(e){
     assemblyFee:assemblyService?ASSEMBLY_FEE:0,
     productSubtotal:getProductSubtotal(),
     total:getOrderTotal(),
-    date:new Date().toLocaleString('id-ID'),
+    date:new Date().toISOString(),
     number:'MB-'+Date.now()
   };
 
@@ -888,6 +888,33 @@ document.querySelector('#checkoutForm').onsubmit=async function(e){
 
 /* INVOICE PREMIUM */
 
+function formatInvoiceDateJakarta(value){
+  const date=value instanceof Date?value:new Date(value);
+  if(Number.isNaN(date.getTime()))return '-';
+
+  return new Intl.DateTimeFormat('id-ID',{
+    timeZone:'Asia/Jakarta',
+    day:'2-digit',
+    month:'long',
+    year:'numeric',
+    hour:'2-digit',
+    minute:'2-digit',
+    hourCycle:'h23'
+  }).format(date).replace(/\./g,':');
+}
+
+function formatInvoiceWhatsApp(value){
+  let phone=String(value==null?'':value).replace(/\D/g,'');
+  if(!phone)return '-';
+
+  if(phone.indexOf('62')===0){
+    phone='0'+phone.substring(2);
+  }else if(phone.indexOf('8')===0){
+    phone='0'+phone;
+  }
+  return phone;
+}
+
 function printInvoice(){
   if(!latestOrder)return;
 
@@ -919,50 +946,61 @@ function printInvoice(){
 <title>Invoice ${esc(o.number)}</title>
 <style>
 *{box-sizing:border-box}
-body{margin:0;background:#eef1f5;font-family:Arial,Helvetica,sans-serif;color:#172238}
-.sheet{width:210mm;min-height:297mm;margin:24px auto;background:#fff;padding:17mm 16mm;box-shadow:0 8px 35px #0b19301a}
-.top{background:linear-gradient(120deg,#081529,#19395f);color:#fff;padding:25px 28px;display:flex;justify-content:space-between;gap:20px;border-bottom:5px solid #d9ad54}
-.brand{font-size:22px;font-weight:900;letter-spacing:2px;color:#f5d991}
-.brand small{display:block;font-size:10px;letter-spacing:4px;color:#dce3ee;margin-top:6px}
+body{margin:0;padding:18px;background:#eef1f5;font-family:Arial,Helvetica,sans-serif;color:#172238}
+.toolbar{width:148mm;max-width:100%;margin:0 auto 12px;display:flex;gap:8px}
+.toolbar button{flex:1;border:0;border-radius:7px;padding:12px 10px;background:#0b1930;color:#fff;font-weight:800;cursor:pointer}
+.toolbar .pdf{background:#16794b}
+.toolbar-note{width:148mm;max-width:100%;margin:0 auto 10px;text-align:center;color:#536075;font-size:11px;line-height:1.5}
+.sheet{width:148mm;min-height:210mm;margin:0 auto;background:#fff;padding:9mm;box-shadow:0 8px 35px #0b19301a}
+.top{background:linear-gradient(120deg,#081529,#19395f);color:#fff;padding:18px 20px;display:flex;justify-content:space-between;gap:14px;border-bottom:4px solid #d9ad54}
+.brand{font-size:20px;font-weight:900;letter-spacing:1.5px;color:#f5d991}
+.brand small{display:block;font-size:9px;letter-spacing:3px;color:#dce3ee;margin-top:5px}
 .invoice-label{text-align:right}
-.invoice-label strong{display:block;font-size:22px;letter-spacing:2px;color:#f5d991}
-.invoice-label span{font-size:10px;letter-spacing:2px;color:#dce3ee}
-.meta{display:grid;grid-template-columns:1fr 1fr;gap:25px;padding:25px 2px}
-.label{font-size:9px;font-weight:800;letter-spacing:1.5px;color:#a5792d;margin-bottom:9px}
-.meta p{font-size:12px;line-height:1.8;margin:0;color:#455166}
+.invoice-label strong{display:block;font-size:20px;letter-spacing:1.5px;color:#f5d991}
+.invoice-label span{font-size:8px;letter-spacing:1.5px;color:#dce3ee}
+.meta{display:grid;grid-template-columns:1fr 1fr;gap:16px 20px;padding:18px 2px}
+.label{font-size:8px;font-weight:800;letter-spacing:1.2px;color:#a5792d;margin-bottom:6px}
+.meta p{font-size:10px;line-height:1.65;margin:0;color:#455166;overflow-wrap:anywhere}
 .meta strong{color:#172238}
-.order-no{font-size:15px;font-weight:800;color:#0b1930}
-.status{display:inline-block;margin-top:8px;background:#fff5df;color:#93651e;border-radius:20px;padding:6px 10px;font-size:9px;font-weight:800}
-table{width:100%;border-collapse:collapse;margin-top:8px}
-th{background:#0b1930;color:#f5d991;padding:13px 10px;text-align:left;font-size:10px;letter-spacing:.5px}
-td{padding:14px 10px;border-bottom:1px solid #e9edf2;font-size:11px;vertical-align:top}
-td small{display:block;color:#8a94a4;font-size:9px;margin-top:5px}
+.order-no{font-size:13px;font-weight:800;color:#0b1930}
+table{width:100%;border-collapse:collapse;margin-top:6px}
+th{background:#0b1930;color:#f5d991;padding:9px 7px;text-align:left;font-size:8px;letter-spacing:.4px}
+td{padding:10px 7px;border-bottom:1px solid #e9edf2;font-size:9px;vertical-align:top}
+td small{display:block;color:#8a94a4;font-size:8px;margin-top:4px}
 .center{text-align:center}.right{text-align:right;white-space:nowrap}
-.summary{width:48%;margin:20px 0 0 auto}
-.summary div{display:flex;justify-content:space-between;padding:8px 0;font-size:11px;color:#596579;border-bottom:1px solid #edf0f4}
-.summary .grand{background:#0b1930;color:#f5d991;padding:14px;margin-top:8px;font-size:14px;font-weight:900;border:0}
-.payment{margin-top:30px;padding:19px 21px;background:#f7f8fa;border-left:4px solid #d9ad54;border-radius:4px}
-.payment h3{font-size:12px;margin:0 0 10px;color:#0b1930;letter-spacing:1px}
-.payment p{font-size:11px;line-height:1.8;margin:0;color:#536075}
-.payment strong{color:#0b1930;font-size:14px}
-.footer{margin-top:35px;padding-top:17px;border-top:1px solid #e5e9ef;text-align:center;color:#8490a1;font-size:10px;line-height:1.8}
-.footer strong{color:#a5792d;letter-spacing:2px}
-@page{size:A4;margin:0}
+.summary{width:58%;margin:14px 0 0 auto}
+.summary div{display:flex;justify-content:space-between;gap:8px;padding:6px 0;font-size:9px;color:#596579;border-bottom:1px solid #edf0f4}
+.summary .grand{background:#0b1930;color:#f5d991;padding:10px;margin-top:6px;font-size:11px;font-weight:900;border:0}
+.payment{margin-top:18px;padding:13px 15px;background:#f7f8fa;border-left:4px solid #d9ad54;border-radius:4px}
+.payment h3{font-size:10px;margin:0 0 7px;color:#0b1930;letter-spacing:1px}
+.payment p{font-size:9px;line-height:1.65;margin:0;color:#536075}
+.payment strong{color:#0b1930;font-size:13px}
+.footer{margin-top:20px;padding-top:11px;border-top:1px solid #e5e9ef;text-align:center;color:#8490a1;font-size:8px;line-height:1.7}
+.footer strong{color:#a5792d;letter-spacing:1.3px}
+@page{size:A5 portrait;margin:0}
 @media print{
-  body{background:#fff}
-  .sheet{width:210mm;min-height:297mm;margin:0;box-shadow:none}
-  -webkit-print-color-adjust:exact;print-color-adjust:exact
+  html,body{width:148mm;min-height:210mm;margin:0;padding:0;background:#fff}
+  .toolbar,.toolbar-note{display:none!important}
+  .sheet{width:148mm;min-height:210mm;margin:0;padding:9mm;box-shadow:none}
+  *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
 }
-@media(max-width:700px){
-  .sheet{width:100%;min-height:100vh;margin:0;padding:18px}
-  .top{padding:18px}.brand{font-size:17px}
-  .invoice-label strong{font-size:17px}
+@media(max-width:600px){
+  body{padding:8px}
+  .sheet{width:100%;min-height:0;padding:14px}
+  .top{padding:15px}.brand{font-size:17px}.invoice-label strong{font-size:17px}
   .meta{gap:12px}.summary{width:70%}
-  td,th{padding:9px 6px;font-size:9px}
+  td,th{padding:8px 5px;font-size:8px}
 }
 </style>
 </head>
 <body>
+<div class="toolbar">
+  <button type="button" onclick="window.print()">CETAK INVOICE</button>
+  <button type="button" class="pdf" onclick="window.print()">SIMPAN PDF</button>
+</div>
+<div class="toolbar-note">
+  Pratinjau invoice. Untuk menyimpan PDF, pilih “Save as PDF / Simpan sebagai PDF” pada pilihan printer.
+</div>
 <div class="sheet">
   <div class="top">
     <div class="brand">MICHIO BIKE<small>S U R A B A Y A</small></div>
@@ -976,23 +1014,20 @@ td small{display:block;color:#8a94a4;font-size:9px;margin-top:5px}
     </div>
     <div>
       <div class="label">INFORMASI PESANAN</div>
-      <p>
-        Nomor Invoice<br><span class="order-no">${esc(o.number)}</span><br>
-        Tanggal: ${esc(o.date)}<br>
-        <span class="status">MENUNGGU KONFIRMASI</span>
-      </p>
+      <p>Nomor Invoice<br><span class="order-no">${esc(o.number)}</span><br>
+      Tanggal: ${esc(formatInvoiceDateJakarta(o.date))}</p>
     </div>
     <div>
       <div class="label">INFORMASI PEMBELI</div>
-      <p><strong>${esc(o.buyer)}</strong><br>WhatsApp: ${esc(o.phone)}<br>Catatan: ${esc(o.address||'-')}</p>
+      <p><strong>${esc(o.buyer)}</strong><br>WhatsApp: ${esc(formatInvoiceWhatsApp(o.phone))}</p>
     </div>
     <div>
       <div class="label">METODE PEMBAYARAN</div>
-      <p>Transfer Bank BCA<br><strong>0881885122</strong><br>a.n. Bryan Surya Putra</p>
+      <p>Transfer Bank BCA<br><strong>0881885122</strong><br>A/N BRYAN SURYA PUTRA</p>
     </div>
   </div>
 
-  <div class="label">RINCIAN PESANAN</div>
+  <div class="label">RINCIAN PEMBELIAN</div>
   <table>
     <thead><tr>
       <th>DESKRIPSI</th><th class="center">QTY</th>
@@ -1011,7 +1046,7 @@ td small{display:block;color:#8a94a4;font-size:9px;margin-top:5px}
     <h3>INFORMASI PEMBAYARAN</h3>
     <p>Silakan melakukan pembayaran melalui transfer ke rekening berikut:<br>
     <strong>BCA · 0881885122</strong><br>
-    Atas Nama: Bryan Surya Putra<br>
+    Atas Nama: BRYAN SURYA PUTRA<br>
     Setelah transfer, mohon konfirmasi pembayaran kepada admin Michio Bike Surabaya.</p>
   </div>
 
@@ -1021,14 +1056,13 @@ td small{display:block;color:#8a94a4;font-size:9px;margin-top:5px}
     Ride Better, Live Happier.
   </div>
 </div>
-<script>window.onload=function(){window.print()}<\/script>
 </body>
 </html>`;
 
   const w=window.open('','_blank');
 
   if(!w){
-    alert('Izinkan pop-up browser untuk mencetak invoice.');
+    alert('Izinkan pop-up browser untuk melihat invoice.');
     return;
   }
 
