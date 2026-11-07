@@ -36,8 +36,11 @@ main{max-width:1100px;margin:22px auto;padding:0 16px}
 .filters button.active{background:var(--navy);color:var(--gold2);border-color:var(--navy)}
 .grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px}
 .card{background:#fff;border:1px solid #e7eaf0;border-radius:17px;overflow:hidden;box-shadow:0 7px 22px #16233a0a}
-.photo{height:175px;background:linear-gradient(135deg,#e9edf3,#fff);display:flex;align-items:center;justify-content:center;color:#9aa5b6}
+.photo{height:175px;background:linear-gradient(135deg,#e9edf3,#fff);display:flex;align-items:center;justify-content:center;color:#9aa5b6;position:relative;overflow:hidden}
 .photo img{width:100%;height:100%;object-fit:contain}
+.photo-nav{position:absolute;inset:0;display:flex;align-items:center;justify-content:space-between;padding:0 7px;pointer-events:none}
+.photo-nav button{pointer-events:auto;border:0;border-radius:50%;width:30px;height:30px;background:#0b1930bb;color:white;font-size:19px;line-height:1}
+.photo-count{position:absolute;right:8px;bottom:8px;background:#0b1930c9;color:white;border-radius:20px;padding:4px 8px;font-size:10px}
 .cardbody{padding:14px}
 .tag{font-size:10px;color:#94702d;letter-spacing:1px;text-transform:uppercase}
 .card h3{font-size:15px;margin:5px 0}
@@ -79,7 +82,7 @@ dialog::backdrop{background:#06152b99}
 .photo{height:120px}
 }
 @media print{
-header,.hero,.toolbar,.filters,.actions,.no-print,footer{display:none!important}
+header,.hero,.toolbar,.filters,.actions,footer{display:none!important}
 body{background:white}
 main{margin:0;max-width:none;padding:0}
 .panel,.card{box-shadow:none;border:0}
@@ -176,12 +179,24 @@ const money=n=>new Intl.NumberFormat('id-ID',{
 }).format(Number(n)||0);
 
 let products=[], cart=[], category='Semua', latestOrder=null;
+let photoIndexes={};
+
 
 function driveImg(url){
   if(!url)return '';
+
+  // URL thumbnail Google Drive dipakai langsung.
+  if(/drive\.google\.com\/thumbnail/i.test(url)){
+    return url;
+  }
+
   let m=url.match(/(?:id=|\/d\/)([A-Za-z0-9_-]{15,})/);
-  return m?'https://drive.google.com/uc?export=view&id='+m[1]:url;
+
+  return m
+    ? 'https://drive.google.com/thumbnail?id='+m[1]+'&sz=w1200'
+    : url;
 }
+
 
 function esc(s){
   return String(s??'').replace(/[&<>"']/g,c=>({
@@ -193,33 +208,129 @@ function esc(s){
   }[c]));
 }
 
+
+function getPhotos(product){
+  if(Array.isArray(product.photos)&&product.photos.length){
+    return product.photos.filter(Boolean);
+  }
+
+  return product.photo?[product.photo]:[];
+}
+
+
+/* =====================================================
+   GALERI FOTO PRODUK
+===================================================== */
+
+function renderProductPhoto(product){
+  const photos=getPhotos(product);
+
+  if(!photos.length){
+    return '<div class="photo">Foto produk belum tersedia</div>';
+  }
+
+  let index=Number(photoIndexes[product.id]||0);
+
+  if(index<0||index>=photos.length){
+    index=0;
+    photoIndexes[product.id]=0;
+  }
+
+  const imageUrl=driveImg(photos[index]);
+
+  let controls='';
+
+  if(photos.length>1){
+    controls=`
+      <div class="photo-nav">
+        <button type="button"
+          aria-label="Foto sebelumnya"
+          onclick="changeProductPhoto('${esc(product.id)}',-1)">‹</button>
+        <button type="button"
+          aria-label="Foto berikutnya"
+          onclick="changeProductPhoto('${esc(product.id)}',1)">›</button>
+      </div>
+      <div class="photo-count">${index+1} / ${photos.length}</div>
+    `;
+  }
+
+  return `
+    <div class="photo">
+      <img
+        loading="lazy"
+        src="${esc(imageUrl)}"
+        alt="${esc(product.name)}"
+        onerror="this.alt='Foto tidak dapat dimuat';this.style.display='none'">
+      ${controls}
+    </div>
+  `;
+}
+
+
+function changeProductPhoto(id,direction){
+  const product=products.find(p=>p.id===id);
+
+  if(!product)return;
+
+  const photos=getPhotos(product);
+
+  if(photos.length<2)return;
+
+  let index=Number(photoIndexes[id]||0);
+
+  index=(index+direction+photos.length)%photos.length;
+
+  photoIndexes[id]=index;
+
+  render();
+}
+
+
+/* =====================================================
+   MEMUAT KATALOG
+===================================================== */
+
 function load(){
   const status=document.querySelector('#status');
 
   window.michioCatalogLoaded=function(data){
     products=(data&&data.products)||[];
+
+    photoIndexes={};
+
     renderFilters();
     render();
+
     if(data&&data.ok===false){
       status.textContent=data.message||'Katalog belum dapat dimuat.';
     }
   };
 
   const script=document.createElement('script');
-  script.src=API_URL+'?action=products&callback=michioCatalogLoaded&ts='+Date.now();
+
+  script.src=API_URL+
+    '?action=products&callback=michioCatalogLoaded&ts='+Date.now();
+
   script.onerror=()=>{
-    status.textContent='Katalog belum dapat dimuat. Periksa URL Apps Script dan koneksi internet.';
+    status.textContent=
+      'Katalog belum dapat dimuat. Periksa URL Apps Script dan koneksi internet.';
   };
+
   document.head.appendChild(script);
 }
 
+
 function renderFilters(){
-  let cats=['Semua',...new Set(products.map(p=>p.category).filter(Boolean))];
+  let cats=['Semua',...new Set(
+    products.map(p=>p.category).filter(Boolean)
+  )];
 
   document.querySelector('#filters').innerHTML=cats.map(c=>
-    `<button class="${c===category?'active':''}" onclick="category='${esc(c)}';renderFilters();render()">${esc(c)}</button>`
+    `<button class="${c===category?'active':''}"
+      onclick="category='${esc(c)}';renderFilters();render()">${esc(c)}</button>`
   ).join('');
 }
+
 
 function render(){
   let q=document.querySelector('#search').value.toLowerCase();
@@ -238,9 +349,7 @@ function render(){
 
   document.querySelector('#products').innerHTML=a.map(p=>
     `<article class="card">
-      <div class="photo">
-        ${p.photo?`<img loading="lazy" src="${esc(driveImg(p.photo))}" alt="${esc(p.name)}" onerror="this.remove()">`:'Foto produk'}
-      </div>
+      ${renderProductPhoto(p)}
       <div class="cardbody">
         <div class="tag">${esc(p.category)}</div>
         <h3>${esc(p.name)}</h3>
@@ -254,20 +363,30 @@ function render(){
     </article>`
   ).join('')||'<div class="empty">Belum ada produk yang ditampilkan.</div>';
 
-  document.querySelector('#status').textContent=`Menampilkan ${a.length} produk`;
+  document.querySelector('#status').textContent=
+    `Menampilkan ${a.length} produk`;
 }
+
+
+/* =====================================================
+   KERANJANG
+===================================================== */
 
 function addCart(id){
   let p=products.find(x=>x.id===id);
+
   if(!p)return;
 
   let item=cart.find(x=>x.id===id);
+
   if(item)item.qty++;
   else cart.push({...p,qty:1});
 
   updateCart();
+
   alert('Produk ditambahkan ke keranjang');
 }
+
 
 function updateCart(){
   document.querySelector('#cartcount').textContent=
@@ -291,27 +410,40 @@ function updateCart(){
     money(cart.reduce((s,x)=>s+x.price*x.qty,0));
 }
 
+
 function changeQty(id,n){
   let x=cart.find(x=>x.id===id);
+
   if(!x)return;
 
   x.qty+=n;
-  if(x.qty<1)cart=cart.filter(y=>y.id!==id);
+
+  if(x.qty<1){
+    cart=cart.filter(y=>y.id!==id);
+  }
 
   updateCart();
 }
 
+
+/* =====================================================
+   NAVIGASI
+===================================================== */
+
 function showView(v){
   ['catalog','cart','orders'].forEach(x=>
-    document.querySelector('#'+x+'View').classList.toggle('hide',x!==v)
+    document.querySelector('#'+x+'View')
+      .classList.toggle('hide',x!==v)
   );
 
-  document.querySelector('#hero').classList.toggle('hide',v!=='catalog');
+  document.querySelector('#hero')
+    .classList.toggle('hide',v!=='catalog');
 
   document.querySelectorAll('.nav button').forEach(b=>
     b.classList.toggle('active',b.dataset.view===v)
   );
 }
+
 
 document.querySelectorAll('.nav button').forEach(b=>
   b.onclick=()=>showView(b.dataset.view)
@@ -320,8 +452,14 @@ document.querySelectorAll('.nav button').forEach(b=>
 document.querySelector('#search').oninput=render;
 document.querySelector('#sort').onchange=render;
 
+
+/* =====================================================
+   BAGIKAN PRODUK
+===================================================== */
+
 function shareProduct(id){
   let p=products.find(x=>x.id===id);
+
   if(p&&navigator.share){
     navigator.share({
       title:p.name,
@@ -330,13 +468,20 @@ function shareProduct(id){
   }
 }
 
+
+/* =====================================================
+   CHECKOUT
+===================================================== */
+
 function checkout(){
   if(!cart.length){
     alert('Keranjang masih kosong');
     return;
   }
+
   document.querySelector('#checkoutDialog').showModal();
 }
+
 
 /**
  * Mengirim pesanan ke Apps Script.
@@ -368,7 +513,6 @@ function sendOrderToSheets(order){
     function receive(event){
       const data=event.data;
 
-      // Hanya menerima balasan dengan token pesanan yang cocok.
       if(!data||typeof data!=='object')return;
       if(data.requestToken!==requestToken)return;
       if(typeof data.ok!=='boolean'||finished)return;
@@ -397,12 +541,14 @@ function sendOrderToSheets(order){
     },30000);
 
     const form=document.createElement('form');
+
     form.method='POST';
     form.action=ORDER_API_URL;
     form.target=frame.name;
     form.style.display='none';
 
     const field=document.createElement('input');
+
     field.type='hidden';
     field.name='order';
 
@@ -421,6 +567,7 @@ function sendOrderToSheets(order){
     form.remove();
   });
 }
+
 
 document.querySelector('#checkoutForm').onsubmit=async function(e){
   e.preventDefault();
@@ -482,12 +629,17 @@ document.querySelector('#checkoutForm').onsubmit=async function(e){
   }
 };
 
+
+/* =====================================================
+   CETAK INVOICE
+===================================================== */
+
 function printInvoice(){
   if(!latestOrder)return;
 
   let o=latestOrder;
 
-  let html=`<html><head><title>Invoice ${o.number}</title>
+  let html=`<html><head><title>Invoice ${esc(o.number)}</title>
   <style>
   body{font:14px Arial;padding:30px;color:#172238}
   h1{color:#9c742c}
@@ -537,6 +689,11 @@ function printInvoice(){
   w.document.close();
 }
 
+
+/* =====================================================
+   CETAK ORDER GUDANG
+===================================================== */
+
 function printPicking(){
   if(!cart.length){
     alert('Keranjang kosong');
@@ -578,8 +735,14 @@ function printPicking(){
   w.document.close();
 }
 
+
+/* =====================================================
+   MULAI WEBSITE
+===================================================== */
+
 load();
 updateCart();
+
 </script>
 </body>
 </html>
