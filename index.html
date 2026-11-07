@@ -1,441 +1,168 @@
-
 <!doctype html>
-<html lang="id">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#0b1930">
-<title>Michio Bike Surabaya</title>
+<html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0b1930"><title>Michio Bike Surabaya</title>
 <style>
 :root{--navy:#0b1930;--navy2:#142947;--gold:#d9ad54;--gold2:#f5d991;--ink:#172238;--muted:#738096;--paper:#f7f8fb}
-*{box-sizing:border-box}
-body{margin:0;background:var(--paper);font-family:Inter,system-ui,Arial;color:var(--ink)}
-button,input,select,textarea{font:inherit}
-button{cursor:pointer}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);font-family:Inter,system-ui,Arial;color:var(--ink)}button,input,select,textarea{font:inherit}button{cursor:pointer}
 header{background:linear-gradient(120deg,#09162b,#17365c);color:#fff;padding:14px 18px;position:sticky;top:0;z-index:5;box-shadow:0 6px 24px #06152b30}
-.head{max-width:1100px;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:12px}
-.brand{display:flex;align-items:center;gap:10px}
-.brand img{width:58px;height:48px;object-fit:contain}
-.brand b{color:var(--gold2);letter-spacing:1.5px}
-.brand small{display:block;color:#d5dce7;letter-spacing:4px;font-size:9px}
-.nav{display:flex;gap:8px;flex-wrap:wrap}
-.nav button,.outline{border:1px solid #d9ad5470;color:#f4d995;background:transparent;border-radius:24px;padding:9px 13px}
-.nav button.active,.gold{background:linear-gradient(135deg,#f8dfa0,#c89136);color:#172238;border:0;font-weight:700}
-main{max-width:1100px;margin:22px auto;padding:0 16px}
-.hero{border-radius:22px;background:linear-gradient(110deg,#0b1930,#18385e);color:white;padding:28px;display:flex;justify-content:space-between;align-items:center;gap:20px;overflow:hidden}
-.hero h1{font-size:clamp(27px,5vw,48px);margin:0 0 8px;color:var(--gold2)}
-.hero p{color:#e0e6ef;margin:0 0 18px}
-.hero .slogan{font-size:12px;letter-spacing:3px;color:#e9ca83}
-.hero-mark{font-size:90px;color:#d9ad54;opacity:.7}
-.toolbar{display:flex;gap:10px;margin:20px 0;flex-wrap:wrap}
-.toolbar input{flex:1;min-width:180px}
-.field{border:1px solid #dce1e9;background:white;border-radius:12px;padding:12px;width:100%;outline-color:var(--gold)}
-.filters{display:flex;gap:8px;overflow:auto;padding:2px 0 14px}
-.filters button{white-space:nowrap;border:1px solid #d9dfeb;border-radius:30px;background:#fff;padding:9px 14px;color:#334}
-.filters button.active{background:var(--navy);color:var(--gold2);border-color:var(--navy)}
-.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px}
-.card{background:#fff;border:1px solid #e7eaf0;border-radius:17px;overflow:hidden;box-shadow:0 7px 22px #16233a0a}
-.photo{height:175px;background:linear-gradient(135deg,#e9edf3,#fff);display:flex;align-items:center;justify-content:center;color:#9aa5b6}
-.photo img{width:100%;height:100%;object-fit:contain}
-.cardbody{padding:14px}
-.tag{font-size:10px;color:#94702d;letter-spacing:1px;text-transform:uppercase}
-.card h3{font-size:15px;margin:5px 0}
-.desc{font-size:12px;color:var(--muted);min-height:32px}
-.price{font-size:19px;font-weight:800;color:#a56c16;margin:10px 0}
-.actions{display:flex;gap:8px}
-.actions button{flex:1;border-radius:10px;padding:10px;border:0}
-.dark{background:var(--navy);color:white}
-.detail{display:grid;grid-template-columns:1fr 1fr;gap:22px}
-.panel{background:white;border:1px solid #e7eaf0;border-radius:18px;padding:20px}
-.panel h2{margin-top:0}
-.muted{color:var(--muted);font-size:13px}
-.row{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid #edf0f4}
-.qty{display:flex;align-items:center;gap:8px}
-.qty button{border:1px solid #ddd;background:#fff;border-radius:8px;padding:5px 10px}
-.primary{background:linear-gradient(135deg,#f7dda0,#c8943e);border:0;border-radius:12px;padding:12px 16px;font-weight:800;color:#18243a}
-.full{width:100%;margin-top:12px}
-.empty{text-align:center;padding:40px;color:var(--muted)}
-footer{text-align:center;padding:35px 15px;color:#778196;font-size:12px}
-dialog{border:0;border-radius:18px;width:min(520px,calc(100% - 24px));padding:22px;box-shadow:0 20px 80px #0005}
-dialog::backdrop{background:#06152b99}
-.formgrid{display:grid;gap:10px}
-.notice{background:#fff6df;padding:12px;border-radius:10px;font-size:12px;color:#70521b}
-.hide{display:none!important}
-@media(max-width:760px){
-.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
-.photo{height:135px}
-.hero{padding:22px}
-.hero-mark{font-size:58px}
-.nav button{padding:8px 10px;font-size:12px}
-.detail{grid-template-columns:1fr}
-.brand img{width:44px}
-.brand b{font-size:13px}
-}
-@media(max-width:390px){
-.grid{grid-template-columns:1fr 1fr}
-.cardbody{padding:10px}
-.price{font-size:16px}
-.photo{height:120px}
-}
-@media print{
-header,.hero,.toolbar,.filters,.actions,.no-print,footer{display:none!important}
-body{background:white}
-main{margin:0;max-width:none;padding:0}
-.panel,.card{box-shadow:none;border:0}
-}
-</style>
-</head>
-<body>
-
-<header>
-<div class="head">
-<div class="brand">
-<img src="logo-michio-bike.svg" alt="Logo Michio Bike">
-<div><b>MICHIO BIKE</b><small>S U R A B A Y A</small></div>
-</div>
-<nav class="nav">
-<button class="active" data-view="catalog">Katalog</button>
-<button data-view="cart">Keranjang <span id="cartcount">0</span></button>
-<button data-view="orders">Cara Pesan</button>
-</nav>
-</div>
-</header>
-
+.head{max-width:1100px;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:12px}.brand{display:flex;align-items:center;gap:10px}.brand img{width:58px;height:48px;object-fit:contain}.brand b{color:var(--gold2);letter-spacing:1.5px}.brand small{display:block;color:#d5dce7;letter-spacing:4px;font-size:9px}.nav{display:flex;gap:8px;flex-wrap:wrap}.nav button,.outline{border:1px solid #d9ad5470;color:#f4d995;background:transparent;border-radius:24px;padding:9px 13px}.nav button.active,.gold{background:linear-gradient(135deg,#f8dfa0,#c89136);color:#172238;border:0;font-weight:700}
+main{max-width:1100px;margin:22px auto;padding:0 16px}.hero{border-radius:22px;background:linear-gradient(110deg,#0b1930,#18385e);color:white;padding:28px;display:flex;justify-content:space-between;align-items:center;gap:20px;overflow:hidden}.hero h1{font-size:clamp(27px,5vw,48px);margin:0 0 8px;color:var(--gold2)}.hero p{color:#e0e6ef;margin:0 0 18px}.hero .slogan{font-size:12px;letter-spacing:3px;color:#e9ca83}.hero-mark{font-size:90px;color:#d9ad54;opacity:.7}.toolbar{display:flex;gap:10px;margin:20px 0;flex-wrap:wrap}.toolbar input{flex:1;min-width:180px}.field{border:1px solid #dce1e9;background:white;border-radius:12px;padding:12px;width:100%;outline-color:var(--gold)}.filters{display:flex;gap:8px;overflow:auto;padding:2px 0 14px}.filters button{white-space:nowrap;border:1px solid #d9dfeb;border-radius:30px;background:#fff;padding:9px 14px;color:#334}.filters button.active{background:var(--navy);color:var(--gold2);border-color:var(--navy)}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px}.card{background:#fff;border:1px solid #e7eaf0;border-radius:17px;overflow:hidden;box-shadow:0 7px 22px #16233a0a}.photo{height:175px;background:linear-gradient(135deg,#e9edf3,#fff);display:flex;align-items:center;justify-content:center;color:#9aa5b6}.photo img{width:100%;height:100%;object-fit:contain}.cardbody{padding:14px}.tag{font-size:10px;color:#94702d;letter-spacing:1px;text-transform:uppercase}.card h3{font-size:15px;margin:5px 0}.desc{font-size:12px;color:var(--muted);min-height:32px}.price{font-size:19px;font-weight:800;color:#a56c16;margin:10px 0}.actions{display:flex;gap:8px}.actions button{flex:1;border-radius:10px;padding:10px;border:0}.dark{background:var(--navy);color:white}.detail{display:grid;grid-template-columns:1fr 1fr;gap:22px}.panel{background:white;border:1px solid #e7eaf0;border-radius:18px;padding:20px}.panel h2{margin-top:0}.muted{color:var(--muted);font-size:13px}.row{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid #edf0f4}.qty{display:flex;align-items:center;gap:8px}.qty button{border:1px solid #ddd;background:#fff;border-radius:8px;padding:5px 10px}.primary{background:linear-gradient(135deg,#f7dda0,#c8943e);border:0;border-radius:12px;padding:12px 16px;font-weight:800;color:#18243a}.full{width:100%;margin-top:12px}.empty{text-align:center;padding:40px;color:var(--muted)}footer{text-align:center;padding:35px 15px;color:#778196;font-size:12px}
+dialog{border:0;border-radius:18px;width:min(520px,calc(100% - 24px));padding:22px;box-shadow:0 20px 80px #0005}dialog::backdrop{background:#06152b99}.formgrid{display:grid;gap:10px}.notice{background:#fff6df;padding:12px;border-radius:10px;font-size:12px;color:#70521b}.hide{display:none!important}
+@media(max-width:760px){.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.photo{height:135px}.hero{padding:22px}.hero-mark{font-size:58px}.nav button{padding:8px 10px;font-size:12px}.detail{grid-template-columns:1fr}.brand img{width:44px}.brand b{font-size:13px}}
+@media(max-width:390px){.grid{grid-template-columns:1fr 1fr}.cardbody{padding:10px}.price{font-size:16px}.photo{height:120px}}
+@media print{header,.hero,.toolbar,.filters,.actions,.no-print,footer{display:none!important}body{background:white}main{margin:0;max-width:none;padding:0}.panel,.card{box-shadow:none;border:0}}
+</style></head><body>
+<header><div class="head"><div class="brand"><img src="logo-michio-bike.svg" alt="Logo Michio Bike"><div><b>MICHIO BIKE</b><small>S U R A B A Y A</small></div></div><nav class="nav"><button class="active" data-view="catalog">Katalog</button><button data-view="cart">Keranjang <span id="cartcount">0</span></button><button data-view="orders">Cara Pesan</button></nav></div></header>
 <main>
-<section id="hero" class="hero">
-<div>
-<div class="slogan">RIDE BETTER, LIVE HAPPIER</div>
-<h1>Temukan Sepeda<br>Terbaik Anda.</h1>
-<p>Koleksi sepeda, E-Bike, dan aksesoris pilihan di Surabaya.</p>
-<button class="primary" onclick="document.querySelector('#search').focus()">Jelajahi Katalog →</button>
-</div>
-<div class="hero-mark">✦</div>
-</section>
-
-<section id="catalogView">
-<div class="toolbar">
-<input id="search" class="field" placeholder="Cari nama atau kategori produk…">
-<select id="sort" class="field" style="max-width:180px">
-<option value="name">Urutkan: Nama</option>
-<option value="low">Harga terendah</option>
-<option value="high">Harga tertinggi</option>
-</select>
-</div>
-<div class="filters" id="filters"></div>
-<div id="products" class="grid"></div>
-<p class="muted" id="status">Menghubungkan katalog...</p>
-</section>
-
-<section id="cartView" class="hide">
-<div class="panel">
-<h2>Keranjang Pesanan</h2>
-<div id="cartitems"></div>
-<div class="row"><b>Total</b><b id="total">Rp0</b></div>
-<button class="primary full" onclick="checkout()">Lanjutkan & Buat Invoice</button>
-<button class="outline full" style="color:#243" onclick="printPicking()">Cetak Order Gudang</button>
-</div>
-</section>
-
-<section id="ordersView" class="hide">
-<div class="panel">
-<h2>Informasi Pemesanan</h2>
-<p>Pilih produk dari katalog, masukkan ke keranjang, lalu isi data pembeli untuk membuat invoice.</p>
-<div class="notice">Pembayaran transfer BCA<br><b>0881885122 a.n. Bryan Surya Putra</b><br>Mohon konfirmasi pembayaran kepada admin toko.</div>
-<p class="muted">Ketersediaan dan harga dapat berubah. Pesanan dikonfirmasi setelah admin memeriksa stok aktual.</p>
-</div>
-</section>
-</main>
-
-<footer>© Michio Bike Surabaya · Ride Better, Live Happier</footer>
-
-<dialog id="checkoutDialog">
-<form method="dialog" class="formgrid" id="checkoutForm">
-<h2>Data Pembeli</h2>
-<input class="field" id="buyer" placeholder="Nama pembeli" required>
-<input class="field" id="phone" placeholder="Nomor WhatsApp" required>
-<textarea class="field" id="address" placeholder="Alamat / catatan (opsional)"></textarea>
-<div class="notice">Transfer BCA 0881885122 a.n. Bryan Surya Putra</div>
-<button class="primary" type="submit">Buat Invoice</button>
-<button class="outline" type="button" onclick="document.querySelector('#checkoutDialog').close()">Batal</button>
-</form>
-</dialog>
-
+<section id="hero" class="hero"><div><div class="slogan">RIDE BETTER, LIVE HAPPIER</div><h1>Temukan Sepeda<br>Terbaik Anda.</h1><p>Koleksi sepeda, E-Bike, dan aksesoris pilihan di Surabaya.</p><button class="primary" onclick="document.querySelector('#search').focus()">Jelajahi Katalog →</button></div><div class="hero-mark">✦</div></section>
+<section id="catalogView"><div class="toolbar"><input id="search" class="field" placeholder="Cari nama atau kategori produk…"><select id="sort" class="field" style="max-width:180px"><option value="name">Urutkan: Nama</option><option value="low">Harga terendah</option><option value="high">Harga tertinggi</option></select></div><div class="filters" id="filters"></div><div id="products" class="grid"></div><p class="muted" id="status"></p></section>
+<section id="cartView" class="hide"><div class="panel"><h2>Keranjang Pesanan</h2><div id="cartitems"></div><div class="row"><b>Total</b><b id="total">Rp0</b></div><button class="primary full" onclick="checkout()">Lanjutkan & Buat Invoice</button><button class="outline full" style="color:#243" onclick="printPicking()">Cetak Order Gudang</button></div></section>
+<section id="ordersView" class="hide"><div class="panel"><h2>Informasi Pemesanan</h2><p>Pilih produk dari katalog, masukkan ke keranjang, lalu isi data pembeli untuk membuat invoice.</p><div class="notice">Pembayaran transfer BCA<br><b>0881885122 a.n. Bryan Surya Putra</b><br>Mohon konfirmasi pembayaran kepada admin toko.</div><p class="muted">Ketersediaan dan harga dapat berubah. Pesanan dikonfirmasi setelah admin memeriksa stok aktual.</p></div></section>
+</main><footer>© Michio Bike Surabaya · Ride Better, Live Happier</footer>
+<dialog id="checkoutDialog"><form method="dialog" class="formgrid" id="checkoutForm"><h2>Data Pembeli</h2><input class="field" id="buyer" placeholder="Nama pembeli" required><input class="field" id="phone" placeholder="Nomor WhatsApp" required><textarea class="field" id="address" placeholder="Alamat / catatan (opsional)"></textarea><div class="notice">Transfer BCA 0881885122 a.n. Bryan Surya Putra</div><button class="primary" type="submit">Simpan Pesanan & Buat Invoice</button><button class="outline" type="button" onclick="document.querySelector('#checkoutDialog').close()">Batal</button></form></dialog>
 <script>
-/* URL API MICHIO BIKE */
 const API_URL = "https://script.google.com/macros/s/AKfycbxVbEUxvQAFaJSiUWoSW_KfrTW22LrtJp_YTDKoVV-WKs2jFVUdGZjeQbbBUx4Zq3cM/exec";
+const ORDER_API_URL = API_URL;
+const money=n=>new Intl.NumberFormat('id-ID',{style:'currency',currency:'IDR',maximumFractionDigits:0}).format(Number(n)||0);
+let products=[], cart=[], category='Semua', latestOrder=null;
 
-const money = n => new Intl.NumberFormat('id-ID',{
-  style:'currency',
-  currency:'IDR',
-  maximumFractionDigits:0
-}).format(Number(n)||0);
-
-let products = [];
-let cart = [];
-let category = 'Semua';
-let latestOrder = null;
-
-function driveImg(url){
-  if(!url)return '';
-  let m=url.match(/(?:id=|\/d\/)([A-Za-z0-9_-]{15,})/);
-  return m?'https://drive.google.com/uc?export=view&id='+m[1]:url;
-}
-
-function esc(s){
-  return String(s??'').replace(/[&<>"']/g,c=>({
-    '&':'&amp;',
-    '<':'&lt;',
-    '>':'&gt;',
-    '"':'&quot;',
-    "'":'&#39;'
-  }[c]));
-}
+function driveImg(url){if(!url)return '';let m=url.match(/(?:id=|\/d\/)([A-Za-z0-9_-]{15,})/);return m?'https://drive.google.com/uc?export=view&id='+m[1]:url}
+function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 
 function load(){
   const status=document.querySelector('#status');
-  status.textContent='Menghubungkan ke database Michio Bike...';
-
   window.michioCatalogLoaded=function(data){
-    products=(data&&Array.isArray(data.products))?data.products:[];
-    renderFilters();
-    render();
-    if(products.length===0){
-      status.textContent='Belum ada produk yang diaktifkan untuk katalog.';
-    }else{
-      status.textContent='Berhasil memuat '+products.length+' produk Michio Bike.';
-    }
+    products=(data&&data.products)||[];
+    renderFilters();render();
+    if(data&&data.ok===false)status.textContent=data.message||'Katalog belum dapat dimuat.';
   };
-
   const script=document.createElement('script');
   script.src=API_URL+'?action=products&callback=michioCatalogLoaded&ts='+Date.now();
-
-  script.onerror=function(){
-    status.textContent='Katalog gagal dimuat. Periksa koneksi internet atau URL Apps Script.';
-  };
-
+  script.onerror=()=>{status.textContent='Katalog belum dapat dimuat. Periksa URL Apps Script dan koneksi internet.'};
   document.head.appendChild(script);
 }
 
 function renderFilters(){
-  const cats=['Semua',...new Set(products.map(p=>p.category).filter(Boolean))];
-  document.querySelector('#filters').innerHTML=cats.map(c=>
-    `<button class="${c===category?'active':''}" onclick="category='${esc(c)}';renderFilters();render()">${esc(c)}</button>`
-  ).join('');
+  let cats=['Semua',...new Set(products.map(p=>p.category).filter(Boolean))];
+  document.querySelector('#filters').innerHTML=cats.map(c=>`<button class="${c===category?'active':''}" onclick="category='${esc(c)}';renderFilters();render()">${esc(c)}</button>`).join('');
 }
-
 function render(){
-  const q=document.querySelector('#search').value.toLowerCase();
-  const sort=document.querySelector('#sort').value;
-
-  let a=products.filter(p=>
-    (category==='Semua'||p.category===category)&&
-    (`${p.name} ${p.category} ${p.description}`).toLowerCase().includes(q)
-  );
-
-  a.sort((x,y)=>
-    sort==='low'?x.price-y.price:
-    sort==='high'?y.price-x.price:
-    String(x.name).localeCompare(String(y.name))
-  );
-
-  document.querySelector('#products').innerHTML=a.map(p=>
-    `<article class="card">
-      <div class="photo">
-        ${p.photo?`<img loading="lazy" src="${esc(driveImg(p.photo))}" alt="${esc(p.name)}" onerror="this.remove()">`:'Foto produk'}
-      </div>
-      <div class="cardbody">
-        <div class="tag">${esc(p.category)}</div>
-        <h3>${esc(p.name)}</h3>
-        <div class="desc">${esc(p.description||'')}</div>
-        <div class="price">${money(p.price)}</div>
-        <div class="actions">
-          <button class="dark" onclick="addCart('${esc(p.id)}')">+ Keranjang</button>
-          <button class="primary" onclick="shareProduct('${esc(p.id)}')">Bagikan</button>
-        </div>
-      </div>
-    </article>`
-  ).join('')||'<div class="empty">Belum ada produk yang ditampilkan.</div>';
-
-  document.querySelector('#status').textContent='Menampilkan '+a.length+' produk';
+  let q=document.querySelector('#search').value.toLowerCase(),sort=document.querySelector('#sort').value;
+  let a=products.filter(p=>(category==='Semua'||p.category===category)&&(`${p.name} ${p.category} ${p.description}`).toLowerCase().includes(q));
+  a.sort((x,y)=>sort==='low'?x.price-y.price:sort==='high'?y.price-x.price:x.name.localeCompare(y.name));
+  document.querySelector('#products').innerHTML=a.map(p=>`<article class="card"><div class="photo">${p.photo?`<img loading="lazy" src="${esc(driveImg(p.photo))}" alt="${esc(p.name)}" onerror="this.remove()">`:'Foto produk'}</div><div class="cardbody"><div class="tag">${esc(p.category)}</div><h3>${esc(p.name)}</h3><div class="desc">${esc(p.description||'')}</div><div class="price">${money(p.price)}</div><div class="actions"><button class="dark" onclick="addCart('${esc(p.id)}')">+ Keranjang</button><button class="primary" onclick="shareProduct('${esc(p.id)}')">Bagikan</button></div></div></article>`).join('')||'<div class="empty">Belum ada produk yang ditampilkan.</div>';
+  document.querySelector('#status').textContent=`Menampilkan ${a.length} produk`;
 }
-
 function addCart(id){
-  let p=products.find(x=>String(x.id)===String(id));
-  if(!p)return;
-  let item=cart.find(x=>String(x.id)===String(id));
-  if(item)item.qty++;
-  else cart.push({...p,qty:1});
-  updateCart();
-  alert('Produk ditambahkan ke keranjang');
+  let p=products.find(x=>x.id===id);if(!p)return;
+  let item=cart.find(x=>x.id===id);
+  if(item)item.qty++;else cart.push({...p,qty:1});
+  updateCart();alert('Produk ditambahkan ke keranjang');
 }
-
 function updateCart(){
   document.querySelector('#cartcount').textContent=cart.reduce((s,x)=>s+x.qty,0);
-
-  document.querySelector('#cartitems').innerHTML=cart.map(x=>
-    `<div class="row">
-      <div><b>${esc(x.name)}</b><div class="muted">${money(x.price)} × ${x.qty}</div></div>
-      <div class="qty">
-        <button onclick="changeQty('${esc(x.id)}',-1)">−</button>
-        ${x.qty}
-        <button onclick="changeQty('${esc(x.id)}',1)">+</button>
-      </div>
-    </div>`
-  ).join('')||'<div class="empty">Keranjang masih kosong.</div>';
-
-  document.querySelector('#total').textContent=money(
-    cart.reduce((s,x)=>s+x.price*x.qty,0)
-  );
+  document.querySelector('#cartitems').innerHTML=cart.map(x=>`<div class="row"><div><b>${esc(x.name)}</b><div class="muted">${money(x.price)} × ${x.qty}</div></div><div class="qty"><button onclick="changeQty('${esc(x.id)}',-1)">−</button>${x.qty}<button onclick="changeQty('${esc(x.id)}',1)">+</button></div></div>`).join('')||'<div class="empty">Keranjang masih kosong.</div>';
+  document.querySelector('#total').textContent=money(cart.reduce((s,x)=>s+x.price*x.qty,0));
 }
-
-function changeQty(id,n){
-  let x=cart.find(x=>String(x.id)===String(id));
-  if(!x)return;
-  x.qty+=n;
-  if(x.qty<1)cart=cart.filter(y=>String(y.id)!==String(id));
-  updateCart();
-}
-
+function changeQty(id,n){let x=cart.find(x=>x.id===id);if(!x)return;x.qty+=n;if(x.qty<1)cart=cart.filter(y=>y.id!==id);updateCart()}
 function showView(v){
-  ['catalog','cart','orders'].forEach(x=>
-    document.querySelector('#'+x+'View').classList.toggle('hide',x!==v)
-  );
+  ['catalog','cart','orders'].forEach(x=>document.querySelector('#'+x+'View').classList.toggle('hide',x!==v));
   document.querySelector('#hero').classList.toggle('hide',v!=='catalog');
-  document.querySelectorAll('.nav button').forEach(b=>
-    b.classList.toggle('active',b.dataset.view===v)
-  );
+  document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.view===v));
 }
-
-document.querySelectorAll('.nav button').forEach(b=>
-  b.onclick=()=>showView(b.dataset.view)
-);
-
+document.querySelectorAll('.nav button').forEach(b=>b.onclick=()=>showView(b.dataset.view));
 document.querySelector('#search').oninput=render;
 document.querySelector('#sort').onchange=render;
+function shareProduct(id){let p=products.find(x=>x.id===id);if(p&&navigator.share)navigator.share({title:p.name,text:`${p.name} — ${money(p.price)} | Michio Bike Surabaya`}).catch(()=>{})}
+function checkout(){if(!cart.length){alert('Keranjang masih kosong');return}document.querySelector('#checkoutDialog').showModal()}
 
-function shareProduct(id){
-  let p=products.find(x=>String(x.id)===String(id));
-  if(!p)return;
+/** Mengirim pesanan ke Apps Script melalui iframe agar tidak terkena masalah CORS. */
+function sendOrderToSheets(order){
+  return new Promise((resolve,reject)=>{
+    let frame=document.getElementById('michioOrderFrame');
+    if(!frame){
+      frame=document.createElement('iframe');
+      frame.id='michioOrderFrame';frame.name='michioOrderFrame';
+      frame.style.display='none';document.body.appendChild(frame);
+    }
+    let finished=false;
+    const cleanup=()=>{window.removeEventListener('message',receive);clearTimeout(timer)};
+    function receive(event){
+      if(event.source!==frame.contentWindow)return;
+      if(!event.data||typeof event.data.ok!=='boolean'||finished)return;
+      finished=true;cleanup();
+      if(event.data.ok)resolve(event.data);
+      else reject(new Error(event.data.message||'Pesanan gagal disimpan.'));
+    }
+    window.addEventListener('message',receive);
+    const timer=setTimeout(()=>{
+      if(finished)return;finished=true;cleanup();
+      reject(new Error('Waktu penyimpanan habis. Periksa koneksi dan deployment Apps Script.'));
+    },30000);
 
-  const shareData={
-    title:p.name,
-    text:`${p.name} — ${money(p.price)} | Michio Bike Surabaya`,
-    url:location.href
-  };
-
-  if(navigator.share){
-    navigator.share(shareData).catch(()=>{});
-  }else if(navigator.clipboard){
-    navigator.clipboard.writeText(shareData.text).then(()=>{
-      alert('Informasi produk berhasil disalin.');
-    }).catch(()=>{
-      alert(shareData.text);
+    const form=document.createElement('form');
+    form.method='POST';form.action=ORDER_API_URL;form.target=frame.name;
+    form.style.display='none';
+    const field=document.createElement('input');
+    field.type='hidden';field.name='order';
+    field.value=JSON.stringify({
+      buyer:order.buyer,phone:order.phone,address:order.address,
+      items:order.items,clientOrderId:order.number
     });
-  }else{
-    alert(shareData.text);
-  }
+    form.appendChild(field);document.body.appendChild(form);
+    form.submit();form.remove();
+  });
 }
 
-function checkout(){
-  if(!cart.length){
-    alert('Keranjang masih kosong');
-    return;
-  }
-  document.querySelector('#checkoutDialog').showModal();
-}
-
-document.querySelector('#checkoutForm').onsubmit=e=>{
+document.querySelector('#checkoutForm').onsubmit=async function(e){
   e.preventDefault();
-
+  if(!cart.length){alert('Keranjang masih kosong.');return}
   latestOrder={
-    buyer:document.querySelector('#buyer').value,
-    phone:document.querySelector('#phone').value,
-    address:document.querySelector('#address').value,
+    buyer:document.querySelector('#buyer').value.trim(),
+    phone:document.querySelector('#phone').value.trim(),
+    address:document.querySelector('#address').value.trim(),
     items:cart.map(x=>({...x})),
     total:cart.reduce((s,x)=>s+x.price*x.qty,0),
     date:new Date().toLocaleString('id-ID'),
     number:'MB-'+Date.now()
   };
-
-  document.querySelector('#checkoutDialog').close();
-  printInvoice();
+  const button=this.querySelector('button[type="submit"]');
+  const oldText=button.textContent;
+  button.disabled=true;button.textContent='Menyimpan pesanan...';
+  try{
+    const result=await sendOrderToSheets(latestOrder);
+    latestOrder.number=result.orderNo||latestOrder.number;
+    latestOrder.total=Number(result.total)||latestOrder.total;
+    document.querySelector('#checkoutDialog').close();
+    alert('Pesanan berhasil tersimpan di Google Sheets!\nNomor: '+latestOrder.number+'\nStatus: MENUNGGU KONFIRMASI');
+    printInvoice();
+    cart=[];updateCart();
+    document.querySelector('#buyer').value='';
+    document.querySelector('#phone').value='';
+    document.querySelector('#address').value='';
+  }catch(error){
+    alert('Pesanan belum berhasil disimpan.\n'+error.message+'\nJangan anggap pesanan tercatat sebelum muncul pesan berhasil.');
+  }finally{
+    button.disabled=false;button.textContent=oldText;
+  }
 };
 
 function printInvoice(){
   if(!latestOrder)return;
   let o=latestOrder;
-
-  let html=`<html><head><title>Invoice ${o.number}</title>
-  <style>
-  body{font:14px Arial;padding:30px;color:#172238}
-  h1{color:#9c742c}
-  table{width:100%;border-collapse:collapse;margin:20px 0}
-  td,th{padding:10px;border-bottom:1px solid #ddd;text-align:left}
-  .right{text-align:right}
-  .box{background:#f5f0e4;padding:15px}
-  </style></head><body>
-  <h1>MICHIO BIKE SURABAYA</h1>
-  <h2>INVOICE PEMBELIAN</h2>
-  <p>No: ${o.number}<br>
-  Tanggal: ${o.date}<br>
-  Pembeli: ${esc(o.buyer)}<br>
-  WhatsApp: ${esc(o.phone)}<br>
-  Catatan: ${esc(o.address)}</p>
-  <table>
-  <tr><th>Produk</th><th>Qty</th><th>Harga</th><th>Subtotal</th></tr>
-  ${o.items.map(x=>`<tr><td>${esc(x.name)}</td><td>${x.qty}</td><td>${money(x.price)}</td><td>${money(x.price*x.qty)}</td></tr>`).join('')}
-  </table>
-  <h2 class="right">Total: ${money(o.total)}</h2>
-  <div class="box">Pembayaran transfer BCA<br>
-  <b>0881885122 a.n. Bryan Surya Putra</b>
-  <p>Mohon konfirmasi pembayaran kepada Michio Bike Surabaya.</p>
-  </div>
-  <p>Terima kasih telah berbelanja.</p>
-  <script>window.print()<\/script>
-  </body></html>`;
-
+  let html=`<html><head><title>Invoice ${o.number}</title><style>body{font:14px Arial;padding:30px;color:#172238}h1{color:#9c742c}table{width:100%;border-collapse:collapse;margin:20px 0}td,th{padding:10px;border-bottom:1px solid #ddd;text-align:left}.right{text-align:right}.box{background:#f5f0e4;padding:15px}</style></head><body><h1>MICHIO BIKE SURABAYA</h1><h2>INVOICE PEMBELIAN</h2><p>No: ${esc(o.number)}<br>Tanggal: ${esc(o.date)}<br>Pembeli: ${esc(o.buyer)}<br>WhatsApp: ${esc(o.phone)}<br>Catatan: ${esc(o.address)}</p><table><tr><th>Produk</th><th>Qty</th><th>Harga</th><th>Subtotal</th></tr>${o.items.map(x=>`<tr><td>${esc(x.name)}</td><td>${x.qty}</td><td>${money(x.price)}</td><td>${money(x.price*x.qty)}</td></tr>`).join('')}</table><h2 class="right">Total: ${money(o.total)}</h2><div class="box">Pembayaran transfer BCA<br><b>0881885122 a.n. Bryan Surya Putra</b><p>Status: MENUNGGU KONFIRMASI. Mohon konfirmasi pembayaran kepada Michio Bike Surabaya.</p></div><p>Terima kasih telah berbelanja.</p><script>window.print()<\/script></body></html>`;
   let w=window.open('','_blank');
-  if(!w){
-    alert('Izinkan pop-up pada browser untuk mencetak invoice.');
-    return;
-  }
-  w.document.write(html);
-  w.document.close();
+  if(!w){alert('Izinkan pop-up browser untuk mencetak invoice.');return}
+  w.document.write(html);w.document.close();
 }
-
 function printPicking(){
-  if(!cart.length){
-    alert('Keranjang kosong');
-    return;
-  }
-
-  let html=`<html><head><title>Picking List</title>
-  <style>
-  body{font:14px Arial;padding:25px}
-  table{width:100%;border-collapse:collapse}
-  td,th{border:1px solid #888;padding:10px;text-align:left}
-  </style></head><body>
-  <h2>MICHIO BIKE — ORDER GUDANG</h2>
-  <p>Tanggal: ${new Date().toLocaleString('id-ID')}</p>
-  <table>
-  <tr><th>No</th><th>Nama Barang</th><th>Qty</th><th>Lokasi</th><th>Checklist</th></tr>
-  ${cart.map((x,i)=>`<tr><td>${i+1}</td><td>${esc(x.name)}</td><td>${x.qty}</td><td></td><td>□</td></tr>`).join('')}
-  </table>
-  <p>Disiapkan: ____________ &nbsp; Dicek: ____________</p>
-  <script>window.print()<\/script>
-  </body></html>`;
-
+  if(!cart.length){alert('Keranjang kosong');return}
+  let html=`<html><head><title>Picking List</title><style>body{font:14px Arial;padding:25px}table{width:100%;border-collapse:collapse}td,th{border:1px solid #888;padding:10px;text-align:left}</style></head><body><h2>MICHIO BIKE — ORDER GUDANG</h2><p>Tanggal: ${new Date().toLocaleString('id-ID')}</p><table><tr><th>No</th><th>Nama Barang</th><th>Qty</th><th>Lokasi</th><th>Checklist</th></tr>${cart.map((x,i)=>`<tr><td>${i+1}</td><td>${esc(x.name)}</td><td>${x.qty}</td><td></td><td>□</td></tr>`).join('')}</table><p>Disiapkan: ____________ &nbsp; Dicek: ____________</p><script>window.print()<\/script></body></html>`;
   let w=window.open('','_blank');
-  if(!w){
-    alert('Izinkan pop-up pada browser untuk mencetak daftar gudang.');
-    return;
-  }
-  w.document.write(html);
-  w.document.close();
+  if(!w){alert('Izinkan pop-up browser untuk mencetak.');return}
+  w.document.write(html);w.document.close();
 }
 
-load();
-updateCart();
-</script>
-</body>
-</html>
+load();updateCart();
+</script></body></html>
