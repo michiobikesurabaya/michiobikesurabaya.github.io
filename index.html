@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html lang="id">
 <head>
@@ -23,7 +24,6 @@
 }
 
 *{box-sizing:border-box}
-
 html{scroll-behavior:smooth}
 
 body{
@@ -99,9 +99,7 @@ header{
   transition:.2s;
 }
 
-.nav button:hover{
-  background:#ffffff12;
-}
+.nav button:hover{background:#ffffff12}
 
 .nav button.active,
 .gold{
@@ -246,9 +244,7 @@ main{
 
 /* KATALOG */
 
-.catalog-heading{
-  margin:32px 0 15px;
-}
+.catalog-heading{margin:32px 0 15px}
 
 .catalog-heading small{
   color:#a5792d;
@@ -313,9 +309,7 @@ main{
   transition:.2s;
 }
 
-.filters button:hover{
-  border-color:var(--gold);
-}
+.filters button:hover{border-color:var(--gold)}
 
 .filters button.active{
   background:var(--navy);
@@ -364,9 +358,7 @@ main{
   transition:transform .35s;
 }
 
-.card:hover .photo img{
-  transform:scale(1.035);
-}
+.card:hover .photo img{transform:scale(1.035)}
 
 .photo-nav{
   position:absolute;
@@ -447,15 +439,16 @@ main{
 
 .actions{
   display:flex;
-  gap:8px;
+  gap:7px;
 }
 
 .actions button{
   flex:1;
+  min-width:0;
   border-radius:10px;
-  padding:11px 7px;
+  padding:11px 5px;
   border:0;
-  font-size:12px;
+  font-size:11px;
   font-weight:700;
 }
 
@@ -553,17 +546,195 @@ dialog::backdrop{background:#06152b99}
   color:var(--navy);
 }
 
-footer{
-  text-align:center;
-  padding:35px 15px;
-  color:#778196;
-  font-size:12px;
-  margin-top:40px;
+/* DETAIL PRODUK PREMIUM */
+
+.product-detail-dialog{
+  width:min(950px,calc(100% - 24px));
+  max-width:950px;
+  max-height:90vh;
+  padding:0;
+  overflow:auto;
+  border:1px solid #e5e9f0;
+  border-radius:22px;
   background:#fff;
-  border-top:1px solid var(--line);
 }
 
-footer b{color:var(--navy)}
+.product-detail-dialog::backdrop{
+  background:#06152bd9;
+  backdrop-filter:blur(4px);
+}
+
+.detail-topbar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:17px 22px;
+  background:linear-gradient(120deg,#081529,#17365c);
+  color:#f5d991;
+  position:sticky;
+  top:0;
+  z-index:2;
+}
+
+.detail-topbar b{
+  letter-spacing:2px;
+  font-size:12px;
+}
+
+.detail-close{
+  border:1px solid #ffffff55;
+  background:#ffffff12;
+  color:white;
+  border-radius:50%;
+  width:35px;
+  height:35px;
+  font-size:21px;
+}
+
+.detail-content{
+  display:grid;
+  grid-template-columns:1.05fr .95fr;
+  gap:28px;
+  padding:25px;
+}
+
+.detail-gallery{min-width:0}
+
+.detail-main-photo{
+  height:390px;
+  background:linear-gradient(135deg,#eef1f5,#fff);
+  border-radius:17px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+  position:relative;
+  color:#9aa5b6;
+}
+
+.detail-main-photo img{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  padding:12px;
+}
+
+.detail-gallery-nav{
+  position:absolute;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:12px;
+  pointer-events:none;
+}
+
+.detail-gallery-nav button{
+  pointer-events:auto;
+  width:40px;
+  height:40px;
+  border:0;
+  border-radius:50%;
+  background:#0b1930d9;
+  color:white;
+  font-size:24px;
+}
+
+.detail-gallery-count{
+  position:absolute;
+  right:12px;
+  bottom:12px;
+  background:#0b1930df;
+  color:white;
+  padding:7px 12px;
+  border-radius:20px;
+  font-size:11px;
+}
+
+.detail-info{min-width:0}
+
+.detail-category{
+  display:inline-block;
+  background:#fbf4e5;
+  color:#94702d;
+  padding:7px 12px;
+  border-radius:20px;
+  font-size:10px;
+  font-weight:800;
+  letter-spacing:1px;
+  text-transform:uppercase;
+}
+
+.detail-info h2{
+  color:var(--navy);
+  font-size:27px;
+  line-height:1.3;
+  margin:13px 0;
+}
+
+.detail-price{
+  font-size:29px;
+  color:#a56c16;
+  font-weight:900;
+  margin:16px 0;
+}
+
+.detail-stock{
+  display:inline-block;
+  padding:8px 13px;
+  border-radius:9px;
+  background:#e9f7ef;
+  color:#187344;
+  font-size:12px;
+  font-weight:800;
+}
+
+.detail-stock.low{
+  background:#fff5df;
+  color:#95651b;
+}
+
+.detail-stock.out{
+  background:#fdeaea;
+  color:#a52d2d;
+}
+
+.detail-spec{
+  margin-top:22px;
+  padding:17px;
+  background:#f7f8fa;
+  border:1px solid #e8ebf0;
+  border-radius:14px;
+}
+
+.detail-spec h3{
+  margin:0 0 12px;
+  color:var(--navy);
+  font-size:14px;
+}
+
+.detail-spec-content{
+  color:#5d687b;
+  font-size:13px;
+  line-height:1.9;
+  white-space:pre-line;
+  overflow-wrap:anywhere;
+}
+
+.detail-actions{
+  display:flex;
+  gap:10px;
+  margin-top:20px;
+}
+
+.detail-actions button{flex:1}
+
+.detail-note{
+  color:#8992a1;
+  font-size:11px;
+  line-height:1.7;
+  margin-top:15px;
+}
 
 /* RESPONSIVE TABLET DAN HP */
 
@@ -572,6 +743,23 @@ footer b{color:var(--navy)}
   .photo{height:185px}
   .hero{padding:30px}
   .hero-mark{font-size:90px}
+}
+
+@media(max-width:650px){
+  .product-detail-dialog{
+    max-height:94vh;
+    border-radius:17px;
+  }
+
+  .detail-content{
+    grid-template-columns:1fr;
+    gap:18px;
+    padding:16px;
+  }
+
+  .detail-main-photo{height:280px}
+  .detail-info h2{font-size:22px}
+  .detail-price{font-size:25px}
 }
 
 @media(max-width:600px){
@@ -613,19 +801,9 @@ footer b{color:var(--navy)}
     min-height:270px;
   }
 
-  .hero h1{
-    font-size:34px;
-  }
-
-  .hero p{
-    font-size:13px;
-  }
-
-  .hero-mark{
-    font-size:55px;
-    padding:0;
-  }
-
+  .hero h1{font-size:34px}
+  .hero p{font-size:13px}
+  .hero-mark{font-size:55px;padding:0}
   .hero-info{gap:6px}
 
   .hero-info span{
@@ -634,7 +812,6 @@ footer b{color:var(--navy)}
   }
 
   .catalog-heading h2{font-size:22px}
-
   .toolbar{gap:8px}
 
   .toolbar select{
@@ -648,9 +825,7 @@ footer b{color:var(--navy)}
   }
 
   .photo{height:145px;padding:5px}
-
   .card{border-radius:14px}
-
   .cardbody{padding:11px}
 
   .card h3{
@@ -668,11 +843,11 @@ footer b{color:var(--navy)}
     margin:10px 0;
   }
 
-  .actions{gap:5px}
+  .actions{gap:4px}
 
   .actions button{
-    font-size:10px;
-    padding:10px 4px;
+    font-size:9px;
+    padding:10px 3px;
   }
 
   .photo-nav button{
@@ -687,7 +862,6 @@ footer b{color:var(--navy)}
   }
 
   .panel{padding:17px}
-
   .detail{grid-template-columns:1fr}
 }
 
@@ -783,7 +957,6 @@ Jelajahi Katalog →
 </div>
 
 <div class="toolbar">
-
 <input id="search" class="field"
 placeholder="Cari nama atau kategori produk…">
 
@@ -792,13 +965,10 @@ placeholder="Cari nama atau kategori produk…">
 <option value="low">Harga terendah</option>
 <option value="high">Harga tertinggi</option>
 </select>
-
 </div>
 
 <div class="filters" id="filters"></div>
-
 <div id="products" class="grid"></div>
-
 <p class="muted" id="status"></p>
 
 </section>
@@ -834,7 +1004,6 @@ Cetak Order Gudang
 <section id="ordersView" class="hide">
 
 <div class="panel">
-
 <h2>Informasi Pemesanan</h2>
 
 <p>
@@ -853,7 +1022,6 @@ Mohon konfirmasi pembayaran kepada admin toko.
 Ketersediaan dan harga dapat berubah.
 Pesanan dikonfirmasi setelah admin memeriksa stok aktual.
 </p>
-
 </div>
 </section>
 
@@ -865,7 +1033,6 @@ Ride Better, Live Happier
 </footer>
 
 <dialog id="checkoutDialog">
-
 <form method="dialog" class="formgrid" id="checkoutForm">
 
 <h2>Data Pembeli</h2>
@@ -896,6 +1063,20 @@ Batal
 </form>
 </dialog>
 
+<!-- DIALOG DETAIL PRODUK -->
+
+<dialog id="productDetailDialog" class="product-detail-dialog">
+
+<div class="detail-topbar">
+<b>MICHIO BIKE — PRODUCT DETAIL</b>
+<button class="detail-close" type="button"
+onclick="closeProductDetail()">×</button>
+</div>
+
+<div id="productDetailContent"></div>
+
+</dialog>
+
 <script>
 
 const API_URL = "https://script.google.com/macros/s/AKfycbxVbEUxvQAFaJSiUWoSW_KfrTW22LrtJp_YTDKoVV-WKs2jFVUdGZjeQbbBUx4Zq3cM/exec";
@@ -909,6 +1090,8 @@ const money=n=>new Intl.NumberFormat('id-ID',{
 
 let products=[], cart=[], category='Semua', latestOrder=null;
 let photoIndexes={};
+let detailPhotoIndex=0;
+let activeDetailProduct=null;
 
 function sameId(a,b){
   return String(a)===String(b);
@@ -947,7 +1130,7 @@ function getPhotos(product){
   return product.photo?[product.photo]:[];
 }
 
-/* GALERI FOTO PRODUK */
+/* GALERI FOTO PRODUK DI KATALOG */
 
 function renderProductPhoto(product){
   const photos=getPhotos(product);
@@ -1008,6 +1191,157 @@ function changeProductPhoto(id,direction){
   photoIndexes[key]=index;
 
   render();
+}
+
+/* DETAIL PRODUK PREMIUM */
+
+function openProductDetail(id){
+  const p=products.find(x=>sameId(x.id,id));
+
+  if(!p)return;
+
+  activeDetailProduct=p;
+  detailPhotoIndex=0;
+
+  renderProductDetail();
+
+  document.querySelector('#productDetailDialog').showModal();
+}
+
+function renderProductDetail(){
+  const p=activeDetailProduct;
+
+  if(!p)return;
+
+  const photos=getPhotos(p);
+  const hasPhotos=photos.length>0;
+
+  if(hasPhotos && detailPhotoIndex>=photos.length){
+    detailPhotoIndex=0;
+  }
+
+  let photoHtml='';
+
+  if(hasPhotos){
+    photoHtml=`
+      <img src="${esc(driveImg(photos[detailPhotoIndex]))}"
+        alt="${esc(p.name)}"
+        onerror="this.alt='Foto tidak dapat dimuat';this.style.display='none'">
+
+      ${photos.length>1?`
+        <div class="detail-gallery-nav">
+          <button type="button"
+            aria-label="Foto sebelumnya"
+            onclick="changeDetailPhoto(-1)">‹</button>
+          <button type="button"
+            aria-label="Foto berikutnya"
+            onclick="changeDetailPhoto(1)">›</button>
+        </div>
+        <div class="detail-gallery-count">
+          ${detailPhotoIndex+1} / ${photos.length}
+        </div>
+      `:''}
+    `;
+  }else{
+    photoHtml='<span class="muted">Foto produk belum tersedia</span>';
+  }
+
+  const stockValue=Number(p.qty);
+  const stockKnown=
+    p.qty!==undefined &&
+    p.qty!==null &&
+    String(p.qty).trim()!=='';
+
+  let stockText='Hubungi toko untuk cek stok';
+  let stockClass='detail-stock';
+
+  if(stockKnown){
+    if(!Number.isFinite(stockValue)){
+      stockText='Hubungi toko untuk cek stok';
+    }else if(stockValue<=0){
+      stockText='Stok habis';
+      stockClass+=' out';
+    }else if(stockValue<=3){
+      stockText=`Stok terbatas · ${stockValue} unit`;
+      stockClass+=' low';
+    }else{
+      stockText=`Tersedia · ${stockValue} unit`;
+    }
+  }
+
+  document.querySelector('#productDetailContent').innerHTML=`
+    <div class="detail-content">
+
+      <div class="detail-gallery">
+        <div class="detail-main-photo">
+          ${photoHtml}
+        </div>
+      </div>
+
+      <div class="detail-info">
+
+        <span class="detail-category">
+          ${esc(p.category||'Koleksi Michio Bike')}
+        </span>
+
+        <h2>${esc(p.name)}</h2>
+
+        <div class="detail-price">${money(p.price)}</div>
+
+        <div class="${stockClass}">
+          ${esc(stockText)}
+        </div>
+
+        <div class="detail-spec">
+          <h3>Spesifikasi & Informasi Produk</h3>
+          <div class="detail-spec-content">${
+            esc(p.description||'Informasi produk belum tersedia.')
+          }</div>
+        </div>
+
+        <div class="detail-actions">
+          <button class="primary" type="button"
+            onclick="addCart('${esc(p.id)}');closeProductDetail()">
+            + Keranjang
+          </button>
+
+          <button class="dark" type="button"
+            onclick="closeProductDetail()">
+            Tutup
+          </button>
+        </div>
+
+        <div class="detail-note">
+          Harga dan ketersediaan produk dapat berubah.
+          Silakan konfirmasi langsung kepada staf Michio Bike Surabaya.
+        </div>
+
+      </div>
+    </div>
+  `;
+}
+
+function changeDetailPhoto(direction){
+  if(!activeDetailProduct)return;
+
+  const photos=getPhotos(activeDetailProduct);
+
+  if(photos.length<2)return;
+
+  detailPhotoIndex=
+    (detailPhotoIndex+direction+photos.length)%photos.length;
+
+  renderProductDetail();
+}
+
+function closeProductDetail(){
+  const dialog=document.querySelector('#productDetailDialog');
+
+  if(dialog.open){
+    dialog.close();
+  }
+
+  activeDetailProduct=null;
 }
 
 /* MEMUAT KATALOG */
@@ -1071,13 +1405,21 @@ function render(){
     `<article class="card">
       ${renderProductPhoto(p)}
       <div class="cardbody">
-        <div class="tag">${esc(p.category)}</div>
+        <div class="tag">${esc(p.category||'Produk Michio Bike')}</div>
         <h3>${esc(p.name)}</h3>
         <div class="desc">${esc(p.description||'')}</div>
         <div class="price">${money(p.price)}</div>
+
         <div class="actions">
-          <button class="dark" onclick="addCart('${esc(p.id)}')">+ Keranjang</button>
-          <button class="primary" onclick="shareProduct('${esc(p.id)}')">Bagikan</button>
+          <button class="dark"
+            onclick="addCart('${esc(p.id)}')">+ Keranjang</button>
+
+          <button class="primary"
+            onclick="openProductDetail('${esc(p.id)}')">Detail</button>
+
+          <button class="outline"
+            style="color:#243"
+            onclick="shareProduct('${esc(p.id)}')">Bagikan</button>
         </div>
       </div>
     </article>`
