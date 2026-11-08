@@ -292,6 +292,7 @@ dialog::backdrop{background:#06152b99}
 .detail-choice-list{display:flex;flex-wrap:wrap;gap:8px}
 .detail-choice{border:1px solid #dce2eb;border-radius:10px;background:#fff;color:#334155;padding:9px 12px;font-size:11px;font-weight:700}
 .detail-choice.active{border-color:#b98532;background:#fff7e7;color:#77521b;box-shadow:0 0 0 2px #d9ad5420}
+.detail-choice:disabled{opacity:.45;cursor:not-allowed;background:#f1f3f6;color:#7b8492;text-decoration:line-through}
 .detail-choice small{display:block;font-size:9px;font-weight:500;color:#7b8492;margin-top:3px}
 .detail-spec-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:13px}
 .detail-spec-item{background:#fff;border:1px solid #e8ebf0;border-radius:10px;padding:10px}
@@ -319,8 +320,16 @@ dialog::backdrop{background:#06152b99}
 .service-mode .nav button[data-view="cart"],.service-mode .nav button[data-view="orders"]{display:none!important}
 .service-mode .nav button[data-view="catalog"]{display:none!important}
 .service-mode .nav{display:flex;justify-content:flex-end}
-.service-banner{display:none;background:#fbf4e5;color:#77551e;padding:10px 14px;border-radius:10px;margin:0 0 14px;font-size:12px}
+.service-banner{display:none;background:#fbf4e5;color:#77551e;padding:10px 14px;border-radius:10px;margin:0 0 14px;font-size:12px;font-weight:700}
 .service-mode .service-banner{display:block}
+.service-panel{display:none;grid-template-columns:1.4fr 1fr;gap:14px;padding:18px;margin:0 0 18px;background:linear-gradient(135deg,#fff,#f8f2e5);border:1px solid #ead9b3;border-radius:16px;box-shadow:0 8px 24px #0b19300c}
+.service-mode .service-panel{display:grid}
+.service-panel h3{margin:0 0 7px;color:#0b1930;font-size:18px}
+.service-panel p{margin:0;color:#596579;font-size:13px;line-height:1.65}
+.service-panel .service-contact{display:flex;flex-direction:column;justify-content:center;gap:9px}
+.service-panel a{display:inline-flex;align-items:center;justify-content:center;text-align:center;text-decoration:none;background:#16834a;color:white;border-radius:10px;padding:12px 14px;font-size:13px;font-weight:800}
+.service-panel .service-address{font-size:11px;color:#6d7480}
+@media(max-width:650px){.service-panel{grid-template-columns:1fr;padding:14px}.service-panel h3{font-size:16px}}
 @media(max-width:600px){.compare-bar{align-items:stretch;flex-direction:column}.compare-toggle{font-size:10px;padding:8px 2px}}
 
 @media(max-width:850px){
@@ -418,7 +427,17 @@ dialog::backdrop{background:#06152b99}
         <option value="">Semua jenis sepeda</option>
       </select>
     </div>
-    <div class="service-banner">MODE PELAYANAN AKTIF · Katalog siap diperlihatkan kepada pelanggan.</div>
+    <div class="service-banner"><strong>MODE PELAYANAN AKTIF</strong><br>Katalog pelanggan siap ditampilkan. Pilih produk untuk melihat foto, warna, stok, dan harga. Keranjang serta menu internal disembunyikan selama pelayanan.</div>
+    <div class="service-panel" aria-live="polite">
+      <div>
+        <h3>Selamat datang di Michio Bike Surabaya</h3>
+        <p>Silakan pilih sepeda pada katalog untuk melihat foto, pilihan warna, ukuran, harga, dan informasi stok. Admin kami siap membantu memilih sepeda yang sesuai kebutuhan Anda.</p>
+      </div>
+      <div class="service-contact">
+        <a href="https://wa.me/6282190003633" target="_blank" rel="noopener noreferrer">Hubungi Admin Michio Bike · 082190003633</a>
+        <p class="service-address">Alamat: Jalan Raya Kenjeran 484B, Kalijudan, Mulyorejo, Kota Surabaya</p>
+      </div>
+    </div>
     <div class="filters" id="filters"></div>
     <div class="compare-bar">
       <span id="compareCount">0 produk dipilih untuk dibandingkan (2–5 produk).</span>
@@ -467,7 +486,7 @@ dialog::backdrop{background:#06152b99}
         <b>Informasi Pembayaran</b><br>
         Transfer BCA<br>
         <b>0881885122 a.n. Bryan Surya Putra</b><br>
-        Mohon konfirmasi pembayaran kepada admin toko.
+        Mohon konfirmasi pembayaran kepada Admin Michio Bike Surabaya.
       </div>
       <p class="muted">Ketersediaan dan harga dapat berubah. Pesanan dikonfirmasi setelah admin memeriksa stok aktual.</p>
     </div>
@@ -476,7 +495,9 @@ dialog::backdrop{background:#06152b99}
 
 <footer>
   <b>© MICHIO BIKE SURABAYA</b><br>
-  Ride Better, Live Happier
+  Ride Better, Live Happier<br>
+  <span>Alamat toko: Jalan Raya Kenjeran 484B, Kalijudan, Mulyorejo, Kota Surabaya</span><br>
+  <a href="https://wa.me/6282190003633" target="_blank" rel="noopener noreferrer">Admin Michio Bike Surabaya · 082190003633</a>
 </footer>
 
 <dialog id="checkoutDialog">
@@ -518,7 +539,9 @@ const money=n=>new Intl.NumberFormat('id-ID',{
 let products=[],cart=[],category='Semua',latestOrder=null;
 let photoIndexes={},detailPhotoIndex=0,activeDetailProduct=null,selectedCompareIds=[];
 let detailSelectedColor='',detailSelectedSize='';
-const MICHIO_WHATSAPP='6282231376907';
+const MICHIO_WHATSAPP='6282190003633';
+const MICHIO_WHATSAPP_LABEL='Admin Michio Bike Surabaya';
+const MICHIO_ADDRESS='Jalan Raya Kenjeran 484B, Kalijudan, Mulyorejo, Kota Surabaya';
 
 function sameId(a,b){return String(a)===String(b)}
 
@@ -584,7 +607,7 @@ function openProductDetail(id){
   activeDetailProduct=p;
   detailPhotoIndex=0;
   const variants=getProductColorVariants(p);
-  detailSelectedColor=variants.length?variants[0].name:'';
+  detailSelectedColor=(variants.find(v=>v.qty>0)||variants[0]||{}).name||'';
   detailSelectedSize=getProductSize(p)||'';
   renderProductDetail();
   document.querySelector('#productDetailDialog').showModal();
@@ -592,21 +615,34 @@ function openProductDetail(id){
 
 function getProductColorVariants(p){
   const description=String(p&&p.description||'');
-  const parts=description.split(/[.\n;|]+/).map(x=>x.trim()).filter(Boolean);
-  const variants=[];
-  parts.forEach(part=>{
-    const match=part.match(/^(.*?)[\s-]*(\d+)$/);
-    if(!match)return;
-    const rawName=match[1].trim().replace(/[\s_-]+$/,'');
-    if(!rawName||/^(\d+(?:[,.]\d+)?\s*)?(sp|speed|inch|inci)$/i.test(rawName))return;
-    const name=humanizeColorName(rawName);
-    if(!variants.some(v=>v.name.toLowerCase()===name.toLowerCase())){
-      variants.push({name:name,qty:Math.max(0,Number(match[2])||0)});
-    }
-  });
-  return variants;
-}
+  if(!description.trim())return [];
 
+  // Kenali nama warna yang umum dipakai di data stok Michio Bike,
+  // termasuk format gabung seperti Blackred23 dan format terpisah Black red 23.
+  const colorWords=[
+    'turquoise','turquise','titanium','chocolate','champagne','midnight',
+    'black','white','silver','purple','orange','yellow','green','brown',
+    'beige','navy','cream','peach','glow','chrome','pink','grey','gray',
+    'blue','red','gold','bronze','copper','rose','maroon','olive','army',
+    'cyan','lime','sand'
+  ];
+  const colorPattern=colorWords.sort((a,b)=>b.length-a.length).join('|');
+  const re=new RegExp('((?:(?:'+colorPattern+')[\\s_/-]*){1,4})\\s*[:=]?\\s*(\\d{1,3})(?![\\d,])','gi');
+  const found=new Map();
+  let match;
+
+  while((match=re.exec(description))!==null){
+    const rawName=match[1].replace(/[\s_/-]+$/,'').trim();
+    if(!rawName)continue;
+    const name=humanizeColorName(rawName);
+    const qty=Math.max(0,Number(match[2])||0);
+    const key=name.toLowerCase();
+    if(found.has(key))found.get(key).qty+=qty;
+    else found.set(key,{name:name,qty:qty});
+  }
+
+  return Array.from(found.values());
+}
 function humanizeColorName(value){
   return String(value||'').replace(/([a-z])([A-Z])/g,'$1 $2')
     .replace(/(black|red|blue|grey|gray|white|yellow|silver|purple|orange|green|pink|beige|brown|navy|cream|gold|peach|titanium|glow|chrome|turquoise|turquise)/gi,' $1')
@@ -614,6 +650,10 @@ function humanizeColorName(value){
 }
 
 function selectDetailColor(name){
+  const p=activeDetailProduct;
+  if(!p)return;
+  const variant=getProductColorVariants(p).find(v=>v.name===name);
+  if(!variant||variant.qty<=0)return;
   detailSelectedColor=name;
   renderProductDetail();
 }
@@ -634,7 +674,7 @@ function selectDetailSizeProduct(id){
   detailSelectedSize=getProductSize(next)||'';
   detailPhotoIndex=0;
   const variants=getProductColorVariants(next);
-  detailSelectedColor=variants.length?variants[0].name:'';
+  detailSelectedColor=(variants.find(v=>v.qty>0)||variants[0]||{}).name||'';
   renderProductDetail();
 }
 
@@ -682,8 +722,8 @@ function renderProductDetail(){
     <div class="detail-option">
       <div class="detail-option-title"><span>Pilihan warna</span><span class="detail-option-hint">${variants.length} varian tersedia</span></div>
       <div class="detail-choice-list">${variants.map(v=>`
-        <button type="button" class="detail-choice ${v.name===detailSelectedColor?'active':''}" aria-pressed="${v.name===detailSelectedColor?'true':'false'}" onclick="selectDetailColor(decodeURIComponent('${encodeURIComponent(v.name)}'))">
-          ${esc(v.name)}<small>${v.qty} unit</small>
+        <button type="button" class="detail-choice ${v.name===detailSelectedColor?'active':''}" aria-pressed="${v.name===detailSelectedColor?'true':'false'}" ${v.qty<=0?'disabled aria-disabled="true"':''} onclick="selectDetailColor(decodeURIComponent('${encodeURIComponent(v.name)}'))">
+          ${esc(v.name)}<small>${v.qty>0?v.qty+' unit':'Stok habis'}</small>
         </button>`).join('')}</div>
     </div>`:`<div class="detail-option"><div class="detail-option-title">Pilihan warna</div><div class="detail-option-hint">Konfirmasi pilihan warna langsung kepada staf toko.</div></div>`;
 
@@ -697,7 +737,7 @@ function renderProductDetail(){
       ${sizeProducts.length<2?'<div class="detail-note">Ukuran lain dapat dipilih melalui produk lain di katalog.</div>':''}
     </div>`:'';
 
-  const waMessage=`Halo Michio Bike Surabaya, saya ingin konsultasi produk:\n${p.name}\nHarga: ${money(p.price)}\nWarna: ${detailSelectedColor||'Mohon rekomendasi'}\nUkuran: ${detailSelectedSize?detailSelectedSize+' inci':'Mohon informasi'}\nMohon informasi lebih lanjut. `;
+  const waMessage=`Halo ${MICHIO_WHATSAPP_LABEL}, saya ingin konsultasi produk:\n${p.name}\nHarga: ${money(p.price)}\nWarna: ${detailSelectedColor||'Mohon rekomendasi'}\nUkuran: ${detailSelectedSize?detailSelectedSize+' inci':'Mohon informasi'}\nMohon informasi lebih lanjut. `;
   const waUrl='https://wa.me/'+MICHIO_WHATSAPP+'?text='+encodeURIComponent(waMessage);
   const canAdd=!stock.known||!Number.isFinite(stock.qty)||stock.qty>0;
 
@@ -729,7 +769,7 @@ function renderProductDetail(){
 
         <div class="detail-actions">
           <button class="primary secondary-action" type="button" ${canAdd?'':'disabled'} onclick="addCart('${esc(p.id)}',decodeURIComponent('${encodeURIComponent(detailSelectedColor)}'),decodeURIComponent('${encodeURIComponent(detailSelectedSize)}'));closeProductDetail()">+ Keranjang</button>
-          <a class="whatsapp-button" href="${esc(waUrl)}" target="_blank" rel="noopener noreferrer">☏ Konsultasi via WhatsApp</a>
+          <a class="whatsapp-button" href="${esc(waUrl)}" target="_blank" rel="noopener noreferrer">☏ Chat Admin Michio Bike Surabaya</a>
           <button class="outline secondary-action" type="button" style="color:#243" onclick="shareProduct('${esc(p.id)}')">Bagikan</button>
           <button class="dark secondary-action" type="button" onclick="closeProductDetail()">Tutup</button>
         </div>
@@ -951,9 +991,12 @@ function showView(view){
   window.scrollTo({top:0,behavior:'smooth'});
 }
 
-document.querySelectorAll('.nav button').forEach(b=>
-  b.onclick=()=>showView(b.dataset.view)
+document.querySelectorAll('.nav button[data-view]').forEach(b=>
+  b.addEventListener('click',()=>showView(b.dataset.view))
 );
+
+// Tombol Mode Pelayanan memiliki aksi tersendiri dan tidak boleh
+// ditimpa handler navigasi katalog/keranjang/cara pesan.
 document.querySelector('#search').oninput=render;
 document.querySelector('#sort').onchange=render;
 
@@ -997,7 +1040,7 @@ function toggleServiceMode(){
   const enabled=!document.body.classList.contains('service-mode');
   document.body.classList.toggle('service-mode',enabled);
   const button=document.querySelector('#serviceModeButton');
-  button.textContent=enabled?'Keluar Mode Pelayanan':'Mode Pelayanan';
+  if(button) button.textContent=enabled?'Keluar Mode Pelayanan':'Mode Pelayanan';
   if(enabled)showView('catalog');
   try{sessionStorage.setItem('mbServiceMode',enabled?'1':'0');}catch(e){}
 }
@@ -1009,30 +1052,28 @@ function shareProduct(id){
   const p=products.find(x=>sameId(x.id,id));
   if(!p)return;
 
-  // Tautan langsung membuka detail produk setelah katalog berhasil dimuat.
-  const productUrl = new URL(window.location.href);
-  productUrl.search = '';
-  productUrl.hash = '';
-  productUrl.searchParams.set('produk', String(p.id));
-  const url = productUrl.toString();
-  const shareText = `${p.name} — ${money(p.price)} | Michio Bike Surabaya\nLihat produk: ${url}`;
+  const productUrl=new URL(window.location.pathname,window.location.origin);
+  productUrl.searchParams.set('produk',String(p.id));
+  const url=productUrl.toString();
+  const shareText=`${p.name} — ${money(p.price)} | Michio Bike Surabaya`;
+  const fallbackText=`${shareText}\nLihat produk: ${url}`;
 
-  if (navigator.share) {
-    navigator.share({title:p.name, text:shareText, url:url}).catch(function(){});
+  if(navigator.share){
+    // URL dikirim hanya melalui properti url, tidak diulang di dalam text.
+    navigator.share({title:p.name,text:shareText,url:url}).catch(function(){});
     return;
   }
 
-  if (navigator.clipboard && navigator.clipboard.writeText) {
-    navigator.clipboard.writeText(url).then(function(){
-      alert('Tautan produk berhasil disalin. Silakan bagikan kepada calon pembeli.\n' + url);
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(fallbackText).then(function(){
+      alert('Informasi produk dan satu tautan berhasil disalin. Silakan bagikan kepada calon pembeli.');
     }).catch(function(){
-      window.prompt('Salin tautan produk berikut:', url);
+      window.prompt('Salin informasi produk berikut:',fallbackText);
     });
-  } else {
-    window.prompt('Salin tautan produk berikut:', url);
+  }else{
+    window.prompt('Salin informasi produk berikut:',fallbackText);
   }
 }
-
 /* CHECKOUT */
 
 function checkout(){
@@ -1301,7 +1342,7 @@ td small{display:block;color:#8a94a4;font-size:8px;margin-top:4px}
   <div class="meta">
     <div>
       <div class="label">DITERBITKAN OLEH</div>
-      <p><strong>MICHIO BIKE SURABAYA</strong><br>Ride Better, Live Happier</p>
+      <p><strong>MICHIO BIKE SURABAYA</strong><br>Ride Better, Live Happier<br>${esc(MICHIO_ADDRESS)}<br>WhatsApp: 082190003633</p>
     </div>
     <div>
       <div class="label">INFORMASI PESANAN</div>
@@ -1338,7 +1379,7 @@ td small{display:block;color:#8a94a4;font-size:8px;margin-top:4px}
     <p>Silakan melakukan pembayaran melalui transfer ke rekening berikut:<br>
     <strong>BCA · 0881885122</strong><br>
     Atas Nama: BRYAN SURYA PUTRA<br>
-    Setelah transfer, mohon konfirmasi pembayaran kepada admin Michio Bike Surabaya.</p>
+    Setelah transfer, mohon konfirmasi pembayaran kepada Admin Michio Bike Surabaya melalui WhatsApp 082190003633.</p>
   </div>
 
   <div class="footer">
@@ -1408,7 +1449,7 @@ try {
 } catch(e) {}
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', function() {
-    navigator.serviceWorker.register('./sw.js').catch(function(err){console.warn('PWA belum aktif:',err);});
+    navigator.serviceWorker.register('./sw.js?v=20261108-3').catch(function(err){console.warn('PWA belum aktif:',err);});
   });
 }
 
