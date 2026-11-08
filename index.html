@@ -513,6 +513,7 @@ dialog::backdrop{background:#06152b99}
       </div>
 
       <button class="primary full" onclick="checkout()">Lanjutkan & Buat Invoice</button>
+      <button id="reprintLastInvoiceButton" class="outline full hide" style="color:#243" onclick="printInvoice()">Lihat / Cetak Invoice Terakhir</button>
       <button class="outline full" style="color:#243" onclick="printPicking()">Cetak Order Gudang</button>
     </div>
   </section>
@@ -607,7 +608,7 @@ const money=n=>new Intl.NumberFormat('id-ID',{
   style:'currency',currency:'IDR',maximumFractionDigits:0
 }).format(Number(n)||0);
 
-let products=[],cart=[],category='Semua',latestOrder=null;
+let products=[],cart=[],category='Semua',latestOrder=null,pendingCheckout=null;
 let photoIndexes={},detailPhotoIndex=0,activeDetailProduct=null,selectedCompareIds=[];
 let detailSelectedColor='',detailSelectedSize='';
 const MICHIO_WHATSAPP='6282190003633';
@@ -629,6 +630,12 @@ function esc(s){
   }[c]));
 }
 
+// Menyisipkan string sebagai argumen JavaScript di atribut HTML dengan aman.
+// escape HTML saja tidak cukup karena entitas &#39; kembali menjadi apostrof.
+function jsArg(value){
+  return esc(JSON.stringify(String(value??'')));
+}
+
 function getPhotos(product){
   if(Array.isArray(product.photos)){
     const list=product.photos.filter(Boolean);
@@ -648,8 +655,8 @@ function renderProductPhoto(product){
 
   const controls=photos.length>1?`
     <div class="photo-nav">
-      <button type="button" aria-label="Foto sebelumnya" onclick="changeProductPhoto('${esc(product.id)}',-1)">‹</button>
-      <button type="button" aria-label="Foto berikutnya" onclick="changeProductPhoto('${esc(product.id)}',1)">›</button>
+      <button type="button" aria-label="Foto sebelumnya" onclick="changeProductPhoto(${jsArg(product.id)},-1)">‹</button>
+      <button type="button" aria-label="Foto berikutnya" onclick="changeProductPhoto(${jsArg(product.id)},1)">›</button>
     </div>
     <div class="photo-count">${index+1} / ${photos.length}</div>`:'';
 
@@ -793,7 +800,7 @@ function renderProductDetail(){
     <div class="detail-option">
       <div class="detail-option-title"><span>Pilihan warna</span><span class="detail-option-hint">${variants.length} varian tersedia</span></div>
       <div class="detail-choice-list">${variants.map(v=>`
-        <button type="button" class="detail-choice ${v.name===detailSelectedColor?'active':''}" aria-pressed="${v.name===detailSelectedColor?'true':'false'}" ${v.qty<=0?'disabled aria-disabled="true"':''} onclick="selectDetailColor(decodeURIComponent('${encodeURIComponent(v.name)}'))">
+        <button type="button" class="detail-choice ${v.name===detailSelectedColor?'active':''}" aria-pressed="${v.name===detailSelectedColor?'true':'false'}" ${v.qty<=0?'disabled aria-disabled="true"':''} onclick="selectDetailColor(${jsArg(v.name)})">
           ${esc(v.name)}<small>${v.qty>0?v.qty+' unit':'Stok habis'}</small>
         </button>`).join('')}</div>
     </div>`:`<div class="detail-option"><div class="detail-option-title">Pilihan warna</div><div class="detail-option-hint">Konfirmasi pilihan warna langsung kepada staf toko.</div></div>`;
@@ -804,7 +811,7 @@ function renderProductDetail(){
     <div class="detail-option">
       <div class="detail-option-title"><span>Pilihan ukuran roda</span><span class="detail-option-hint">${sizeProducts.length>1?'Pilih ukuran yang tersedia':'Ukuran mengikuti model produk'}</span></div>
       <div class="detail-choice-list">${(sizeProducts.length?sizeProducts:[p]).map(item=>`
-        <button type="button" class="detail-choice ${sameId(item.id,p.id)?'active':''}" aria-pressed="${sameId(item.id,p.id)?'true':'false'}" onclick="selectDetailSizeProduct('${esc(item.id)}')">${esc(getProductSize(item))} inci</button>`).join('')}</div>
+        <button type="button" class="detail-choice ${sameId(item.id,p.id)?'active':''}" aria-pressed="${sameId(item.id,p.id)?'true':'false'}" onclick="selectDetailSizeProduct(${jsArg(item.id)})">${esc(getProductSize(item))} inci</button>`).join('')}</div>
       ${sizeProducts.length<2?'<div class="detail-note">Ukuran lain dapat dipilih melalui produk lain di katalog.</div>':''}
     </div>`:'';
 
@@ -839,9 +846,9 @@ function renderProductDetail(){
         </div>
 
         <div class="detail-actions">
-          <button class="primary secondary-action" type="button" ${canAdd?'':'disabled'} onclick="addCart('${esc(p.id)}',decodeURIComponent('${encodeURIComponent(detailSelectedColor)}'),decodeURIComponent('${encodeURIComponent(detailSelectedSize)}'));closeProductDetail()">+ Keranjang</button>
+          <button class="primary secondary-action" type="button" ${canAdd?'':'disabled'} onclick="addCart(${jsArg(p.id)},${jsArg(detailSelectedColor)},${jsArg(detailSelectedSize)});closeProductDetail()">+ Keranjang</button>
           <a class="whatsapp-button" href="${esc(waUrl)}" target="_blank" rel="noopener noreferrer">☏ Chat Admin Michio Bike Surabaya</a>
-          <button class="outline secondary-action" type="button" style="color:#243" onclick="shareProduct('${esc(p.id)}')">Bagikan</button>
+          <button class="outline secondary-action" type="button" style="color:#243" onclick="shareProduct(${jsArg(p.id)})">Bagikan</button>
           <button class="dark secondary-action" type="button" onclick="closeProductDetail()">Tutup</button>
         </div>
         <div class="detail-note">Harga dan stok ditampilkan berdasarkan katalog Michio Bike. Ketersediaan akhir tetap dikonfirmasi oleh staf toko.</div>
@@ -899,7 +906,7 @@ function load(){
 function renderFilters(){
   const cats=['Semua',...new Set(products.map(p=>p.category).filter(Boolean))];
   document.querySelector('#filters').innerHTML=cats.map(c=>
-    `<button class="${c===category?'active':''}" onclick="setCategory('${esc(c)}')">${esc(c)}</button>`
+    `<button class="${c===category?'active':''}" onclick="setCategory(${jsArg(c)})">${esc(c)}</button>`
   ).join('');
   const sizes=[...new Set(products.map(getProductSize).filter(Boolean))].sort((a,b)=>parseFloat(a)-parseFloat(b));
   const sizeEl=document.querySelector('#sizeFilter');
@@ -966,11 +973,11 @@ function render(){
         <div class="desc">${esc(p.description||'')}</div>
         <div class="price">${money(p.price)}</div>
         <div class="actions">
-          <button class="dark" onclick="addCart('${esc(p.id)}')">+ Keranjang</button>
-          <button class="primary" onclick="openProductDetail('${esc(p.id)}')">Detail</button>
-          <button class="outline" style="color:#243" onclick="shareProduct('${esc(p.id)}')">Bagikan</button>
+          <button class="dark" onclick="addCart(${jsArg(p.id)})">+ Keranjang</button>
+          <button class="primary" onclick="openProductDetail(${jsArg(p.id)})">Detail</button>
+          <button class="outline" style="color:#243" onclick="shareProduct(${jsArg(p.id)})">Bagikan</button>
         </div>
-        <button type="button" class="compare-toggle ${selectedCompareIds.some(id=>sameId(id,p.id))?'selected':''}" onclick="toggleCompare('${esc(p.id)}')">
+        <button type="button" class="compare-toggle ${selectedCompareIds.some(id=>sameId(id,p.id))?'selected':''}" onclick="toggleCompare(${jsArg(p.id)})">
           ${selectedCompareIds.some(id=>sameId(id,p.id))?'✓ Dipilih untuk dibandingkan':'+ Bandingkan'}
         </button>
       </div>
@@ -1147,6 +1154,24 @@ function shareProduct(id){
 }
 /* CHECKOUT */
 
+function uniqueCheckoutId(){
+  const uuid=(window.crypto&&typeof window.crypto.randomUUID==='function')
+    ? window.crypto.randomUUID().replace(/-/g,'')
+    : String(Date.now())+Math.random().toString(36).slice(2);
+  return 'MB-'+uuid;
+}
+
+function isTrustedAppsScriptOrigin(origin){
+  try{
+    const target=new URL(origin);
+    return target.protocol==='https:' && (
+      target.hostname==='script.google.com' ||
+      target.hostname==='script.googleusercontent.com' ||
+      target.hostname.endsWith('.googleusercontent.com')
+    );
+  }catch(_error){ return false; }
+}
+
 function checkout(){
   if(!cart.length){
     alert('Keranjang masih kosong');
@@ -1167,7 +1192,7 @@ function sendOrderToSheets(order){
       document.body.appendChild(frame);
     }
 
-    const requestToken=order.number+'-'+Math.random().toString(36).slice(2);
+    const requestToken=uniqueCheckoutId();
     let finished=false,timer;
 
     const cleanup=()=>{
@@ -1176,6 +1201,7 @@ function sendOrderToSheets(order){
     };
 
     function receive(event){
+      if(!isTrustedAppsScriptOrigin(event.origin))return;
       const data=event.data;
       if(!data||typeof data!=='object')return;
       if(data.requestToken!==requestToken)return;
@@ -1232,18 +1258,29 @@ document.querySelector('#checkoutForm').onsubmit=async function(e){
   }
 
   const assemblyService=isAssemblySelected();
+  const buyer=document.querySelector('#buyer').value.trim();
+  const phone=document.querySelector('#phone').value.trim();
+  const address=document.querySelector('#address').value.trim();
+  const lineItems=cart.map(x=>({
+    id:x.id,name:x.name,qty:x.qty,color:x.color||'',size:x.size||''
+  }));
+  // Pertahankan nomor yang sama jika respons timeout lalu pesanan identik dikirim ulang.
+  const signature=JSON.stringify({buyer,phone,address,items:lineItems,assemblyService});
+  if(!pendingCheckout||pendingCheckout.signature!==signature){
+    pendingCheckout={signature:signature,number:uniqueCheckoutId()};
+  }
 
   latestOrder={
-    buyer:document.querySelector('#buyer').value.trim(),
-    phone:document.querySelector('#phone').value.trim(),
-    address:document.querySelector('#address').value.trim(),
-    items:cart.map(x=>({...x})),
+    buyer:buyer,
+    phone:phone,
+    address:address,
+    items:lineItems.map(x=>({...x,price:Number(cart.find(c=>sameId(c.id,x.id)&&c.color===x.color&&c.size===x.size)?.price||0)})),
     assemblyService:assemblyService,
     assemblyFee:assemblyService?ASSEMBLY_FEE:0,
     productSubtotal:getProductSubtotal(),
     total:getOrderTotal(),
     date:new Date().toISOString(),
-    number:'MB-'+Date.now()
+    number:pendingCheckout.number
   };
 
   const button=this.querySelector('button[type="submit"]');
@@ -1258,6 +1295,13 @@ document.querySelector('#checkoutForm').onsubmit=async function(e){
     latestOrder.total=Number(result.total)||latestOrder.total;
     latestOrder.assemblyService=result.assemblyService===true;
     latestOrder.assemblyFee=Number(result.assemblyFee)||0;
+    // Detail invoice harus berasal dari respons server, bukan harga keranjang lokal.
+    if(Array.isArray(result.items)){
+      latestOrder.items=result.items.filter(x=>x&&x.type==='product');
+      latestOrder.productSubtotal=Number(result.productSubtotal)||0;
+    }
+    if(result.orderDate)latestOrder.date=result.orderDate;
+    pendingCheckout=null;
 
     document.querySelector('#checkoutDialog').close();
 
@@ -1267,6 +1311,7 @@ document.querySelector('#checkoutForm').onsubmit=async function(e){
       'Status: MENUNGGU KONFIRMASI'
     );
 
+    document.querySelector('#reprintLastInvoiceButton').classList.remove('hide');
     printInvoice();
 
     cart=[];
