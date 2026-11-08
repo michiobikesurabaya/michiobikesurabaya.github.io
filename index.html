@@ -282,6 +282,25 @@ dialog::backdrop{background:#06152b99}
 .detail-actions{display:flex;gap:10px;margin-top:20px}
 .detail-actions button{flex:1}
 .detail-note{color:#8992a1;font-size:11px;line-height:1.7;margin-top:15px}
+.detail-thumbnails{display:flex;gap:9px;overflow-x:auto;padding:11px 2px 3px;scrollbar-width:thin}
+.detail-thumb{flex:0 0 76px;width:76px;height:66px;border:2px solid #e6eaf0;border-radius:11px;background:#fff;padding:3px;overflow:hidden;cursor:pointer}
+.detail-thumb img{width:100%;height:100%;object-fit:contain}
+.detail-thumb.active{border-color:#c8943e;box-shadow:0 0 0 2px #d9ad5425}
+.detail-option{margin-top:17px}
+.detail-option-title{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:9px;color:var(--navy);font-size:12px;font-weight:800}
+.detail-option-hint{font-size:10px;color:#8992a1;font-weight:500}
+.detail-choice-list{display:flex;flex-wrap:wrap;gap:8px}
+.detail-choice{border:1px solid #dce2eb;border-radius:10px;background:#fff;color:#334155;padding:9px 12px;font-size:11px;font-weight:700}
+.detail-choice.active{border-color:#b98532;background:#fff7e7;color:#77521b;box-shadow:0 0 0 2px #d9ad5420}
+.detail-choice small{display:block;font-size:9px;font-weight:500;color:#7b8492;margin-top:3px}
+.detail-spec-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:13px}
+.detail-spec-item{background:#fff;border:1px solid #e8ebf0;border-radius:10px;padding:10px}
+.detail-spec-item small{display:block;color:#8992a1;font-size:9px;margin-bottom:4px}
+.detail-spec-item b{display:block;color:#25334a;font-size:11px;overflow-wrap:anywhere}
+.detail-actions{flex-wrap:wrap}
+.detail-actions .whatsapp-button{flex:1 1 100%;display:flex;justify-content:center;align-items:center;gap:8px;text-decoration:none;background:#16834a;color:#fff;border-radius:12px;padding:13px 16px;font-size:13px;font-weight:800;box-shadow:0 5px 14px #16834a25}
+.detail-actions .whatsapp-button:hover{background:#116c3c}
+.detail-actions .secondary-action{flex:1;min-width:90px}
 
 
 .toolbar{flex-wrap:wrap}
@@ -313,6 +332,8 @@ dialog::backdrop{background:#06152b99}
   .detail-content{grid-template-columns:1fr;gap:18px;padding:16px}
   .detail-main-photo{height:280px}
   .detail-info h2{font-size:22px}.detail-price{font-size:25px}
+  .detail-thumb{flex-basis:67px;width:67px;height:59px}
+  .detail-spec-grid{gap:7px}
 }
 @media(max-width:600px){
   header{padding:11px 12px}
@@ -496,6 +517,8 @@ const money=n=>new Intl.NumberFormat('id-ID',{
 
 let products=[],cart=[],category='Semua',latestOrder=null;
 let photoIndexes={},detailPhotoIndex=0,activeDetailProduct=null,selectedCompareIds=[];
+let detailSelectedColor='',detailSelectedSize='';
+const MICHIO_WHATSAPP='6282231376907';
 
 function sameId(a,b){return String(a)===String(b)}
 
@@ -560,8 +583,67 @@ function openProductDetail(id){
   if(!p)return;
   activeDetailProduct=p;
   detailPhotoIndex=0;
+  const variants=getProductColorVariants(p);
+  detailSelectedColor=variants.length?variants[0].name:'';
+  detailSelectedSize=getProductSize(p)||'';
   renderProductDetail();
   document.querySelector('#productDetailDialog').showModal();
+}
+
+function getProductColorVariants(p){
+  const description=String(p&&p.description||'');
+  const parts=description.split(/[.\n;|]+/).map(x=>x.trim()).filter(Boolean);
+  const variants=[];
+  parts.forEach(part=>{
+    const match=part.match(/^(.*?)[\s-]*(\d+)$/);
+    if(!match)return;
+    const rawName=match[1].trim().replace(/[\s_-]+$/,'');
+    if(!rawName||/^(\d+(?:[,.]\d+)?\s*)?(sp|speed|inch|inci)$/i.test(rawName))return;
+    const name=humanizeColorName(rawName);
+    if(!variants.some(v=>v.name.toLowerCase()===name.toLowerCase())){
+      variants.push({name:name,qty:Math.max(0,Number(match[2])||0)});
+    }
+  });
+  return variants;
+}
+
+function humanizeColorName(value){
+  return String(value||'').replace(/([a-z])([A-Z])/g,'$1 $2')
+    .replace(/(black|red|blue|grey|gray|white|yellow|silver|purple|orange|green|pink|beige|brown|navy|cream|gold|peach|titanium|glow|chrome|turquoise|turquise)/gi,' $1')
+    .replace(/\s+/g,' ').trim().replace(/\b\w/g,c=>c.toUpperCase());
+}
+
+function selectDetailColor(name){
+  detailSelectedColor=name;
+  renderProductDetail();
+}
+
+function getRelatedSizeProducts(p){
+  const family=name=>String(name||'').toLowerCase()
+    .replace(/^\s*(?:12|14|16|18|20|24|26|27(?:[,.]?5)?|28|29)\s*/,'')
+    .replace(/[^a-z0-9]+/g,' ').trim();
+  const key=family(p.name);
+  return products.filter(item=>item.category===p.category&&family(item.name)===key&&getProductSize(item))
+    .sort((a,b)=>parseFloat(getProductSize(a))-parseFloat(getProductSize(b)));
+}
+
+function selectDetailSizeProduct(id){
+  const next=products.find(item=>sameId(item.id,id));
+  if(!next)return;
+  activeDetailProduct=next;
+  detailSelectedSize=getProductSize(next)||'';
+  detailPhotoIndex=0;
+  const variants=getProductColorVariants(next);
+  detailSelectedColor=variants.length?variants[0].name:'';
+  renderProductDetail();
+}
+
+function getDetailStock(p){
+  const variants=getProductColorVariants(p);
+  const selected=variants.find(v=>v.name===detailSelectedColor);
+  if(selected)return {qty:selected.qty,known:true,byColor:true};
+  const known=p.qty!==undefined&&p.qty!==null&&String(p.qty).trim()!=='';
+  return {qty:known?Number(p.qty):0,known:known,byColor:false};
 }
 
 function renderProductDetail(){
@@ -570,49 +652,98 @@ function renderProductDetail(){
 
   const photos=getPhotos(p);
   if(detailPhotoIndex>=photos.length)detailPhotoIndex=0;
-
-  let photoHtml=photos.length?`
+  const mainPhoto=photos.length?`
     <img src="${esc(driveImg(photos[detailPhotoIndex]))}" alt="${esc(p.name)}"
-      onerror="this.onerror=null;this.parentElement.innerHTML='<span class=&quot;muted&quot;>Foto tidak dapat dimuat. Periksa akses Google Drive.</span>'">
+      onerror="this.onerror=null;this.alt='Foto tidak dapat dimuat';this.style.display='none';this.parentElement.insertAdjacentHTML('beforeend','<span class=\\"muted\\">Foto tidak dapat dimuat. Periksa akses Google Drive.</span>')">
     ${photos.length>1?`
       <div class="detail-gallery-nav">
-        <button type="button" onclick="changeDetailPhoto(-1)">‹</button>
-        <button type="button" onclick="changeDetailPhoto(1)">›</button>
+        <button type="button" aria-label="Foto sebelumnya" onclick="changeDetailPhoto(-1)">‹</button>
+        <button type="button" aria-label="Foto berikutnya" onclick="changeDetailPhoto(1)">›</button>
       </div>
       <div class="detail-gallery-count">${detailPhotoIndex+1} / ${photos.length}</div>`:''}
   `:'<span class="muted">Foto produk belum tersedia</span>';
 
-  const stockValue=Number(p.qty);
-  const stockKnown=p.qty!==undefined&&p.qty!==null&&String(p.qty).trim()!=='';
-  let stockText='Hubungi toko untuk cek stok',stockClass='detail-stock';
+  const thumbnails=photos.length>1?`<div class="detail-thumbnails" aria-label="Galeri foto">${photos.map((src,i)=>`
+    <button type="button" class="detail-thumb ${i===detailPhotoIndex?'active':''}" aria-label="Lihat foto ${i+1}" aria-pressed="${i===detailPhotoIndex?'true':'false'}" onclick="selectDetailPhoto(${i})">
+      <img loading="lazy" src="${esc(driveImg(src))}" alt="${esc(p.name)} foto ${i+1}">
+    </button>`).join('')}</div>`:'';
 
-  if(stockKnown){
-    if(!Number.isFinite(stockValue))stockText='Hubungi toko untuk cek stok';
-    else if(stockValue<=0){stockText='Stok habis';stockClass+=' out'}
-    else if(stockValue<=3){stockText=`Stok terbatas · ${stockValue} unit`;stockClass+=' low'}
-    else stockText=`Tersedia · ${stockValue} unit`;
+  const variants=getProductColorVariants(p);
+  const stock=getDetailStock(p);
+  let stockText='Hubungi toko untuk cek stok',stockClass='detail-stock';
+  if(stock.known){
+    if(!Number.isFinite(stock.qty)){stockText='Hubungi toko untuk cek stok';}
+    else if(stock.qty<=0){stockText='Stok habis untuk pilihan ini';stockClass+=' out';}
+    else if(stock.qty<=3){stockText=`Stok terbatas · ${stock.qty} unit`;stockClass+=' low';}
+    else stockText=`Tersedia · ${stock.qty} unit`;
   }
+
+  const colorChoices=variants.length?`
+    <div class="detail-option">
+      <div class="detail-option-title"><span>Pilihan warna</span><span class="detail-option-hint">${variants.length} varian tersedia</span></div>
+      <div class="detail-choice-list">${variants.map(v=>`
+        <button type="button" class="detail-choice ${v.name===detailSelectedColor?'active':''}" aria-pressed="${v.name===detailSelectedColor?'true':'false'}" onclick="selectDetailColor(decodeURIComponent('${encodeURIComponent(v.name)}'))">
+          ${esc(v.name)}<small>${v.qty} unit</small>
+        </button>`).join('')}</div>
+    </div>`:`<div class="detail-option"><div class="detail-option-title">Pilihan warna</div><div class="detail-option-hint">Konfirmasi pilihan warna langsung kepada staf toko.</div></div>`;
+
+  const size=getProductSize(p);
+  const sizeProducts=getRelatedSizeProducts(p);
+  const sizeChoice=size?`
+    <div class="detail-option">
+      <div class="detail-option-title"><span>Pilihan ukuran roda</span><span class="detail-option-hint">${sizeProducts.length>1?'Pilih ukuran yang tersedia':'Ukuran mengikuti model produk'}</span></div>
+      <div class="detail-choice-list">${(sizeProducts.length?sizeProducts:[p]).map(item=>`
+        <button type="button" class="detail-choice ${sameId(item.id,p.id)?'active':''}" aria-pressed="${sameId(item.id,p.id)?'true':'false'}" onclick="selectDetailSizeProduct('${esc(item.id)}')">${esc(getProductSize(item))} inci</button>`).join('')}</div>
+      ${sizeProducts.length<2?'<div class="detail-note">Ukuran lain dapat dipilih melalui produk lain di katalog.</div>':''}
+    </div>`:'';
+
+  const waMessage=`Halo Michio Bike Surabaya, saya ingin konsultasi produk:\n${p.name}\nHarga: ${money(p.price)}\nWarna: ${detailSelectedColor||'Mohon rekomendasi'}\nUkuran: ${detailSelectedSize?detailSelectedSize+' inci':'Mohon informasi'}\nMohon informasi lebih lanjut. `;
+  const waUrl='https://wa.me/'+MICHIO_WHATSAPP+'?text='+encodeURIComponent(waMessage);
+  const canAdd=!stock.known||!Number.isFinite(stock.qty)||stock.qty>0;
 
   document.querySelector('#productDetailContent').innerHTML=`
     <div class="detail-content">
-      <div class="detail-gallery"><div class="detail-main-photo">${photoHtml}</div></div>
+      <div class="detail-gallery">
+        <div class="detail-main-photo">${mainPhoto}</div>
+        ${thumbnails}
+      </div>
       <div class="detail-info">
         <span class="detail-category">${esc(p.category||'Koleksi Michio Bike')}</span>
         <h2>${esc(p.name)}</h2>
         <div class="detail-price">${money(p.price)}</div>
         <div class="${stockClass}">${esc(stockText)}</div>
+
+        ${colorChoices}
+        ${sizeChoice}
+
         <div class="detail-spec">
-          <h3>Spesifikasi & Informasi Produk</h3>
-          <div class="detail-spec-content">${esc(p.description||'Informasi produk belum tersedia.')}</div>
+          <h3>Informasi & Spesifikasi Produk</h3>
+          <div class="detail-spec-grid">
+            <div class="detail-spec-item"><small>Kategori</small><b>${esc(p.category||'-')}</b></div>
+            <div class="detail-spec-item"><small>Jenis sepeda</small><b>${esc(getProductType(p))}</b></div>
+            <div class="detail-spec-item"><small>Ukuran roda</small><b>${size?esc(size)+' inci':'Konfirmasi ke toko'}</b></div>
+            <div class="detail-spec-item"><small>Galeri foto</small><b>${photos.length} foto</b></div>
+          </div>
+          <div class="detail-spec-content">${esc(p.description||'Informasi teknis belum dicantumkan pada katalog. Silakan konsultasi dengan staf Michio Bike.')}</div>
         </div>
+
         <div class="detail-actions">
-          <button class="primary" type="button" onclick="addCart('${esc(p.id)}');closeProductDetail()">+ Keranjang</button>
-          <button class="outline" type="button" onclick="shareProduct('${esc(p.id)}')">Bagikan</button>
-          <button class="dark" type="button" onclick="closeProductDetail()">Tutup</button>
+          <button class="primary secondary-action" type="button" ${canAdd?'':'disabled'} onclick="addCart('${esc(p.id)}',decodeURIComponent('${encodeURIComponent(detailSelectedColor)}'),decodeURIComponent('${encodeURIComponent(detailSelectedSize)}'));closeProductDetail()">+ Keranjang</button>
+          <a class="whatsapp-button" href="${esc(waUrl)}" target="_blank" rel="noopener noreferrer">☏ Konsultasi via WhatsApp</a>
+          <button class="outline secondary-action" type="button" style="color:#243" onclick="shareProduct('${esc(p.id)}')">Bagikan</button>
+          <button class="dark secondary-action" type="button" onclick="closeProductDetail()">Tutup</button>
         </div>
-        <div class="detail-note">Harga dan ketersediaan produk dapat berubah. Silakan konfirmasi langsung kepada staf Michio Bike Surabaya.</div>
+        <div class="detail-note">Harga dan stok ditampilkan berdasarkan katalog Michio Bike. Ketersediaan akhir tetap dikonfirmasi oleh staf toko.</div>
       </div>
     </div>`;
+}
+
+function selectDetailPhoto(index){
+  if(!activeDetailProduct)return;
+  const photos=getPhotos(activeDetailProduct);
+  if(index<0||index>=photos.length)return;
+  detailPhotoIndex=index;
+  renderProductDetail();
 }
 
 function changeDetailPhoto(direction){
@@ -740,12 +871,23 @@ function render(){
 
 /* KERANJANG */
 
-function addCart(id){
+function addCart(id,color,size){
   const p=products.find(x=>sameId(x.id,id));
   if(!p)return;
-  const item=cart.find(x=>sameId(x.id,id));
-  if(item)item.qty++;
-  else cart.push({...p,qty:1});
+  const variants=getProductColorVariants(p);
+  const selectedVariant=variants.find(v=>v.name===String(color||''));
+  const selectedColor=selectedVariant?selectedVariant.name:(color|| (variants[0]&&variants[0].name)||'');
+  const selectedSize=String(size||getProductSize(p)||'');
+  const colorStock=selectedVariant?selectedVariant.qty:null;
+  const stockLimit=colorStock!==null?colorStock:Number(p.qty);
+  const item=cart.find(x=>sameId(x.id,id)&&String(x.color||'')===selectedColor&&String(x.size||'')===selectedSize);
+  if(item){
+    if(Number.isFinite(stockLimit)&&stockLimit>=0&&item.qty>=stockLimit){alert('Jumlah melebihi stok varian yang tersedia.');return;}
+    item.qty++;
+  }else{
+    if(Number.isFinite(stockLimit)&&stockLimit<=0){alert('Stok varian ini sedang habis. Silakan konsultasi melalui WhatsApp.');return;}
+    cart.push({...p,qty:1,color:selectedColor,size:selectedSize,colorStock:colorStock,productQty:Number(p.qty)});
+  }
   updateCart();
   alert('Produk ditambahkan ke keranjang');
 }
@@ -765,16 +907,16 @@ function getOrderTotal(){
 function updateCart(){
   document.querySelector('#cartcount').textContent=cart.reduce((s,x)=>s+x.qty,0);
 
-  document.querySelector('#cartitems').innerHTML=cart.map(x=>`
+  document.querySelector('#cartitems').innerHTML=cart.map((x,i)=>`
     <div class="row">
       <div>
         <b>${esc(x.name)}</b>
-        <div class="muted">${money(x.price)} × ${x.qty}</div>
+        <div class="muted">${x.color?'Warna: '+esc(x.color)+' · ':''}${x.size?'Ukuran: '+esc(x.size)+' inci · ':''}${money(x.price)} × ${x.qty}</div>
       </div>
       <div class="qty">
-        <button onclick="changeQty('${esc(x.id)}',-1)">−</button>
+        <button onclick="changeQty(${i},-1)">−</button>
         ${x.qty}
-        <button onclick="changeQty('${esc(x.id)}',1)">+</button>
+        <button onclick="changeQty(${i},1)">+</button>
       </div>
     </div>`).join('')||'<div class="empty">Keranjang masih kosong.</div>';
 
@@ -786,11 +928,13 @@ function updateCart(){
   document.querySelector('#total').textContent=money(subtotal+(assembly?ASSEMBLY_FEE:0));
 }
 
-function changeQty(id,n){
-  const item=cart.find(x=>sameId(x.id,id));
+function changeQty(index,n){
+  const item=cart[index];
   if(!item)return;
+  const limit=item.colorStock!==null&&item.colorStock!==undefined?Number(item.colorStock):Number(item.productQty);
+  if(n>0&&Number.isFinite(limit)&&item.qty>=limit){alert('Jumlah melebihi stok varian yang tersedia.');return;}
   item.qty+=n;
-  if(item.qty<1)cart=cart.filter(x=>!sameId(x.id,id));
+  if(item.qty<1)cart.splice(index,1);
   updateCart();
 }
 
@@ -1070,7 +1214,7 @@ function printInvoice(){
     <tr>
       <td>
         <strong>${esc(item.name)}</strong>
-        <small>Produk Michio Bike</small>
+        <small>Produk Michio Bike${item.color?' · Warna: '+esc(item.color):''}${item.size?' · Ukuran: '+esc(item.size)+' inci':''}</small>
       </td>
       <td class="center">${Number(item.qty)||0}</td>
       <td class="right">${money(item.price)}</td>
@@ -1239,7 +1383,7 @@ function printPicking(){
   <table>
   <tr><th>No</th><th>Nama Barang</th><th>Qty</th><th>Lokasi</th><th>Checklist</th></tr>
   ${cart.map((x,i)=>`
-    <tr><td>${i+1}</td><td>${esc(x.name)}</td><td>${x.qty}</td><td></td><td>□</td></tr>
+    <tr><td>${i+1}</td><td>${esc(x.name)}${x.color||x.size?'<br><small>'+[x.color?'Warna: '+esc(x.color):'',x.size?'Ukuran: '+esc(x.size)+' inci':''].filter(Boolean).join(' · ')+'</small>':''}</td><td>${x.qty}</td><td></td><td>□</td></tr>
   `).join('')}
   </table>
   <p>Disiapkan: ____________ &nbsp; Dicek: ____________</p>
